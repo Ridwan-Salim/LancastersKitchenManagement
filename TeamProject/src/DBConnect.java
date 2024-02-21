@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class DBConnect {
-    public void connectToAndQueryDatabase(String username, String password) throws SQLException {
+    public Connection connectToAndQueryDatabase(String username, String password) throws SQLException {
 
         /*
         * 1) Download the mysql connector Martin put in week 3 resources and save it, then go to intellij
@@ -13,18 +13,19 @@ public class DBConnect {
                 "jdbc:mysql://localhost:3306/mydatabase",
                 username,
                 password);
-
+        System.out.println("Success");
         // Example way to execute statements (Create some tables in the phpmyadmin first and modify)
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT a, b, c FROM Table1");
+        /*Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM dish");
 
         while (rs.next()) {
-            int x = rs.getInt("a");
-            String s = rs.getString("b");
-            float f = rs.getFloat("c");
+            int x = rs.getInt("id");
+            String s = rs.getString("name");
+            float f = rs.getFloat("price");
             System.out.println(x);
             System.out.println(s);
             System.out.println(f);
-        }
+        }*/
+        return con; // Returning it so we can use the same instance in other classes, remove if using same class for all SQL statements
     }
 }
