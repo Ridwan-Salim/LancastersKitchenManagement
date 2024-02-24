@@ -1,0 +1,4 @@
+getHistoric - done
+probably delete customer per half hour
+delte getMenu
+sendReceipt
