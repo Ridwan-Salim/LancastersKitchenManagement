@@ -1,0 +1,3 @@
+---- IMAGE SOURCES ----
+
+App icon: chartIcon.png: https://cdn-icons-png.flaticon.com/512/3281/3281306.png

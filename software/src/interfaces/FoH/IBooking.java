@@ -1,0 +1,7 @@
+package interfaces.FoH;
+
+public interface IBooking {
+    void getHistoricBookings(int UNIXtimestamp_Date); // returns a 2D array of all the bookings for a given date
+    void getTableSizeFrequencyAverageForDayOfWeek(int UNIXtimestamp_Date); // returns a table size - frequency hashmap for how many of each table size there was for a given day from the entire previous year
+    void getTableSizeFrequency(int UNIXtimestamp_Date); // returns a table size - frequency hashmap for how many of each table size there was for a given day
+}
