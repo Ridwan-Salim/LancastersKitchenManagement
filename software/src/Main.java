@@ -6,12 +6,15 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.Objects;
+import scenes.*;
 
 public class Main extends Application {
 
     private static final double ASPECT_RATIO = 16.0/9.0;
     private static final int SCREEN_RES_WIDTH = 1280;
     private static final int SCREEN_RES_HEIGHT = 720;
+
+    private SceneManager sceneManager = SceneManager.getInstance();
 
 
     private static DBConnect dbConnect;
@@ -70,9 +73,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        StackPane root = new StackPane();
+        sceneManager.setPrimaryStage(primaryStage);
+        sceneManager.showScene("LOGIN");
 
-        Scene scene = new Scene(root,SCREEN_RES_WIDTH,SCREEN_RES_HEIGHT);
+
+        Login loginScene = new Login();
+        StackPane root = loginScene.createLoginScene(primaryStage); // Assuming createLoginScene() returns the root of the login scene
+        Scene scene = new Scene(root, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
         primaryStage.setScene(scene);
 
         setAspectRatio(primaryStage);
@@ -81,6 +88,7 @@ public class Main extends Application {
         primaryStage.setTitle("Lancaster's Kitchen: Management Software");
         Image iconImage = new Image(getClass().getResourceAsStream("dat/img/chartIcon.png"));
         primaryStage.getIcons().add(iconImage);
+
 
         primaryStage.show();
     }
