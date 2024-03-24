@@ -2,6 +2,7 @@ package scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
@@ -12,19 +13,19 @@ public class SceneManager {
     private static SceneManager instance;
     private Map<String, Scene> scenes;
 
-    private static Stage primaryStage;
+    private Stage primaryStage;
 
-    private SceneManager(Stage primaryStage) {
+    private SceneManager() {
         scenes = new HashMap<>();
-        scenes.put("general-staff", new GeneralStaffScene().createScene(primaryStage));
-        scenes.put("manager", new ManagerScene().createScene(primaryStage));
-        scenes.put("director", new DirectorScene().createScene(primaryStage));
-        scenes.put("LOGIN", new DirectorScene().createScene(primaryStage)); // Assuming this is your login scene
+        scenes.put("general-staff", new GeneralStaffScene().createScene());
+        scenes.put("manager", new ManagerScene().createScene());
+        scenes.put("director", new DirectorScene().createScene());
+        scenes.put("LOGIN", new Login().createLoginScene());
     }
 
     public static SceneManager getInstance() {
         if (instance == null) {
-            instance = new SceneManager(primaryStage);
+            instance = new SceneManager();
         }
         return instance;
     }
@@ -46,7 +47,7 @@ public class SceneManager {
         alert.showAndWait();
     }
 
-    public void setPrimaryStage(Stage primaryScene) {
-        this.primaryStage = primaryScene;
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 }

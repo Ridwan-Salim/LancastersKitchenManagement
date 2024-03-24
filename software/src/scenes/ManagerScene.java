@@ -6,30 +6,27 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
-public class ManagerScene {
+public class ManagerScene extends scenes.Scene {
 
-    final String IDLE_BUTTON_STYLE = "-fx-background-color:  #0077CC; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
-    final String HOVERED_BUTTON_STYLE = "-fx-background-color: #025692; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50; ";
-    final String CLICKED_BUTTON_STYLE = "-fx-background-color: #002540; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
-    private SceneManager sceneManager = SceneManager.getInstance();
     public Scene createScene() {
-        Label label = new Label("Welcome Manager!");
-        StackPane layout = new StackPane(label);
+        VBox layout = new VBox(20); // VBox layout to stack nodes vertically
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        Button loginButton = new Button("Sign out");
-        loginButton.setStyle(IDLE_BUTTON_STYLE);
-        loginButton.setOnMouseEntered(e -> loginButton.setStyle(HOVERED_BUTTON_STYLE));
-        loginButton.setOnMouseExited(e -> loginButton.setStyle(IDLE_BUTTON_STYLE));
-        loginButton.setOnMouseClicked(e -> loginButton.setStyle(CLICKED_BUTTON_STYLE));
+        Label greetingLabel = new Label("Welcome Manager!");
+        greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        loginButton.setOnAction(event -> {
-            sceneManager.showScene("LOGIN");
-            System.out.println("Back to login page");
-        });
+        Button logoutButton = new Button("Sign out");
+        logoutButton.setOnAction(event -> SceneManager.getInstance().showScene("LOGIN"));
+        logoutButton.setStyle(IDLE_BUTTON_STYLE);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(HOVERED_BUTTON_STYLE));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(IDLE_BUTTON_STYLE));
+        logoutButton.setOnMouseClicked(e -> logoutButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        return new Scene(layout, 600, 400);
+        layout.getChildren().addAll(greetingLabel, logoutButton);
+
+        return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
 }

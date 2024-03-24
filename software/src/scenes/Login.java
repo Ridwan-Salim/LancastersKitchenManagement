@@ -18,14 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class Login {
-    final String IDLE_BUTTON_STYLE = "-fx-background-color:  #0077CC; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
-    final String HOVERED_BUTTON_STYLE = "-fx-background-color: #025692; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50; ";
-    final String CLICKED_BUTTON_STYLE = "-fx-background-color: #002540; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
+public class Login extends scenes.Scene {
 
-    private SceneManager sceneManager = SceneManager.getInstance();
-    public StackPane createLoginScene(Stage primaryStage) {
-        // Create UI elements for login scene
+    public Scene createLoginScene() {
         Label titleLabel = new Label("Enter your password");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         PasswordField passwordField = new PasswordField();
@@ -33,7 +28,6 @@ public class Login {
         passwordField.setPrefHeight(30);
         StackPane passwordPane = new StackPane(passwordField);
         passwordPane.setMaxWidth(210);
-
 
         Button loginButton = new Button("Login");
         loginButton.setStyle(IDLE_BUTTON_STYLE);
@@ -43,31 +37,25 @@ public class Login {
 
         loginButton.setOnAction(event -> {
             String password = passwordField.getText();
-            // TODO: Add logic
-            sceneManager.showScene(password);
+            SceneManager.getInstance().showScene(password);
             System.out.println("Login button clicked with password: " + password);
         });
 
         // Load image
         Image image = new Image(getClass().getResourceAsStream("../dat/img/logo.png"));
         ImageView imageView = new ImageView(image);
-//        imageView.setFitHeight(400);
-//        imageView.setFitWidth(1500);
 
         VBox layout = new VBox(20);
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
-        layout.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))); // Set background color
-        layout.getChildren().addAll(imageView, titleLabel, passwordPane, loginButton); // Add passwordPane instead of passwordField
-        
+        layout.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        layout.getChildren().addAll(imageView, titleLabel, passwordPane, loginButton);
+
         StackPane root = new StackPane();
         root.getChildren().addAll(layout);
         StackPane.setAlignment(layout, Pos.CENTER);
 
-        return root;
-    }
-
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
+        Scene scene = new Scene(root);
+        return scene;
     }
 }
