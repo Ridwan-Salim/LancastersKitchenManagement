@@ -4,18 +4,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-public class DirectorScene extends scenes.Scene {
+public class DirectorScene extends PersonalizableScene {
+
 
     public Scene createScene() {
         StackPane layout = new StackPane();
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        Text greetingText = new Text("Welcome Director!");
+        Text greetingText = new Text("Welcome Director " + employeeName + "!");
         greetingText.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Button logoutButton = new Button("Sign out");

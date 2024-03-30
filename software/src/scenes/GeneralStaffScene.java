@@ -5,10 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class GeneralStaffScene extends scenes.Scene {
+public class GeneralStaffScene extends PersonalizableScene {
+
 
     public Scene createScene() {
 
@@ -16,7 +16,7 @@ public class GeneralStaffScene extends scenes.Scene {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        Label greetingLabel = new Label("Welcome General Staff!");
+        Label greetingLabel = new Label("Welcome General Staff " + employeeName + "!");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Button logoutButton = new Button("Sign out");

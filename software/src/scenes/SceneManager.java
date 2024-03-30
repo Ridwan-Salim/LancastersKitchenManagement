@@ -2,25 +2,33 @@ package scenes;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class SceneManager {
     private static SceneManager instance;
-    private Map<String, Scene> scenes;
+    private Map<String, PersonalizableScene> scenes;
 
     private Stage primaryStage;
 
     private SceneManager() {
         scenes = new HashMap<>();
-        scenes.put("general-staff", new GeneralStaffScene().createScene());
-        scenes.put("manager", new ManagerScene().createScene());
-        scenes.put("director", new DirectorScene().createScene());
-        scenes.put("LOGIN", new Login().createLoginScene());
+
+        PersonalizableScene regularScene = new GeneralStaffScene();
+
+        PersonalizableScene managerScene = new ManagerScene();
+
+        PersonalizableScene directorScene = new DirectorScene();
+
+
+        scenes.put("regular", regularScene);
+        scenes.put("manager", managerScene);
+        scenes.put("director", directorScene);
+        scenes.put("login", new Login());
     }
 
     public static SceneManager getInstance() {
@@ -31,12 +39,40 @@ public class SceneManager {
     }
 
     public void showScene(String password) {
-        Scene scene = scenes.get(password);
-        if (scene != null) {
-            primaryStage.setScene(scene);
+        String userInfo = getUserInfo(password);
+        if (!userInfo.isEmpty()) {
+            String[] userInfoParts = userInfo.split(" - ");
+            String role = userInfoParts[2];
+            String employeeName = userInfoParts[1];
+
+            if (scenes.containsKey(role.toLowerCase())) {
+                PersonalizableScene scene = scenes.get(role.toLowerCase());
+                scene.setEmployeeName(employeeName);
+                primaryStage.setScene(scene.createScene());
+
+            } else {
+                showAlert("Invalid Role", "Invalid role specified for the user.", Alert.AlertType.ERROR);
+            }
         } else {
             showAlert("Invalid Password", "Invalid password entered. Please try again.", Alert.AlertType.ERROR);
         }
+    }
+
+    // NOTE: you need to specify the full path to the file
+    private String getUserInfo(String password) {
+        String filePath = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\usersInfo\\users_info.txt";
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts[0].equals(password)) {
+                    return line;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void showAlert(String title, String message, Alert.AlertType alertType) {

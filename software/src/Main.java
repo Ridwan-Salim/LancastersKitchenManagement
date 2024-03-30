@@ -1,10 +1,11 @@
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import scenes.PersonalizableScene;
+import scenes.SceneManager;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import scenes.*;
 
 public class Main extends Application {
 
@@ -36,18 +37,6 @@ public class Main extends Application {
         return error;
     }
 
-    private void setAspectRatio(Stage stage) {
-        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = newValue.doubleValue() / scenes.Scene.ASPECT_RATIO;
-            stage.setHeight(newHeight);
-        });
-
-        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = newValue.doubleValue() * scenes.Scene.ASPECT_RATIO;
-            stage.setWidth(newWidth);
-        });
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         sceneManager.setPrimaryStage(primaryStage);
@@ -61,5 +50,17 @@ public class Main extends Application {
         primaryStage.getIcons().add(iconImage);
 
         primaryStage.show();
+    }
+
+    private void setAspectRatio(Stage stage) {
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double newHeight = newValue.doubleValue() / PersonalizableScene.ASPECT_RATIO;
+            stage.setHeight(newHeight);
+        });
+
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double newWidth = newValue.doubleValue() * PersonalizableScene.ASPECT_RATIO;
+            stage.setWidth(newWidth);
+        });
     }
 }

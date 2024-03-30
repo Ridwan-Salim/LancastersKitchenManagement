@@ -16,11 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
-public class Login extends scenes.Scene {
+public class Login extends PersonalizableScene {
 
-    public Scene createLoginScene() {
+    public Scene createScene() {
         Label titleLabel = new Label("Enter your password");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         PasswordField passwordField = new PasswordField();
