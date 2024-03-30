@@ -14,7 +14,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         String line = connectToDatabase();
-        if (!Objects.equals(line, "")){
+        if (!Objects.equals(line, "")) {
             System.out.println(line);
         }
 
@@ -22,22 +22,21 @@ public class Main extends Application {
     }
 
     private static String connectToDatabase() throws SQLException {
-        dbConnect = new DBConnect();
-        String adminUsername = "root";
-        String adminPassword = "";
+        String adminUsername = "in2033t09_a";
+        String adminPassword = "C9byIeKbkE0";
 
         String error = "";
 
         try {
-            dbConnect.connectToAndQueryDatabase(adminUsername, adminPassword);
-        } catch (SQLException sqlException){
+            DBConnect dbConnect = new DBConnect(adminUsername, adminPassword);
+        } catch (SQLException sqlException) {
             error = sqlException.getMessage();
         }
 
         return error;
     }
 
-    private void setAspectRatio(Stage stage){
+    private void setAspectRatio(Stage stage) {
         stage.widthProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = newValue.doubleValue() / scenes.Scene.ASPECT_RATIO;
             stage.setHeight(newHeight);
