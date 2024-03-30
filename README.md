@@ -1,3 +1,6 @@
+<u> IMPORTANT: DO NOT COMMIT THE .idea FOLDER <u> 
+
+
 # IN2033 Team Project (PRD2 A 2023/24)
 
 ### *Lancaster's Kitchen (Management)*
