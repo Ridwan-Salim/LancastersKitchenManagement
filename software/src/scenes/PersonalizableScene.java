@@ -1,10 +1,12 @@
 package scenes;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 public abstract class PersonalizableScene {
     protected String employeeName = "";
     public Scene createScene(){return null;};
+    public Scene createScene(boolean b){return null;};
     public String getEmployeeName() {
         return employeeName;
     }
@@ -18,4 +20,15 @@ public abstract class PersonalizableScene {
     final String IDLE_BUTTON_STYLE = "-fx-background-color:  #0077CC; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
     final String HOVERED_BUTTON_STYLE = "-fx-background-color: #025692; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50; ";
     final String CLICKED_BUTTON_STYLE = "-fx-background-color: #002540; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 3 50;";
+    protected Button createLogoutButton()
+    {
+        Button logoutButton = new Button("Sign out");
+        logoutButton.setOnAction(event -> SceneManager.getInstance().showScene("LOGIN"));
+        logoutButton.setStyle(IDLE_BUTTON_STYLE);
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(HOVERED_BUTTON_STYLE));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle(IDLE_BUTTON_STYLE));
+        logoutButton.setOnMouseClicked(e -> logoutButton.setStyle(CLICKED_BUTTON_STYLE));
+        return logoutButton;
+
+    }
 }

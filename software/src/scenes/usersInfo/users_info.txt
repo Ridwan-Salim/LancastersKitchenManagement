@@ -1,6 +1,15 @@
 2137 - Zach - Regular
+
 21412 - Ridwan - Manager
+GENERAL-Ridwan - Ridwan - Regular
+
 21321 - Lancaster - Director
+MANAGER-Lancaster - Lancaster - Manager
+GENERAL-Lancaster - Lancaster - Regular
+
 0198 - Artem - Regular
+
 31023 - Tahmid - Manager
+GENERAL-Tahmid - Tahmid - Regular
+
 LOGIN - LOGIN - LOGIN

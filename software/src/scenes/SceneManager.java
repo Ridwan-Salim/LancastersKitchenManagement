@@ -42,14 +42,20 @@ public class SceneManager {
         String userInfo = getUserInfo(password);
         if (!userInfo.isEmpty()) {
             String[] userInfoParts = userInfo.split(" - ");
-            String role = userInfoParts[2];
+            String role = userInfoParts[2].toLowerCase(); // Convert role to lowercase for consistency
             String employeeName = userInfoParts[1];
 
-            if (scenes.containsKey(role.toLowerCase())) {
-                PersonalizableScene scene = scenes.get(role.toLowerCase());
+            if (scenes.containsKey(role)) {
+                PersonalizableScene scene = scenes.get(role);
                 scene.setEmployeeName(employeeName);
-                primaryStage.setScene(scene.createScene());
-
+                if (userInfoParts[0].contains("GENERAL-") && userInfoParts[0].contains("Lancaster"))
+                    primaryStage.setScene(scene.createScene(false));
+                else if (userInfoParts[0].contains("GENERAL-"))
+                    primaryStage.setScene(scene.createScene(true));
+                else if (userInfoParts[0].contains("MANAGER-"))
+                    primaryStage.setScene(scene.createScene(false));
+                else
+                    primaryStage.setScene(scene.createScene());
             } else {
                 showAlert("Invalid Role", "Invalid role specified for the user.", Alert.AlertType.ERROR);
             }
