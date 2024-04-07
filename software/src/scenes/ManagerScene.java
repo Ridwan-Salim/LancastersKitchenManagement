@@ -35,6 +35,66 @@ public class ManagerScene extends PersonalizableScene {
         );
         labelAnimation.play();
 
+        VBox buttonLayout = new VBox(20);
+        buttonLayout.setAlignment(Pos.CENTER);
+        buttonLayout.setPadding(new Insets(50));
+        Button clockButton = new Button("Clock In/Out");
+        clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        clockButton.setOnAction(event -> clockInOut());
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button staffHours = new Button("Staff Hours");
+        staffHours.setPrefWidth(INPUT_FIELD_WIDTH);
+        staffHours.setOnAction(event -> staffHours());
+        staffHours.setStyle(IDLE_BUTTON_STYLE);
+        staffHours.setOnMouseEntered(e -> staffHours.setStyle(HOVERED_BUTTON_STYLE));
+        staffHours.setOnMouseExited(e -> staffHours.setStyle(IDLE_BUTTON_STYLE));
+        staffHours.setOnMouseClicked(e -> staffHours.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button sickHolidayRequests = new Button("Sick/Holiday requests");
+        sickHolidayRequests.setPrefWidth(INPUT_FIELD_WIDTH);
+        sickHolidayRequests.setOnAction(event -> sickHolidayRequests());
+        sickHolidayRequests.setStyle(IDLE_BUTTON_STYLE);
+        sickHolidayRequests.setOnMouseEntered(e -> sickHolidayRequests.setStyle(HOVERED_BUTTON_STYLE));
+        sickHolidayRequests.setOnMouseExited(e -> sickHolidayRequests.setStyle(IDLE_BUTTON_STYLE));
+        sickHolidayRequests.setOnMouseClicked(e -> sickHolidayRequests.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button createSendOrder = new Button("Create/Send order");
+        createSendOrder.setPrefWidth(INPUT_FIELD_WIDTH);
+        createSendOrder.setOnAction(event -> createSendOrder());
+        createSendOrder.setStyle(IDLE_BUTTON_STYLE);
+        createSendOrder.setOnMouseEntered(e -> createSendOrder.setStyle(HOVERED_BUTTON_STYLE));
+        createSendOrder.setOnMouseExited(e -> createSendOrder.setStyle(IDLE_BUTTON_STYLE));
+        createSendOrder.setOnMouseClicked(e -> createSendOrder.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button editMenu = new Button("Edit Menu");
+        editMenu.setPrefWidth(INPUT_FIELD_WIDTH);
+        editMenu.setOnAction(event -> editMenu());
+        editMenu.setStyle(IDLE_BUTTON_STYLE);
+        editMenu.setOnMouseEntered(e -> editMenu.setStyle(HOVERED_BUTTON_STYLE));
+        editMenu.setOnMouseExited(e -> editMenu.setStyle(IDLE_BUTTON_STYLE));
+        editMenu.setOnMouseClicked(e -> editMenu.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button bookingPredictions = new Button("Booking Predictions");
+        bookingPredictions.setPrefWidth(INPUT_FIELD_WIDTH);
+        bookingPredictions.setOnAction(event -> bookingPredictions());
+        bookingPredictions.setStyle(IDLE_BUTTON_STYLE);
+        bookingPredictions.setOnMouseEntered(e -> bookingPredictions.setStyle(HOVERED_BUTTON_STYLE));
+        bookingPredictions.setOnMouseExited(e -> bookingPredictions.setStyle(IDLE_BUTTON_STYLE));
+        bookingPredictions.setOnMouseClicked(e -> bookingPredictions.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button salesAnalysis = new Button("Sales analysis");
+        salesAnalysis.setPrefWidth(INPUT_FIELD_WIDTH);
+        salesAnalysis.setOnAction(event -> salesAnalysis());
+        salesAnalysis.setStyle(IDLE_BUTTON_STYLE);
+        salesAnalysis.setOnMouseEntered(e -> salesAnalysis.setStyle(HOVERED_BUTTON_STYLE));
+        salesAnalysis.setOnMouseExited(e -> salesAnalysis.setStyle(IDLE_BUTTON_STYLE));
+        salesAnalysis.setOnMouseClicked(e -> salesAnalysis.setStyle(CLICKED_BUTTON_STYLE));
+
+        buttonLayout.getChildren().addAll(clockButton, staffHours, sickHolidayRequests, createSendOrder, editMenu, bookingPredictions, salesAnalysis);
         ComboBox<String> roleDropdown = createRoleDropdown();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
@@ -47,9 +107,32 @@ public class ManagerScene extends PersonalizableScene {
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
         layout.setBottom(logoutButton);
+        layout.setCenter(buttonLayout);
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
+
+    private void salesAnalysis() {
+    }
+
+    private void bookingPredictions() {
+    }
+
+    private void editMenu() {
+    }
+
+    private void createSendOrder() {
+    }
+
+    private void sickHolidayRequests() {
+    }
+
+    private void staffHours() {
+    }
+
+    private void clockInOut() {
+    }
+
     public Scene createScene(boolean toggleManager) {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
@@ -66,6 +149,69 @@ public class ManagerScene extends PersonalizableScene {
         );
         labelAnimation.play();
 
+
+        VBox buttonLayout = new VBox(20);
+        buttonLayout.setAlignment(Pos.CENTER);
+        buttonLayout.setPadding(new Insets(50));
+        Button clockButton = new Button("Clock In/Out");
+        clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        clockButton.setOnAction(event -> clockInOut());
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button staffHours = new Button("Staff Hours");
+        staffHours.setPrefWidth(INPUT_FIELD_WIDTH);
+        staffHours.setOnAction(event -> staffHours());
+        staffHours.setStyle(IDLE_BUTTON_STYLE);
+        staffHours.setOnMouseEntered(e -> staffHours.setStyle(HOVERED_BUTTON_STYLE));
+        staffHours.setOnMouseExited(e -> staffHours.setStyle(IDLE_BUTTON_STYLE));
+        staffHours.setOnMouseClicked(e -> staffHours.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button sickHolidayRequests = new Button("Sick/Holiday requests");
+        sickHolidayRequests.setPrefWidth(INPUT_FIELD_WIDTH);
+        sickHolidayRequests.setOnAction(event -> sickHolidayRequests());
+        sickHolidayRequests.setStyle(IDLE_BUTTON_STYLE);
+        sickHolidayRequests.setOnMouseEntered(e -> sickHolidayRequests.setStyle(HOVERED_BUTTON_STYLE));
+        sickHolidayRequests.setOnMouseExited(e -> sickHolidayRequests.setStyle(IDLE_BUTTON_STYLE));
+        sickHolidayRequests.setOnMouseClicked(e -> sickHolidayRequests.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button createSendOrder = new Button("Create/Send order");
+        createSendOrder.setPrefWidth(INPUT_FIELD_WIDTH);
+        createSendOrder.setOnAction(event -> createSendOrder());
+        createSendOrder.setStyle(IDLE_BUTTON_STYLE);
+        createSendOrder.setOnMouseEntered(e -> createSendOrder.setStyle(HOVERED_BUTTON_STYLE));
+        createSendOrder.setOnMouseExited(e -> createSendOrder.setStyle(IDLE_BUTTON_STYLE));
+        createSendOrder.setOnMouseClicked(e -> createSendOrder.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button editMenu = new Button("Edit Menu");
+        editMenu.setPrefWidth(INPUT_FIELD_WIDTH);
+        editMenu.setOnAction(event -> editMenu());
+        editMenu.setStyle(IDLE_BUTTON_STYLE);
+        editMenu.setOnMouseEntered(e -> editMenu.setStyle(HOVERED_BUTTON_STYLE));
+        editMenu.setOnMouseExited(e -> editMenu.setStyle(IDLE_BUTTON_STYLE));
+        editMenu.setOnMouseClicked(e -> editMenu.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button bookingPredictions = new Button("Booking Predictions");
+        bookingPredictions.setPrefWidth(INPUT_FIELD_WIDTH);
+        bookingPredictions.setOnAction(event -> bookingPredictions());
+        bookingPredictions.setStyle(IDLE_BUTTON_STYLE);
+        bookingPredictions.setOnMouseEntered(e -> bookingPredictions.setStyle(HOVERED_BUTTON_STYLE));
+        bookingPredictions.setOnMouseExited(e -> bookingPredictions.setStyle(IDLE_BUTTON_STYLE));
+        bookingPredictions.setOnMouseClicked(e -> bookingPredictions.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button salesAnalysis = new Button("Sales analysis");
+        salesAnalysis.setPrefWidth(INPUT_FIELD_WIDTH);
+        salesAnalysis.setOnAction(event -> salesAnalysis());
+        salesAnalysis.setStyle(IDLE_BUTTON_STYLE);
+        salesAnalysis.setOnMouseEntered(e -> salesAnalysis.setStyle(HOVERED_BUTTON_STYLE));
+        salesAnalysis.setOnMouseExited(e -> salesAnalysis.setStyle(IDLE_BUTTON_STYLE));
+        salesAnalysis.setOnMouseClicked(e -> salesAnalysis.setStyle(CLICKED_BUTTON_STYLE));
+
+        buttonLayout.getChildren().addAll(clockButton, staffHours, sickHolidayRequests, createSendOrder, editMenu, bookingPredictions, salesAnalysis);
+
+
         ComboBox<String> roleDropdown = createRoleDropdownDirector();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
@@ -78,6 +224,7 @@ public class ManagerScene extends PersonalizableScene {
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
         layout.setBottom(logoutButton);
+        layout.setCenter(buttonLayout);
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
