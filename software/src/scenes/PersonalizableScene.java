@@ -25,6 +25,7 @@ public abstract class PersonalizableScene {
         Button logoutButton = new Button("Sign out");
         logoutButton.setOnAction(event -> SceneManager.getInstance().showScene("LOGIN"));
         logoutButton.setStyle(IDLE_BUTTON_STYLE);
+        logoutButton.setPrefWidth(255);
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle(HOVERED_BUTTON_STYLE));
         logoutButton.setOnMouseExited(e -> logoutButton.setStyle(IDLE_BUTTON_STYLE));
         logoutButton.setOnMouseClicked(e -> logoutButton.setStyle(CLICKED_BUTTON_STYLE));
