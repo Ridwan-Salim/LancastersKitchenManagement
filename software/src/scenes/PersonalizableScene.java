@@ -50,7 +50,22 @@ public abstract class PersonalizableScene {
         back.setOnMouseClicked(e -> back.setStyle(CLICKED_BUTTON_STYLE));
         return back;
     }
-
+    protected Button createBackButtonDirector()
+    {
+        Button back = new Button("Back");
+        back.setPrefWidth(INPUT_FIELD_WIDTH);
+        back.setOnAction(event -> backButtonManager(true));
+        back.setStyle(IDLE_BUTTON_STYLE);
+        back.setOnMouseEntered(e -> back.setStyle(HOVERED_BUTTON_STYLE));
+        back.setOnMouseExited(e -> back.setStyle(IDLE_BUTTON_STYLE));
+        back.setOnMouseClicked(e -> back.setStyle(CLICKED_BUTTON_STYLE));
+        return back;
+    }
+    private void backButtonManager(boolean toggle) {
+        SceneManager sceneManager = SceneManager.getInstance();
+        String userInfo = getUserInfo(this.employeeName);
+        sceneManager.showScene(userInfo.split(" - ")[0]);
+    }
     private void backButtonManager() {
         SceneManager sceneManager = SceneManager.getInstance();
         if (this.employeeName.equals(BOSS_NAME)) {

@@ -30,6 +30,10 @@ salesAnalysis-Lancaster - Lancaster - salesAnalysis
 sickHoliday-Lancaster - Lancaster - sickHoliday
 staffHoursScene-Lancaster - Lancaster - staffHoursScene
 
+addWineMenu-Lancaster - Lancaster - addWineMenu
+wineCellar-Lancaster - Lancaster - wineCellar
+
+
 bookingPrediction-Tahmid - Tahmid - bookingPrediction
 clockIn-Tahmid - Tahmid - clockIn
 createOrder-Tahmid - Tahmid - createOrder

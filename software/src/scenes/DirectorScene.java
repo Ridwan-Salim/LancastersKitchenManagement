@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -32,6 +33,31 @@ public class DirectorScene extends PersonalizableScene {
         );
         labelAnimation.play();
 
+        HBox buttonLayout = new HBox(20);
+        buttonLayout.setAlignment(Pos.CENTER);
+        buttonLayout.setPadding(new Insets(50));
+
+        Button wineCellarButton = new Button("Your wine cellar");
+        wineCellarButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        wineCellarButton.setOnAction(event -> wineCellar());
+        wineCellarButton.setStyle(IDLE_BUTTON_STYLE);
+        wineCellarButton.setOnMouseEntered(e -> wineCellarButton.setStyle(HOVERED_BUTTON_STYLE));
+        wineCellarButton.setOnMouseExited(e -> wineCellarButton.setStyle(IDLE_BUTTON_STYLE));
+        wineCellarButton.setOnMouseClicked(e -> wineCellarButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        Button addWineMenuButton = new Button("Add wine to menu");
+        addWineMenuButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        addWineMenuButton.setOnAction(event -> addWineMenu());
+        addWineMenuButton.setStyle(IDLE_BUTTON_STYLE);
+        addWineMenuButton.setOnMouseEntered(e -> addWineMenuButton.setStyle(HOVERED_BUTTON_STYLE));
+        addWineMenuButton.setOnMouseExited(e -> addWineMenuButton.setStyle(IDLE_BUTTON_STYLE));
+        addWineMenuButton.setOnMouseClicked(e -> addWineMenuButton.setStyle(CLICKED_BUTTON_STYLE));
+
+
+        buttonLayout.getChildren().addAll(wineCellarButton, addWineMenuButton);
+        buttonLayout.setSpacing(200);
+        buttonLayout.setAlignment(Pos.CENTER);
+
         ComboBox<String> roleDropdown = createRoleDropdown();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
@@ -44,8 +70,19 @@ public class DirectorScene extends PersonalizableScene {
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
         layout.setBottom(logoutButton);
+        layout.setCenter(buttonLayout);
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
+
+    private void addWineMenu() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("addWineMenu-"+employeeName);
+    }
+
+    private void wineCellar() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("wineCellar-"+employeeName);
     }
 
     private ComboBox<String> createRoleDropdown() {

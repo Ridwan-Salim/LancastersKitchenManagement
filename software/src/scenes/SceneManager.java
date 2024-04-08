@@ -38,6 +38,10 @@ public class SceneManager {
 
         PersonalizableScene staffHoursScene = new StaffHoursScene();
 
+        PersonalizableScene addWineMenuScene = new AddWineMenuScene();
+
+        PersonalizableScene cellarScene = new WineCellarScene();
+
 
         scenes.put("regular", regularScene);
         scenes.put("manager", managerScene);
@@ -49,6 +53,8 @@ public class SceneManager {
         scenes.put("salesanalysis", salesAnalysisScene);
         scenes.put("sickholiday", sickHolidayRequestsScene);
         scenes.put("staffhoursscene", staffHoursScene);
+        scenes.put("addwinemenu", addWineMenuScene);
+        scenes.put("winecellar", cellarScene);
         scenes.put("login", new Login());
     }
 

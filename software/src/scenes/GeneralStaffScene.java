@@ -6,33 +6,31 @@ import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
+import java.time.format.DateTimeParseException;
 
 public class GeneralStaffScene extends PersonalizableScene {
     private TextField focusedField;
-    private TextField fromDateField;
-    private TextField toDateField;
+    private DatePicker fromDateField;
+    private DatePicker toDateField;
     private TextArea reasonTextArea;
     private int INPUT_FIELD_WIDTH = 255;
     TextField clockInField;
+    TextField clockOutField;
     public Scene createScene() {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
@@ -57,17 +55,16 @@ public class GeneralStaffScene extends PersonalizableScene {
         leftPane.setAlignment(Pos.BOTTOM_LEFT); // Aligning to the bottom left
         leftPane.setPadding(new Insets(10));
 
-        TextField clockInField = new TextField();
+        clockInField = new TextField();
         clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         clockInField.setMaxWidth(INPUT_FIELD_WIDTH);
         clockInField.setPromptText("Clock In (HH:mm)");
-        clockInField.setOnMouseClicked(event -> focusedField = clockInField);
 
-        TextField clockOutField = new TextField();
+        clockOutField = new TextField();
         clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         clockOutField.setMaxWidth(INPUT_FIELD_WIDTH);
         clockOutField.setPromptText("Clock Out (HH:mm)");
-        clockOutField.setOnMouseClicked(event -> focusedField = clockOutField);
+
 
         Button clockButton = new Button("Clock In/Out");
         clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
@@ -77,15 +74,16 @@ public class GeneralStaffScene extends PersonalizableScene {
         clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
         clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        fromDateField = new TextField();
+
+        DatePicker fromDateField = new DatePicker();
+        fromDateField.setPromptText("From Date");
         fromDateField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         fromDateField.setMaxWidth(INPUT_FIELD_WIDTH);
-        fromDateField.setPromptText("From Date (YYYY-MM-DD)");
-
-        toDateField = new TextField();
+        DatePicker toDateField = new DatePicker();
+        toDateField.setPromptText("To Date");
         toDateField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         toDateField.setMaxWidth(INPUT_FIELD_WIDTH);
-        toDateField.setPromptText("To Date (YYYY-MM-DD)");
+
 
         reasonTextArea = new TextArea();
         reasonTextArea.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
@@ -93,7 +91,7 @@ public class GeneralStaffScene extends PersonalizableScene {
         reasonTextArea.setPromptText("Reason for Leave");
 
         Button submitLeaveButton = new Button("Submit Leave Request");
-        submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getText(), toDateField.getText(), reasonTextArea.getText()));
+        submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getValue(), toDateField.getValue(), reasonTextArea.getText()));
         submitLeaveButton.setStyle(IDLE_BUTTON_STYLE);
         submitLeaveButton.setOnMouseEntered(e -> submitLeaveButton.setStyle(HOVERED_BUTTON_STYLE));
         submitLeaveButton.setOnMouseExited(e -> submitLeaveButton.setStyle(IDLE_BUTTON_STYLE));
@@ -113,20 +111,15 @@ public class GeneralStaffScene extends PersonalizableScene {
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
     private void clockInOut() {
-        if (focusedField != null) {
-            String time = focusedField.getText();
-            if (isValidTimeFormat(time)) {
-                if (focusedField.getPromptText().equals("Clock In (HH:mm)")) {
-                    writeClockTime("clock-ins.txt", "Clock In", time);
-                } else if (focusedField.getPromptText().equals("Clock Out (HH:mm)")) {
-                    writeClockTime("clock-ins.txt", "Clock Out", time);
-                }
+            if (isValidTimeFormat(clockInField.getText(), clockOutField.getText())) {
+                writeClockTime("clock-ins.txt", "Clock In", time);
             } else {
-                // Handle invalid time format
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Incorrect time format!");
+                alert.setContentText("Please enter time in the format HH:mm.");
+                alert.showAndWait();
             }
-        } else {
-            // No field focused
-        }
     }
     public Scene createScene(boolean toggleManager) {
         BorderPane layout = new BorderPane();
@@ -174,38 +167,44 @@ public class GeneralStaffScene extends PersonalizableScene {
         }
     }
 
-    private void submitLeaveRequest(String fromDate, String toDate, String reason) {
-        if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
-            String leaveRequest = String.format("%s-%s-%s-ExceedsQuota", employeeName, fromDate, toDate, reason);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("leave-requests.txt", true))) {
-                writer.write(leaveRequest);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle file write error
-            }
-        } else {
-            // Handle invalid date format
-        }
+    private void submitLeaveRequest(LocalDate fromDate, LocalDate toDate, String reason) {
+//        if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
+//            String leaveRequest = String.format("%s-%s-%s-ExceedsQuota", employeeName, fromDate, toDate, reason);
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter("leave-requests.txt", true))) {
+//                writer.write(leaveRequest);
+//                writer.newLine();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                // Handle file write error
+//            }
+//        } else {
+//            // Handle invalid date format
+//        }
     }
 
-    private boolean isValidTimeFormat(String time) {
+    private boolean isValidTimeFormat(String startTime, String endTime) {
         try {
+            // Parse the start time using the specified format
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            LocalDateTime.parse(time, formatter);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+            LocalTime parsedStartTime = LocalTime.parse(startTime, formatter);
+            LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
 
-    private boolean isValidDateFormat(String date) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDateTime.parse(date, formatter);
-            return true;
-        } catch (Exception e) {
-            return false;
+            // Check if both parsed times are within the valid range (00:00 to 23:59)
+            if ((parsedStartTime.getHour() >= 0 && parsedStartTime.getHour() <= 23 &&
+                    parsedStartTime.getMinute() >= 0 && parsedStartTime.getMinute() <= 59) &&
+                    (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
+                            parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
+                // Check if the end time is after the start time
+                if (parsedEndTime.isAfter(parsedStartTime)) {
+                    return true; // Both times are valid and in the correct order
+                } else {
+                    return false; // End time is not after the start time
+                }
+            } else {
+                return false; // Invalid time format (out of range)
+            }
+        } catch (DateTimeParseException e) {
+            return false; // Parsing failed, invalid time format
         }
     }
 
