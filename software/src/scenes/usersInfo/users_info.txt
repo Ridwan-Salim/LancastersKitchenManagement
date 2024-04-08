@@ -13,3 +13,27 @@ GENERAL-Lancaster - Lancaster - Regular
 GENERAL-Tahmid - Tahmid - Regular
 
 LOGIN - LOGIN - LOGIN
+
+bookingPrediction-Ridwan - Ridwan - bookingPrediction
+clockIn-Ridwan - Ridwan - clockIn
+createOrder-Ridwan - Ridwan - createOrder
+editMenuScene-Ridwan - Ridwan - editMenuScene
+salesAnalysis-Ridwan - Ridwan - salesAnalysis
+sickHoliday-Ridwan - Ridwan - sickHoliday
+staffHoursScene-Ridwan - Ridwan - staffHoursScene
+
+bookingPrediction-Lancaster - Lancaster - bookingPrediction
+clockIn-Lancaster - Lancaster - clockIn
+createOrder-Lancaster - Lancaster - createOrder
+editMenuScene-Lancaster - Lancaster - editMenuScene
+salesAnalysis-Lancaster - Lancaster - salesAnalysis
+sickHoliday-Lancaster - Lancaster - sickHoliday
+staffHoursScene-Lancaster - Lancaster - staffHoursScene
+
+bookingPrediction-Tahmid - Tahmid - bookingPrediction
+clockIn-Tahmid - Tahmid - clockIn
+createOrder-Tahmid - Tahmid - createOrder
+editMenuScene-Tahmid - Tahmid - editMenuScene
+salesAnalysis-Tahmid - Tahmid - salesAnalysis
+sickHoliday-Tahmid - Tahmid - sickHoliday
+staffHoursScene-Tahmid - Tahmid - staffHoursScene

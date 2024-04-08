@@ -102,7 +102,7 @@ public class ManagerScene extends PersonalizableScene {
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_RIGHT);
-        BorderPane.setMargin(logoutButton, new Insets(100, 10, 10, 100));
+        BorderPane.setMargin(logoutButton, new Insets(0, 10, 10, 100));
 
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
@@ -113,24 +113,38 @@ public class ManagerScene extends PersonalizableScene {
     }
 
     private void salesAnalysis() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("salesAnalysis-"+employeeName);
     }
 
     private void bookingPredictions() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("bookingPrediction-"+employeeName);
     }
 
     private void editMenu() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("editMenuScene-"+employeeName);
     }
 
     private void createSendOrder() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("createOrder-"+employeeName);
     }
 
     private void sickHolidayRequests() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("sickHoliday-"+employeeName);
     }
 
     private void staffHours() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("staffHoursScene-"+employeeName);
     }
 
     private void clockInOut() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.showScene("clockIn-"+employeeName);
     }
 
     public Scene createScene(boolean toggleManager) {
@@ -219,7 +233,7 @@ public class ManagerScene extends PersonalizableScene {
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_RIGHT);
-        BorderPane.setMargin(logoutButton, new Insets(100, 10, 10, 100));
+        BorderPane.setMargin(logoutButton, new Insets(0, 10, 10, 100));
 
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);

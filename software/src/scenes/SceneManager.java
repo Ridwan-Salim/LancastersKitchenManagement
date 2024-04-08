@@ -24,10 +24,31 @@ public class SceneManager {
 
         PersonalizableScene directorScene = new DirectorScene();
 
+        PersonalizableScene bookingPredictionScene = new BookingPredictionScene();
+
+        PersonalizableScene clockInScene = new ClockInScene();
+
+        PersonalizableScene createSendOrderScene = new CreateSendOrderScene();
+
+        PersonalizableScene editMenuScene = new EditMenuScene();
+
+        PersonalizableScene salesAnalysisScene = new SalesAnalysisScene();
+
+        PersonalizableScene sickHolidayRequestsScene = new SickHolidayRequestsScene();
+
+        PersonalizableScene staffHoursScene = new StaffHoursScene();
+
 
         scenes.put("regular", regularScene);
         scenes.put("manager", managerScene);
         scenes.put("director", directorScene);
+        scenes.put("bookingprediction", bookingPredictionScene);
+        scenes.put("clockin", clockInScene);
+        scenes.put("createorder", createSendOrderScene);
+        scenes.put("editmenuscene", editMenuScene);
+        scenes.put("salesanalysis", salesAnalysisScene);
+        scenes.put("sickholiday", sickHolidayRequestsScene);
+        scenes.put("staffhoursscene", staffHoursScene);
         scenes.put("login", new Login());
     }
 
