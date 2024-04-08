@@ -111,8 +111,10 @@ public class GeneralStaffScene extends PersonalizableScene {
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
     private void clockInOut() {
-            if (isValidTimeFormat(clockInField.getText(), clockOutField.getText())) {
-                writeClockTime("clock-ins.txt", "Clock In", time);
+        String clockInTime = clockInField.getText();
+        String clockOutTime = clockOutField.getText();
+            if (isValidTimeFormat(clockInTime, clockOutTime)) {
+                writeClockTime(clockInTime, clockOutTime);
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
@@ -159,63 +161,47 @@ public class GeneralStaffScene extends PersonalizableScene {
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
-    private void clockIn(String time) {
-        if (isValidTimeFormat(time)) {
-            writeClockTime("clock-ins.txt", "Clock In", time);
-        } else {
-            // Handle invalid time format
-        }
-    }
+
 
     private void submitLeaveRequest(LocalDate fromDate, LocalDate toDate, String reason) {
-//        if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
-//            String leaveRequest = String.format("%s-%s-%s-ExceedsQuota", employeeName, fromDate, toDate, reason);
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter("leave-requests.txt", true))) {
-//                writer.write(leaveRequest);
-//                writer.newLine();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                // Handle file write error
-//            }
-//        } else {
-//            // Handle invalid date format
-//        }
+
     }
 
     private boolean isValidTimeFormat(String startTime, String endTime) {
         try {
-            // Parse the start time using the specified format
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime parsedStartTime = LocalTime.parse(startTime, formatter);
             LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
 
-            // Check if both parsed times are within the valid range (00:00 to 23:59)
             if ((parsedStartTime.getHour() >= 0 && parsedStartTime.getHour() <= 23 &&
                     parsedStartTime.getMinute() >= 0 && parsedStartTime.getMinute() <= 59) &&
                     (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
                             parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
-                // Check if the end time is after the start time
+
                 if (parsedEndTime.isAfter(parsedStartTime)) {
-                    return true; // Both times are valid and in the correct order
+                    return true;
                 } else {
-                    return false; // End time is not after the start time
+                    return false;
                 }
             } else {
-                return false; // Invalid time format (out of range)
+                return false;
             }
         } catch (DateTimeParseException e) {
-            return false; // Parsing failed, invalid time format
+            return false;
         }
     }
 
-    private void writeClockTime(String fileName, String eventType, String time) {
-        String clockTimeEntry = String.format("%s-%s-%s", employeeName, eventType, time);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.write(clockTimeEntry);
+    private void writeClockTime(String clockInTime, String clockOutTime) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\clock-ins.csv", true))) {
+            LocalDate currentDate = LocalDate.now();
+            writer.write(employeeName + ";" + currentDate + ";" + clockInTime + ";" + clockOutTime);
             writer.newLine();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("You successfully added clock-in and clock-out times");
+            alert.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
-            // Handle file write error
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
     private ComboBox<String> createRoleDropdown() {
