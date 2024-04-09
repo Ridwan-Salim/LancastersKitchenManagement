@@ -164,7 +164,31 @@ public class GeneralStaffScene extends PersonalizableScene {
 
 
     private void submitLeaveRequest(LocalDate fromDate, LocalDate toDate, String reason) {
+        try {
+            if (toDate.isBefore(fromDate)) {
+                throw new Exception();
+            }
 
+            LocalDate currentDate = LocalDate.now();
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv", true))) {
+                writer.write(employeeName + ";" + currentDate + ";" + fromDate + ";" + toDate + ";" + reason);
+                writer.newLine();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Successfully submitted sick/leave form!");
+                alert.showAndWait();
+            } catch (IOException e) {
+                System.err.println("Error writing to file: " + e.getMessage());
+            }
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Incorrect time format!");
+            alert.setContentText("Ensure that \"To date\" is after the \"From date\".");
+            alert.showAndWait();
+        }
     }
 
     private boolean isValidTimeFormat(String startTime, String endTime) {
@@ -193,6 +217,7 @@ public class GeneralStaffScene extends PersonalizableScene {
 
     private void writeClockTime(String clockInTime, String clockOutTime) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\clock-ins.csv", true))) {
+            // TODO: Record this in the database
             LocalDate currentDate = LocalDate.now();
             writer.write(employeeName + ";" + currentDate + ";" + clockInTime + ";" + clockOutTime);
             writer.newLine();
