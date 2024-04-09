@@ -31,6 +31,7 @@ public class GeneralStaffScene extends PersonalizableScene {
     private int INPUT_FIELD_WIDTH = 255;
     TextField clockInField;
     TextField clockOutField;
+    ComboBox<String> reasonDropdown;
     public Scene createScene() {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
@@ -85,19 +86,23 @@ public class GeneralStaffScene extends PersonalizableScene {
         toDateField.setMaxWidth(INPUT_FIELD_WIDTH);
 
 
-        reasonTextArea = new TextArea();
-        reasonTextArea.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
-        reasonTextArea.setMaxWidth(INPUT_FIELD_WIDTH);
-        reasonTextArea.setPromptText("Reason for Leave");
+
+
+        reasonDropdown = new ComboBox<>();;
+        reasonDropdown.getItems().addAll("Disease", "Holiday", "Personal", "Emergency", "Other");
+
+        reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        reasonDropdown.setMaxWidth(INPUT_FIELD_WIDTH);
+        reasonDropdown.setPromptText("Reason for Leave");
 
         Button submitLeaveButton = new Button("Submit Leave Request");
-        submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getValue(), toDateField.getValue(), reasonTextArea.getText()));
+        submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getValue(), toDateField.getValue(), reasonDropdown.getValue()));
         submitLeaveButton.setStyle(IDLE_BUTTON_STYLE);
         submitLeaveButton.setOnMouseEntered(e -> submitLeaveButton.setStyle(HOVERED_BUTTON_STYLE));
         submitLeaveButton.setOnMouseExited(e -> submitLeaveButton.setStyle(IDLE_BUTTON_STYLE));
         submitLeaveButton.setOnMouseClicked(e -> submitLeaveButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        leftPane.getChildren().addAll(clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonTextArea, submitLeaveButton);
+        leftPane.getChildren().addAll(clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
@@ -154,9 +159,64 @@ public class GeneralStaffScene extends PersonalizableScene {
             BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
             BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
         }
+        VBox leftPane = new VBox(20);
+        leftPane.setAlignment(Pos.BOTTOM_LEFT); // Aligning to the bottom left
+        leftPane.setPadding(new Insets(10));
+
+        clockInField = new TextField();
+        clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        clockInField.setMaxWidth(INPUT_FIELD_WIDTH);
+        clockInField.setPromptText("Clock In (HH:mm)");
+
+        clockOutField = new TextField();
+        clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        clockOutField.setMaxWidth(INPUT_FIELD_WIDTH);
+        clockOutField.setPromptText("Clock Out (HH:mm)");
+
+
+        Button clockButton = new Button("Clock In/Out");
+        clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        clockButton.setOnAction(event -> clockInOut());
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
+
+
+        DatePicker fromDateField = new DatePicker();
+        fromDateField.setPromptText("From Date");
+        fromDateField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        fromDateField.setMaxWidth(INPUT_FIELD_WIDTH);
+        DatePicker toDateField = new DatePicker();
+        toDateField.setPromptText("To Date");
+        toDateField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        toDateField.setMaxWidth(INPUT_FIELD_WIDTH);
+
+
+
+
+        reasonDropdown = new ComboBox<>();;
+        reasonDropdown.getItems().addAll("Disease", "Holiday", "Personal", "Emergency", "Other");
+
+        reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        reasonDropdown.setMaxWidth(INPUT_FIELD_WIDTH);
+        reasonDropdown.setPromptText("Reason for Leave");
+
+        Button submitLeaveButton = new Button("Submit Leave Request");
+        submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getValue(), toDateField.getValue(), reasonDropdown.getValue()));
+        submitLeaveButton.setStyle(IDLE_BUTTON_STYLE);
+        submitLeaveButton.setOnMouseEntered(e -> submitLeaveButton.setStyle(HOVERED_BUTTON_STYLE));
+        submitLeaveButton.setOnMouseExited(e -> submitLeaveButton.setStyle(IDLE_BUTTON_STYLE));
+        submitLeaveButton.setOnMouseClicked(e -> submitLeaveButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        leftPane.getChildren().addAll(clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
+        
+        BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
+        BorderPane.setMargin(logoutButton, new Insets(10, 10, 10, 10));
 
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
+        layout.setLeft(leftPane);
         layout.setBottom(logoutButton);
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
