@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -22,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class GeneralStaffScene extends PersonalizableScene {
     private TextField focusedField;
@@ -49,6 +53,8 @@ public class GeneralStaffScene extends PersonalizableScene {
 
         ComboBox<String> roleDropdown = createRoleDropdown();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        roleDropdown.setOnMouseEntered(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        roleDropdown.setOnMouseExited(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
         BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
 
@@ -94,7 +100,8 @@ public class GeneralStaffScene extends PersonalizableScene {
         reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         reasonDropdown.setMaxWidth(INPUT_FIELD_WIDTH);
         reasonDropdown.setPromptText("Reason for Leave");
-
+        reasonDropdown.setOnMouseEntered(e -> reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        reasonDropdown.setOnMouseExited(e -> reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
         Button submitLeaveButton = new Button("Submit Leave Request");
         submitLeaveButton.setOnAction(event -> submitLeaveRequest(fromDateField.getValue(), toDateField.getValue(), reasonDropdown.getValue()));
         submitLeaveButton.setStyle(IDLE_BUTTON_STYLE);
@@ -102,7 +109,15 @@ public class GeneralStaffScene extends PersonalizableScene {
         submitLeaveButton.setOnMouseExited(e -> submitLeaveButton.setStyle(IDLE_BUTTON_STYLE));
         submitLeaveButton.setOnMouseClicked(e -> submitLeaveButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        leftPane.getChildren().addAll(clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
+        Button viewCurrentMenu = new Button("View Current Menu");
+        viewCurrentMenu.setPrefWidth(INPUT_FIELD_WIDTH);
+        viewCurrentMenu.setOnAction(event -> getMenu());
+        viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE);
+        viewCurrentMenu.setOnMouseEntered(e -> viewCurrentMenu.setStyle(HOVERED_BUTTON_STYLE));
+        viewCurrentMenu.setOnMouseExited(e -> viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE));
+        viewCurrentMenu.setOnMouseClicked(e -> viewCurrentMenu.setStyle(CLICKED_BUTTON_STYLE));
+
+        leftPane.getChildren().addAll(viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
@@ -150,12 +165,20 @@ public class GeneralStaffScene extends PersonalizableScene {
         if (toggleManager){
             roleDropdown = createRoleDropdownManager();
             roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+            ComboBox<String> finalRoleDropdown = roleDropdown;
+            roleDropdown.setOnMouseEntered(e -> finalRoleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+            ComboBox<String> finalRoleDropdown1 = roleDropdown;
+            roleDropdown.setOnMouseExited(e -> finalRoleDropdown1.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
             BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
             BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
         }
         else {
             roleDropdown = createRoleDropdownDirector();
             roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+            ComboBox<String> finalRoleDropdown2 = roleDropdown;
+            roleDropdown.setOnMouseEntered(e -> finalRoleDropdown2.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+            ComboBox<String> finalRoleDropdown3 = roleDropdown;
+            roleDropdown.setOnMouseExited(e -> finalRoleDropdown3.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
             BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
             BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
         }
@@ -199,6 +222,10 @@ public class GeneralStaffScene extends PersonalizableScene {
         reasonDropdown.getItems().addAll("Disease", "Holiday", "Personal", "Emergency", "Other");
 
         reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        ComboBox<String> finalRoleDropdown4 = reasonDropdown;
+        reasonDropdown.setOnMouseEntered(e -> finalRoleDropdown4.setStyle("-fx-font-size: 12px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        ComboBox<String> finalRoleDropdown5 = reasonDropdown;
+        reasonDropdown.setOnMouseExited(e -> finalRoleDropdown5.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
         reasonDropdown.setMaxWidth(INPUT_FIELD_WIDTH);
         reasonDropdown.setPromptText("Reason for Leave");
 
@@ -209,17 +236,82 @@ public class GeneralStaffScene extends PersonalizableScene {
         submitLeaveButton.setOnMouseExited(e -> submitLeaveButton.setStyle(IDLE_BUTTON_STYLE));
         submitLeaveButton.setOnMouseClicked(e -> submitLeaveButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        leftPane.getChildren().addAll(clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
-        
+        Button viewCurrentMenu = new Button("View Current Menu");
+        viewCurrentMenu.setPrefWidth(INPUT_FIELD_WIDTH);
+        viewCurrentMenu.setOnAction(event -> getMenu());
+        viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE);
+        viewCurrentMenu.setOnMouseEntered(e -> viewCurrentMenu.setStyle(HOVERED_BUTTON_STYLE));
+        viewCurrentMenu.setOnMouseExited(e -> viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE));
+        viewCurrentMenu.setOnMouseClicked(e -> viewCurrentMenu.setStyle(CLICKED_BUTTON_STYLE));
+
+        leftPane.getChildren().addAll(viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
+
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
         BorderPane.setMargin(logoutButton, new Insets(10, 10, 10, 10));
+
+        GridPane calendarGrid= createCalendarPane();
 
         layout.setTop(greetingLabel);
         layout.setRight(roleDropdown);
         layout.setLeft(leftPane);
+        layout.setRight(calendarGrid);
         layout.setBottom(logoutButton);
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
+
+    private GridPane createCalendarPane() {
+        GridPane calendarPane = new GridPane();
+        calendarPane.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 20px;");
+        int numRows = 6;
+        int numCols = 7;
+
+        String currentMonth = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+
+        Label monthLabel = new Label(currentMonth);
+        monthLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        calendarPane.add(monthLabel, 0, 0, 7, 1);
+
+        String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        for (int i = 0; i < 7; i++) {
+            Label dayOfWeekLabel = new Label(daysOfWeek[i]);
+            dayOfWeekLabel.setStyle("-fx-font-weight: bold;");
+            calendarPane.add(dayOfWeekLabel, i, 1);
+        }
+
+        LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+        int dayOfWeekOfFirstDay = firstDayOfMonth.getDayOfWeek().getValue();
+
+        int dayOfMonth = 1;
+        for (int row = 2; row < numRows + 2; row++) {
+            for (int col = 0; col < numCols; col++) {
+                if ((row == 2 && col < dayOfWeekOfFirstDay) || dayOfMonth > firstDayOfMonth.lengthOfMonth()) {
+                    continue;
+                }
+                StackPane dayPane = new StackPane();
+                dayPane.setAlignment(Pos.CENTER);
+                dayPane.setPrefSize(100, 100);
+                Label dayLabel = new Label(String.valueOf(dayOfMonth));
+                dayLabel.setStyle("-fx-font-size: 16px;");
+                dayPane.getChildren().add(dayLabel);
+                dayPane.setOnMouseEntered(event -> dayPane.setStyle("-fx-background-color: #90caf9; -fx-background-radius: 50%;"));
+                dayPane.setOnMouseExited(event -> dayPane.setStyle(null));
+                dayPane.setOnMouseClicked(event -> {
+                    String message = "You clicked on " + dayLabel.getText();
+                    openPopupWarning(message);
+                });
+                calendarPane.add(dayPane, col, row);
+                dayOfMonth++;
+            }
+        }
+        return calendarPane;
+    }
+
+    private void openPopupWarning(String message) {
+        System.out.println(message);
+    }
+
+    private void getMenu() {
     }
 
 

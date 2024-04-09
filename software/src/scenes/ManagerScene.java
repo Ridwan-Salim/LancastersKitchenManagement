@@ -97,6 +97,8 @@ public class ManagerScene extends PersonalizableScene {
         buttonLayout.getChildren().addAll(clockButton, staffHours, sickHolidayRequests, createSendOrder, editMenu, bookingPredictions, salesAnalysis);
         ComboBox<String> roleDropdown = createRoleDropdown();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        roleDropdown.setOnMouseEntered(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        roleDropdown.setOnMouseExited(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
         BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
 
@@ -230,6 +232,8 @@ public class ManagerScene extends PersonalizableScene {
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
         BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
+        roleDropdown.setOnMouseEntered(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        roleDropdown.setOnMouseExited(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_RIGHT);
