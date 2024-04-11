@@ -1,5 +1,4 @@
 package scenes;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -10,6 +9,13 @@ import java.util.*;
  *         MockData mockData = new MockData();
  *         mockData.generateYearPredictions();
  * Then you can call the public Maps / Lists directly
+ * 
+ * 
+ * FOR TABLE DATA @ARTEM Functions start at line 121
+ * Main:
+ *         MockData mockData = new MockData();
+ *         mockData.generateTablePredictions();
+ *         mockData.printAllTablePredictions();
  * */
 
 public class MockData {
@@ -20,6 +26,8 @@ public class MockData {
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
     public List<Integer> popularityData = new ArrayList<>();
+
+    public Map<String, Map<Integer, List<List<String>>>> tablePrediction = new HashMap<>();
 
     public void addIngredients(){
         ingredients.put("Cheddar Cheese", 7);
@@ -109,10 +117,72 @@ public class MockData {
         }
     }
 
+
+// ===============================================================================
+    public void generateTablePredictions(){
+        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
+            Map<Integer, List<List<String>>> tablePredicitions = tablePredictions();
+            String dateString = int4ToDate(dateInt4);
+            this.tablePrediction.put(dateString, tablePredicitions);
+        }
+    }
+
+    public Map<Integer, List<List<String>>> tablePredictions(){
+        Map<Integer, List<List<String>>> eachDayTablePredictions = new HashMap<>();
+        for (int i = 1; i < 31; i++){
+            List<List<String>> eachSlotTablePredictions = new ArrayList<>();
+            for (int hour = 17; hour < 23; hour++) {
+                for (int minute = 0; minute < 60; minute += 30) {
+                    Random random = new Random();
+                    boolean randomBoolean = random.nextBoolean();
+                    String isOccupied = Boolean.toString(randomBoolean);
+
+                    String timeSlot = String.format("%02d:%02d-%02d:%02d", hour, minute, hour, minute + 30);
+                    ArrayList<String> eachSlotInfo = new ArrayList<>(Arrays.asList(timeSlot, String.valueOf(randomBoolean)));
+                    eachSlotTablePredictions.add(eachSlotInfo);
+                }
+                eachDayTablePredictions.put(i, eachSlotTablePredictions);
+            }
+        }
+        return eachDayTablePredictions;
+    }
+
+    // This function was generated using ChatGPT to print out the data
+    public void printAllTablePredictions() {
+        List<String> sortedDates = new ArrayList<>(tablePrediction.keySet());
+        Collections.sort(sortedDates); // Sort the dates
+
+        // Iterate over each date
+        for (String date : sortedDates) {
+            Map<Integer, List<List<String>>> tablePredictions = tablePrediction.get(date);
+
+            System.out.println("Date: " + date);
+            // Iterate over each table prediction for the date
+            for (int tableNumber : tablePredictions.keySet()) {
+                List<List<String>> tablePrediction = tablePredictions.get(tableNumber);
+
+                System.out.println("Table Number: " + tableNumber);
+                // Print each time slot prediction for the table
+                for (int slotIndex = 0; slotIndex < tablePrediction.size(); slotIndex++) {
+                    List<String> timeSlotInfo = tablePrediction.get(slotIndex);
+                    String timeSlot = timeSlotInfo.get(0);
+                    String isOccupied = timeSlotInfo.get(1);
+                    System.out.println("Time Slot: " + timeSlot + ", Is Occupied: " + isOccupied);
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+    }
+
     /*public static void main(String[] args) {
         MockData mockData = new MockData();
-        mockData.generateYearPredictions();
-        mockData.printAllBookingData();
+        mockData.generateTablePredictions();
+        mockData.printAllTablePredictions();
     }*/
 }
 
