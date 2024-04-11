@@ -1,6 +1,7 @@
 package scenes;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -9,9 +10,9 @@ import java.util.*;
  *         MockData mockData = new MockData();
  *         mockData.generateYearPredictions();
  * Then you can call the public Maps / Lists directly
- * 
- * 
- * FOR TABLE DATA @ARTEM Functions start at line 121
+ *
+ *
+ * FOR TABLE DATA @ARTEM Functions start at line 122
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.generateTablePredictions();
@@ -153,14 +154,23 @@ public class MockData {
 
     // This function was generated using ChatGPT to print out the data
     public void printAllTablePredictions() {
-        List<String> sortedDates = new ArrayList<>(tablePrediction.keySet());
-        Collections.sort(sortedDates); // Sort the dates
+        // Convert dates to LocalDate objects
+        List<LocalDate> sortedDates = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (String date : tablePrediction.keySet()) {
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            sortedDates.add(localDate);
+        }
 
-        // Iterate over each date
-        for (String date : sortedDates) {
-            Map<Integer, List<List<String>>> tablePredictions = tablePrediction.get(date);
+        // Sort the dates
+        Collections.sort(sortedDates);
 
-            System.out.println("Date: " + date);
+        // Iterate over each sorted date
+        for (LocalDate date : sortedDates) {
+            String dateString = date.format(formatter);
+            Map<Integer, List<List<String>>> tablePredictions = tablePrediction.get(dateString);
+
+            System.out.println("Date: " + dateString);
             // Iterate over each table prediction for the date
             for (int tableNumber : tablePredictions.keySet()) {
                 List<List<String>> tablePrediction = tablePredictions.get(tableNumber);
@@ -179,10 +189,9 @@ public class MockData {
         }
     }
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         MockData mockData = new MockData();
         mockData.generateTablePredictions();
         mockData.printAllTablePredictions();
-    }*/
+    }
 }
-
