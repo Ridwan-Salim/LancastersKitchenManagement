@@ -12,7 +12,7 @@ import java.util.*;
  * Then you can call the public Maps / Lists directly
  *
  *
- * FOR TABLE DATA @ARTEM Functions start at line 122
+ * FOR TABLE DATA @ARTEM 
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.generateTablePredictions();
@@ -21,7 +21,7 @@ import java.util.*;
 
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
-    public Map<String, Integer> ingredients = new HashMap<>(); // Ingredients -> Price
+    public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
 
     public Map<String,  List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
@@ -31,24 +31,122 @@ public class MockData {
     public Map<String, Map<Integer, List<List<String>>>> tablePrediction = new HashMap<>();
 
     public void addIngredients(){
-        ingredients.put("Cheddar Cheese", 7);
-        ingredients.put("Carrots", 3);
-        ingredients.put("Potato", 3);
-        ingredients.put("Onion", 3);
-        ingredients.put("Garlic", 5);
-        ingredients.put("Ginger", 27);
-        ingredients.put("Tomato Puree", 13);
-        ingredients.put("Cinnamon Powder", 7);
-        ingredients.put("Salad Dressing", 3);
-        ingredients.put("Chicken Thigh", 3);
-        ingredients.put("Mushrooms", 3);
-        ingredients.put("Penne Pasta", 5);
-        ingredients.put("Salmon Fillets", 27);
-        ingredients.put("Lemon Juice", 13);
-
-        // Add more
+        ingredients.put("Cheddar Cheese", 4.0);
+        ingredients.put("Carrots", 1.0);
+        ingredients.put("Potato", 1.0);
+        ingredients.put("Onion", 1.0);
+        ingredients.put("Garlic", 0.5);
+        ingredients.put("Ginger", 2.0);
+        ingredients.put("Tomato Puree", 2.0);
+        ingredients.put("Cinnamon Powder", 2.0);
+        ingredients.put("Salad Dressing", 2.0);
+        ingredients.put("Chicken Thigh", 3.0);
+        ingredients.put("Mushrooms", 2.0);
+        ingredients.put("Penne Pasta", 1.5);
+        ingredients.put("Salmon Fillets", 8.0);
+        ingredients.put("Lemon Juice", 1.0);
+        ingredients.put("Olive Oil", 5.0);
+        ingredients.put("Butter", 2.0);
+        ingredients.put("Salt", 0.5);
+        ingredients.put("Black Pepper", 1.0);
+        ingredients.put("Garlic Powder", 1.0);
+        ingredients.put("Onion Powder", 1.0);
+        ingredients.put("Paprika", 1.0);
+        ingredients.put("Cumin", 2.0);
+        ingredients.put("Coriander", 2.0);
+        ingredients.put("Oregano", 1.0);
+        ingredients.put("Thyme", 1.0);
+        ingredients.put("Basil", 1.0);
+        ingredients.put("Rosemary", 1.0);
+        ingredients.put("Bay Leaves", 1.0);
+        ingredients.put("Chili Powder", 1.0);
+        ingredients.put("Cayenne Pepper", 1.0);
+        ingredients.put("Crushed Red Pepper", 1.0);
+        ingredients.put("Dried Parsley", 1.0);
+        ingredients.put("Dried Basil", 1.0);
+        ingredients.put("Dried Oregano", 1.0);
+        ingredients.put("Dried Thyme", 1.0);
+        ingredients.put("Dried Rosemary", 1.0);
+        ingredients.put("Dried Bay Leaves", 1.0);
+        ingredients.put("Ground Ginger", 2.0);
+        ingredients.put("Ground Cinnamon", 2.0);
+        ingredients.put("Ground Nutmeg", 2.0);
+        ingredients.put("Ground Cloves", 2.0);
+        ingredients.put("Ground Allspice", 2.0);
+        ingredients.put("Ground Cardamom", 2.0);
+        ingredients.put("Ground Turmeric", 2.0);
+        ingredients.put("White Vinegar", 1.0);
+        ingredients.put("Red Wine Vinegar", 2.0);
+        ingredients.put("Balsamic Vinegar", 3.0);
+        ingredients.put("Apple Cider Vinegar", 2.0);
+        ingredients.put("Rice Vinegar", 1.5);
+        ingredients.put("Soy Sauce", 2.0);
+        ingredients.put("Worcestershire Sauce", 2.0);
+        ingredients.put("Hot Sauce", 2.0);
+        ingredients.put("Mustard", 1.5);
+        ingredients.put("Ketchup", 1.5);
+        ingredients.put("Mayonnaise", 2.0);
+        ingredients.put("BBQ Sauce", 2.0);
+        ingredients.put("Honey", 3.0);
+        ingredients.put("Maple Syrup", 3.0);
+        ingredients.put("Brown Sugar", 1.5);
+        ingredients.put("White Sugar", 1.5);
+        ingredients.put("Powdered Sugar", 2.0);
+        ingredients.put("Molasses", 2.0);
+        ingredients.put("Agave Syrup", 3.0);
+        ingredients.put("Coconut Milk", 2.0);
+        ingredients.put("Almond Milk", 2.0);
+        ingredients.put("Oat Milk", 2.0);
+        ingredients.put("Chicken Stock", 2.0);
+        ingredients.put("Beef Stock", 2.0);
+        ingredients.put("Vegetable Stock", 1.5);
+        ingredients.put("Tomato Sauce", 1.5);
+        ingredients.put("Tomato Paste", 1.5);
+        ingredients.put("Crushed Tomatoes", 1.5);
+        ingredients.put("Diced Tomatoes", 1.5);
+        ingredients.put("Tomato Soup", 1.5);
+        ingredients.put("Cream of Mushroom Soup", 2.0);
+        ingredients.put("Cream of Chicken Soup", 2.0);
+        ingredients.put("Cream of Celery Soup", 2.0);
+        ingredients.put("Chicken Broth", 2.0);
+        ingredients.put("Beef Broth", 2.0);
+        ingredients.put("Vegetable Broth", 1.5);
+        ingredients.put("Dijon Mustard", 2.0);
+        ingredients.put("Whole Grain Mustard", 2.0);
+        ingredients.put("Yellow Mustard", 1.5);
+        ingredients.put("Hoisin Sauce", 2.0);
+        ingredients.put("Fish Sauce", 2.0);
+        ingredients.put("Miso Paste", 3.0);
+        ingredients.put("Peanut Butter", 3.0);
+        ingredients.put("Tahini", 3.0);
+        ingredients.put("Sesame Oil", 3.0);
+        ingredients.put("Coconut Oil", 3.0);
+        ingredients.put("Fish Stock", 2.0);
+        ingredients.put("Clam Juice", 2.0);
+        ingredients.put("Capers", 3.0);
+        ingredients.put("Anchovies", 3.0);
+        ingredients.put("Sardines", 3.0);
+        ingredients.put("Olives", 2.0);
+        ingredients.put("Sun-Dried Tomatoes", 3.0);
+        ingredients.put("Pickles", 2.0);
+        ingredients.put("Sauerkraut", 2.0);
+        ingredients.put("Roasted Red Peppers", 3.0);
+        ingredients.put("Artichoke Hearts", 3.0);
+        ingredients.put("Hearts of Palm", 3.0);
+        ingredients.put("Cannellini Beans", 1.5);
+        ingredients.put("Black Beans", 1.5);
+        ingredients.put("Kidney Beans", 1.5);
+        ingredients.put("Chickpeas", 1.5);
+        ingredients.put("Lentils", 1.5);
+        ingredients.put("Quinoa", 3.0);
+        ingredients.put("Couscous", 2.0);
+        ingredients.put("Bulgur", 2.0);
+        ingredients.put("Farro", 2.0);
+        ingredients.put("Arborio Rice", 2.0);
+        ingredients.put("Jasmine Rice", 2.0);
+        ingredients.put("Basmati Rice", 2.0);
     }
-
+    
     public void addDishWithIngredients(String dishName, String... ingredients) {
         List<String> validIngredients = new ArrayList<>();
         for (String ingredient : ingredients) {
@@ -195,3 +293,4 @@ public class MockData {
         mockData.printAllTablePredictions();
     }
 }
+
