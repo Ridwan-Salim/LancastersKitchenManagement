@@ -41,3 +41,6 @@ editMenuScene-Tahmid - Tahmid - editMenuScene
 salesAnalysis-Tahmid - Tahmid - salesAnalysis
 sickHoliday-Tahmid - Tahmid - sickHoliday
 staffHoursScene-Tahmid - Tahmid - staffHoursScene
+
+
+111 - Chief Ronald - Regular

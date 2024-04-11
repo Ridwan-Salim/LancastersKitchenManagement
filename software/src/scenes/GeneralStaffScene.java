@@ -19,6 +19,9 @@ import javafx.util.Duration;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -153,15 +156,21 @@ public class GeneralStaffScene extends PersonalizableScene {
     private void clockInOut() {
         String clockInTime = clockInField.getText();
         String clockOutTime = clockOutField.getText();
-            if (isValidTimeFormat(clockInTime, clockOutTime)) {
-                writeClockTime(clockInTime, clockOutTime);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Incorrect time format!");
-                alert.setContentText("Please enter time in the format HH:mm.");
-                alert.showAndWait();
-            }
+
+        if (!clockInTime.isEmpty() && clockOutTime.isEmpty()) {
+            writeClockTime(clockInTime, "");
+            return;
+        }
+
+        if (isValidTimeFormat(clockInTime, clockOutTime)) {
+            writeClockTime(clockInTime, clockOutTime);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Incorrect time format!");
+            alert.setContentText("Please enter time in the format HH:mm.");
+            alert.showAndWait();
+        }
     }
     public Scene createScene(boolean toggleManager) {
         BorderPane layout = new BorderPane();
@@ -466,19 +475,26 @@ public class GeneralStaffScene extends PersonalizableScene {
     private boolean isValidTimeFormat(String startTime, String endTime) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+            if (startTime.isEmpty())
+            {
+                LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
+                if ( (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
+                        parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
+                    return true;
+                }
+            }
+
             LocalTime parsedStartTime = LocalTime.parse(startTime, formatter);
             LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
 
+            // Validate start and end times
             if ((parsedStartTime.getHour() >= 0 && parsedStartTime.getHour() <= 23 &&
                     parsedStartTime.getMinute() >= 0 && parsedStartTime.getMinute() <= 59) &&
                     (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
                             parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
 
-                if (parsedEndTime.isAfter(parsedStartTime)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return parsedEndTime.isAfter(parsedStartTime);
             } else {
                 return false;
             }
@@ -488,11 +504,39 @@ public class GeneralStaffScene extends PersonalizableScene {
     }
 
     private void writeClockTime(String clockInTime, String clockOutTime) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\clock-ins.csv", true))) {
-            // TODO: Record this in the database
+
+        String csvFilePath = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\clock-ins.csv";
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(csvFilePath));
             LocalDate currentDate = LocalDate.now();
-            writer.write(employeeName + ";" + currentDate + ";" + clockInTime + ";" + clockOutTime);
-            writer.newLine();
+            String recordToSearch = employeeName + ";" + currentDate + ";" + clockInTime + ";";
+            boolean recordFound = false;
+            String clockInTimeFromRecord = "";
+            for (int i = 0; i < lines.size(); i++) {
+                String line = lines.get(i);
+                String[] parts = line.split(";");
+                if (parts.length >= 3 && parts[0].equals(employeeName) && parts[1].equals(currentDate.toString())) {
+                    // Found the corresponding clock-in record
+                    clockInTimeFromRecord = parts[2]; // Get the value of clockInTime from the record
+                    if (clockOutTime.isEmpty()) {
+                        lines.set(i, line + ";;");
+                    } else {
+                        lines.set(i, line + clockOutTime);
+                    }
+                    recordFound = true;
+                    break;
+                }
+            }
+
+            if (!recordFound && !clockInTime.isEmpty()) {
+                String newRecord = employeeName + ";" + currentDate + ";" + clockInTime + ";" + clockOutTime;
+                lines.add(newRecord);
+            } else if (!recordFound && clockInTime.isEmpty()) {
+                return;
+            }
+
+            Files.write(Paths.get(csvFilePath), lines, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("You successfully added clock-in and clock-out times");

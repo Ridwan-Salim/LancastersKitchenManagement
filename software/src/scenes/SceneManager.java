@@ -75,9 +75,9 @@ public class SceneManager {
             if (scenes.containsKey(role)) {
                 PersonalizableScene scene = scenes.get(role);
                 scene.setEmployeeName(employeeName);
-                if (userInfoParts[0].contains("GENERAL-") && userInfoParts[0].contains("Lancaster"))
+                if (userInfoParts[0].contains("GENERAL") && userInfoParts[0].contains("Lancaster"))
                     primaryStage.setScene(scene.createScene(false));
-                else if (userInfoParts[0].contains("GENERAL-"))
+                else if (userInfoParts[0].contains("GENERAL") && !userInfoParts[0].endsWith("chef"))
                     primaryStage.setScene(scene.createScene(true));
                 else if (userInfoParts[0].contains("MANAGER-"))
                     primaryStage.setScene(scene.createScene(false));
