@@ -1,7 +1,7 @@
 2137 - Zach - Regular
 
-21412 - Ridwan - Manager
-GENERAL-Ridwan - Ridwan - Regular
+21412 - Manager Ridwan - Manager
+GENERAL-Manager Ridwan - Manager Ridwan - Regular
 
 21321 - Lancaster - Director
 MANAGER-Lancaster - Lancaster - Manager
@@ -9,18 +9,18 @@ GENERAL-Lancaster - Lancaster - Regular
 
 0198 - Artem - Regular
 
-31023 - Tahmid - Manager
-GENERAL-Tahmid - Tahmid - Regular
+31023 - Manager Tahmid - Manager
+GENERAL-Manager Tahmid - Manager Tahmid - Regular
 
 LOGIN - LOGIN - LOGIN
 
-bookingPrediction-Ridwan - Ridwan - bookingPrediction
-clockIn-Ridwan - Ridwan - clockIn
-createOrder-Ridwan - Ridwan - createOrder
-editMenuScene-Ridwan - Ridwan - editMenuScene
-salesAnalysis-Ridwan - Ridwan - salesAnalysis
-sickHoliday-Ridwan - Ridwan - sickHoliday
-staffHoursScene-Ridwan - Ridwan - staffHoursScene
+bookingPrediction-Manager Ridwan - Manager Ridwan - bookingPrediction
+clockIn-Manager Ridwan - Manager Ridwan - clockIn
+createOrder-Manager Ridwan - Manager Ridwan - createOrder
+editMenuScene-Manager Ridwan - Manager Ridwan - editMenuScene
+salesAnalysis-Manager Ridwan - Manager Ridwan - salesAnalysis
+sickHoliday-Manager Ridwan - Manager Ridwan - sickHoliday
+staffHoursScene-Manager Ridwan - Manager Ridwan - staffHoursScene
 
 bookingPrediction-Lancaster - Lancaster - bookingPrediction
 clockIn-Lancaster - Lancaster - clockIn
@@ -34,13 +34,13 @@ addWineMenu-Lancaster - Lancaster - addWineMenu
 wineCellar-Lancaster - Lancaster - wineCellar
 
 
-bookingPrediction-Tahmid - Tahmid - bookingPrediction
-clockIn-Tahmid - Tahmid - clockIn
-createOrder-Tahmid - Tahmid - createOrder
-editMenuScene-Tahmid - Tahmid - editMenuScene
-salesAnalysis-Tahmid - Tahmid - salesAnalysis
-sickHoliday-Tahmid - Tahmid - sickHoliday
-staffHoursScene-Tahmid - Tahmid - staffHoursScene
+bookingPrediction-Manager Tahmid - Manager Tahmid - bookingPrediction
+clockIn-Manager Tahmid - Manager Tahmid - clockIn
+createOrder-Manager Tahmid - Manager Tahmid - createOrder
+editMenuScene-Manager Tahmid - Manager Tahmid - editMenuScene
+salesAnalysis-Manager Tahmid - Manager Tahmid - salesAnalysis
+sickHoliday-Manager Tahmid - Manager Tahmid - sickHoliday
+staffHoursScene-Manager Tahmid - Manager Tahmid - staffHoursScene
 
 
-111 - Chief Ronald - Regular
+111 - Chef Ronald - Regular

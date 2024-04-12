@@ -24,7 +24,7 @@ public class ManagerScene extends PersonalizableScene {
         layout.setPadding(new Insets(20));
 
 
-        Label greetingLabel = new Label("Welcome Manager " + employeeName + "!");
+        Label greetingLabel = new Label("Welcome " + employeeName + "!");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
@@ -154,7 +154,7 @@ public class ManagerScene extends PersonalizableScene {
         layout.setPadding(new Insets(20));
 
 
-        Label greetingLabel = new Label("Welcome Manager " + employeeName + "!");
+        Label greetingLabel = new Label("Welcome " + employeeName + "!");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));

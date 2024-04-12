@@ -7,10 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -56,7 +53,7 @@ public class GeneralStaffScene extends PersonalizableScene {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
 
-        Label greetingLabel = new Label("Welcome General Staff " + employeeName + "!");
+        Label greetingLabel = new Label("Welcome " + employeeName + "!");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
@@ -67,6 +64,13 @@ public class GeneralStaffScene extends PersonalizableScene {
         );
         labelAnimation.play();
 
+        VBox rightPane = new VBox(20);
+        rightPane.setAlignment(Pos.TOP_RIGHT); // Aligning to the top right
+        rightPane.setPadding(new Insets(10));
+
+        
+
+
         ComboBox<String> roleDropdown = createRoleDropdown();
         roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         roleDropdown.setOnMouseEntered(e -> roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
@@ -74,6 +78,7 @@ public class GeneralStaffScene extends PersonalizableScene {
         BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
         BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
 
+        rightPane.getChildren().addAll(roleDropdown, createCalendarPane());
         VBox leftPane = new VBox(20);
         leftPane.setAlignment(Pos.BOTTOM_LEFT); // Aligning to the bottom left
         leftPane.setPadding(new Insets(10));
@@ -139,14 +144,18 @@ public class GeneralStaffScene extends PersonalizableScene {
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
         BorderPane.setMargin(logoutButton, new Insets(10, 10, 10, 10));
 
-        GridPane calendarGrid= createCalendarPane();
+        HBox topContainer = new HBox();
+        topContainer.getChildren().addAll(greetingLabel, roleDropdown);
+        topContainer.setSpacing(475);
 
-        layout.setTop(greetingLabel);
-        layout.setRight(roleDropdown);
+// Set alignment to put the role dropdown on the right
+        HBox.setHgrow(roleDropdown, Priority.ALWAYS);
+        HBox.setMargin(roleDropdown, new Insets(0, -100, 0, 0));
+
+        layout.setTop(topContainer);
         layout.setLeft(leftPane);
         layout.setBottom(logoutButton);
-        layout.setRight(calendarGrid);
-
+        layout.setRight(createCalendarPane());
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
 
@@ -176,7 +185,7 @@ public class GeneralStaffScene extends PersonalizableScene {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
 
-        Label greetingLabel = new Label("Welcome General Staff " + employeeName + "!");
+        Label greetingLabel = new Label("Welcome " + employeeName + "!");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
@@ -187,44 +196,38 @@ public class GeneralStaffScene extends PersonalizableScene {
         );
         labelAnimation.play();
 
-        Button logoutButton = createLogoutButton();
-        BorderPane.setAlignment(logoutButton, Pos.BOTTOM_RIGHT);
-        BorderPane.setMargin(logoutButton, new Insets(100, 10, 10, 100));
-        ComboBox<String> roleDropdown = new ComboBox<>();
-        if (toggleManager){
+
+        ComboBox<String> roleDropdown;
+        VBox rightPane = new VBox(20);
+        rightPane.setAlignment(Pos.TOP_RIGHT); // Aligning to the top right
+        rightPane.setPadding(new Insets(10));
+
+        if (toggleManager) {
             roleDropdown = createRoleDropdownManager();
-            roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
-            ComboBox<String> finalRoleDropdown = roleDropdown;
-            roleDropdown.setOnMouseEntered(e -> finalRoleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
-            ComboBox<String> finalRoleDropdown1 = roleDropdown;
-            roleDropdown.setOnMouseExited(e -> finalRoleDropdown1.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
-            BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
-            BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
-        }
-        else {
+        } else {
             roleDropdown = createRoleDropdownDirector();
-            roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
-            ComboBox<String> finalRoleDropdown2 = roleDropdown;
-            roleDropdown.setOnMouseEntered(e -> finalRoleDropdown2.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
-            ComboBox<String> finalRoleDropdown3 = roleDropdown;
-            roleDropdown.setOnMouseExited(e -> finalRoleDropdown3.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
-            BorderPane.setAlignment(roleDropdown, Pos.TOP_RIGHT);
-            BorderPane.setMargin(roleDropdown, new Insets(-30, 10, 0, 0));
         }
+
+        roleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        ComboBox<String> finalRoleDropdown = roleDropdown;
+        roleDropdown.setOnMouseEntered(e -> finalRoleDropdown.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        ComboBox<String> finalRoleDropdown1 = roleDropdown;
+        roleDropdown.setOnMouseExited(e -> finalRoleDropdown1.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
+
+        rightPane.getChildren().addAll(roleDropdown, createCalendarPane());
         VBox leftPane = new VBox(20);
         leftPane.setAlignment(Pos.BOTTOM_LEFT); // Aligning to the bottom left
         leftPane.setPadding(new Insets(10));
 
-        clockInField = new TextField();
+        TextField clockInField = new TextField();
         clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         clockInField.setMaxWidth(INPUT_FIELD_WIDTH);
         clockInField.setPromptText("Clock In (HH:mm)");
 
-        clockOutField = new TextField();
+        TextField clockOutField = new TextField();
         clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         clockOutField.setMaxWidth(INPUT_FIELD_WIDTH);
         clockOutField.setPromptText("Clock Out (HH:mm)");
-
 
         Button clockButton = new Button("Clock In/Out");
         clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
@@ -233,7 +236,6 @@ public class GeneralStaffScene extends PersonalizableScene {
         clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
         clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
         clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
-
 
         DatePicker fromDateField = new DatePicker();
         fromDateField.setPromptText("From Date");
@@ -244,12 +246,8 @@ public class GeneralStaffScene extends PersonalizableScene {
         toDateField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         toDateField.setMaxWidth(INPUT_FIELD_WIDTH);
 
-
-
-
-        reasonDropdown = new ComboBox<>();;
+        ComboBox<String> reasonDropdown = new ComboBox<>();
         reasonDropdown.getItems().addAll("Disease", "Holiday", "Personal", "Emergency", "Other");
-
         reasonDropdown.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
         ComboBox<String> finalRoleDropdown4 = reasonDropdown;
         reasonDropdown.setOnMouseEntered(e -> finalRoleDropdown4.setStyle("-fx-font-size: 12px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
@@ -275,17 +273,22 @@ public class GeneralStaffScene extends PersonalizableScene {
 
         leftPane.getChildren().addAll(viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
 
+        Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
         BorderPane.setMargin(logoutButton, new Insets(10, 10, 10, 10));
 
-        GridPane calendarGrid= createCalendarPane();
+        HBox topContainer = new HBox();
+        topContainer.getChildren().addAll(greetingLabel, roleDropdown);
+        topContainer.setSpacing(540);
 
-        layout.setTop(greetingLabel);
-        layout.setRight(roleDropdown);
+// Set alignment to put the role dropdown on the right
+        HBox.setHgrow(roleDropdown, Priority.ALWAYS);
+        HBox.setMargin(roleDropdown, new Insets(0, -100, 0, 0));
+
+        layout.setTop(topContainer);
         layout.setLeft(leftPane);
-        layout.setRight(calendarGrid);
         layout.setBottom(logoutButton);
-
+        layout.setRight(createCalendarPane());
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
 
@@ -476,15 +479,26 @@ public class GeneralStaffScene extends PersonalizableScene {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            if (startTime.isEmpty())
-            {
-                LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
-                if ( (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
-                        parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
-                    return true;
-                }
+            // Check for null values
+            if (startTime.isEmpty() && endTime.isEmpty()) {
+                return false;
             }
 
+            // If start time is null, only validate end time
+            if (startTime.isEmpty()) {
+                LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
+                return (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
+                        parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59);
+            }
+
+            // If end time is null, only validate start time
+            if (endTime.isEmpty()) {
+                LocalTime parsedStartTime = LocalTime.parse(startTime, formatter);
+                return (parsedStartTime.getHour() >= 0 && parsedStartTime.getHour() <= 23 &&
+                        parsedStartTime.getMinute() >= 0 && parsedStartTime.getMinute() <= 59);
+            }
+
+            // Both start and end times are not null, validate both
             LocalTime parsedStartTime = LocalTime.parse(startTime, formatter);
             LocalTime parsedEndTime = LocalTime.parse(endTime, formatter);
 
@@ -494,7 +508,14 @@ public class GeneralStaffScene extends PersonalizableScene {
                     (parsedEndTime.getHour() >= 0 && parsedEndTime.getHour() <= 23 &&
                             parsedEndTime.getMinute() >= 0 && parsedEndTime.getMinute() <= 59)) {
 
-                return parsedEndTime.isAfter(parsedStartTime);
+                if (parsedEndTime.isBefore(parsedStartTime) || parsedEndTime.equals(parsedStartTime)) {
+                    // If end time is before or equal to start time, check if end time is between 00:00 and 02:00 on the next day
+                    return (parsedEndTime.isAfter(LocalTime.of(0, 0)) && parsedEndTime.isBefore(LocalTime.of(2, 0))) ||
+                            parsedEndTime.equals(LocalTime.of(0, 0)) || parsedEndTime.equals(LocalTime.of(2, 0));
+                } else {
+                    // If end time is after start time, simply check if it's after the start time
+                    return parsedEndTime.isAfter(parsedStartTime);
+                }
             } else {
                 return false;
             }
@@ -539,7 +560,12 @@ public class GeneralStaffScene extends PersonalizableScene {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Confirmation");
-            alert.setHeaderText("You successfully added clock-in and clock-out times");
+            if (clockInTime.isEmpty() && !clockOutTime.isEmpty())
+                alert.setHeaderText("You successfully added clock-out time.");
+            else if (!clockInTime.isEmpty() && clockOutTime.isEmpty())
+                alert.setHeaderText("You successfully added clock-in time.");
+            else
+                alert.setHeaderText("You successfully added clock-in and clock-out time.");
             alert.showAndWait();
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());

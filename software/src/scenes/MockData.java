@@ -187,8 +187,8 @@ public class MockData {
 
     // This function was generated using ChatGPT to handle the date int correction
     public void generateYearPredictions() {
-        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
@@ -219,8 +219,8 @@ public class MockData {
 
 // ===============================================================================
     public void generateTablePredictions(){
-        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();

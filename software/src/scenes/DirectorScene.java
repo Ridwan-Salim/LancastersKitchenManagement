@@ -22,7 +22,7 @@ public class DirectorScene extends PersonalizableScene {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
 
-        Label greetingLabel = new Label("Welcome Director " + employeeName + "!\uD83D\uDC4B");
+        Label greetingLabel = new Label("Welcome Boss " + employeeName + "!\uD83D\uDC4B");
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
