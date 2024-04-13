@@ -379,6 +379,10 @@ public class MockData {
             String formattedTotalBill = String.format("%.2f", totalBill);
             String formattedNetBill = String.format("%.2f", netBill);
 
+            // Generate random date in 2024
+            LocalDate randomDate = LocalDate.of(2024, Month.JANUARY, 1)
+                    .plusDays(random.nextInt(365)); // Add random days in the year
+
             // Generate random table number
             int tableNumber = random.nextInt(30) + 1;
 
@@ -388,6 +392,7 @@ public class MockData {
             billItems.add(Integer.toString(result));
             billItems.add(formattedNetBill);
             billItems.add(Integer.toString(tableNumber)); // Adding table number
+            billItems.add(randomDate.toString()); // Adding random date
 
             List<List<String>> billInfo = new ArrayList<>();
             billInfo.add(dishNames);
@@ -412,7 +417,7 @@ public class MockData {
                 System.out.println("- " + dishName + ": £" + formattedDishPrice);
             }
 
-            // Print bill items including table number
+            // Print bill items including table number and date
             List<String> billItems = billInfo.get(1);
             System.out.println("Time Slot: " + billItems.get(0));
             System.out.println("Waiter Name: " + billItems.get(1));
@@ -420,6 +425,7 @@ public class MockData {
             System.out.println("Tip Amount: " + billItems.get(3) + "%");
             System.out.println("Net Bill: £" + billItems.get(4));
             System.out.println("Table Number: " + billItems.get(5)); // Printing table number
+            System.out.println("Date: " + billItems.get(6)); // Printing date
             System.out.println();
         }
     }
