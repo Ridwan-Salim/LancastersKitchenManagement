@@ -366,24 +366,28 @@ public class MockData {
             List<String> billItems = new ArrayList<>();
             double totalBill = 0;
 
-            for(int j = 0; j < dishNames.size(); j++){
-                totalBill += getDishPrice(dishNames.get(j));
+            for (String dishName : dishNames) {
+                totalBill += getDishPrice(dishName);
             }
-            double markupResult = totalBill * ((markup/100d) + 1);
+            double markupResult = totalBill * ((markup / 100d) + 1);
             totalBill += markupResult;
 
             int randomTip = random.nextInt(4) + 1;
             int result = randomTip * 5; // random number between 5 - 20 in increments of 5 for tip %
-            double netBill = totalBill * ((result/100d) + 1);
+            double netBill = totalBill * ((result / 100d) + 1);
 
             String formattedTotalBill = String.format("%.2f", totalBill);
             String formattedNetBill = String.format("%.2f", netBill);
+
+            // Generate random table number
+            int tableNumber = random.nextInt(30) + 1;
 
             billItems.add(generateRandomTimeSlot());
             billItems.add(getRandomName());
             billItems.add(formattedTotalBill);
             billItems.add(Integer.toString(result));
             billItems.add(formattedNetBill);
+            billItems.add(Integer.toString(tableNumber)); // Adding table number
 
             List<List<String>> billInfo = new ArrayList<>();
             billInfo.add(dishNames);
@@ -403,20 +407,20 @@ public class MockData {
             System.out.println("Dish Names:");
             List<String> dishNames = billInfo.get(0);
             for (String dishName : dishNames) {
-                double markupResult = getDishPrice(dishName) * ((markup/100d) + 1);
+                double markupResult = getDishPrice(dishName) * ((markup / 100d) + 1);
                 String formattedDishPrice = String.format("%.2f", markupResult);
                 System.out.println("- " + dishName + ": £" + formattedDishPrice);
             }
 
-            // Print bill items
+            // Print bill items including table number
             List<String> billItems = billInfo.get(1);
             System.out.println("Time Slot: " + billItems.get(0));
             System.out.println("Waiter Name: " + billItems.get(1));
             System.out.println("Total Bill: £" + billItems.get(2));
             System.out.println("Tip Amount: " + billItems.get(3) + "%");
             System.out.println("Net Bill: £" + billItems.get(4));
-
-            System.out.println(); // Add a blank line between bills for readability
+            System.out.println("Table Number: " + billItems.get(5)); // Printing table number
+            System.out.println();
         }
     }
 
@@ -548,7 +552,28 @@ public class MockData {
             System.out.println();
         }
     }
+    public Map<String, List<List<String>>> getYearPredictionsForMonth(String selectedMonth) {
+        Map<String, List<List<String>>> yearPredictionsForMonth = new HashMap<>();
 
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
+            String dateString = int4ToDate(dateInt4);
+
+            // Filter out predictions for the selected month
+            String month = date.getMonth().toString();
+            if (month.equalsIgnoreCase(selectedMonth)) {
+                List<List<String>> predictions = bookings.get(dateString);
+                if (predictions != null) {
+                    yearPredictionsForMonth.put(dateString, predictions);
+                }
+            }
+        }
+
+        return yearPredictionsForMonth;
+    }
     public static void main(String[] args) {
         MockData mockData = new MockData();
 
