@@ -1,5 +1,15 @@
 package scenes;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -17,20 +27,33 @@ import java.util.*;
  *         MockData mockData = new MockData();
  *         mockData.generateTablePredictions();
  *         mockData.printAllTablePredictions();
+ * FOR BILL DATA @ARTEM 
+ * Main:
+ *         MockData mockData = new MockData();
+ *         mockData.addMenuData();
+ *         mockData.createMenu();
+ *         mockData.generateBills();
+ *         mockData.printBills();
  * */
 
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
 
-    public Map<String,  List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
+    public static Map<String, List<String>> menu = new HashMap<>(); // Dish -> Price, Description, Allergens
+    public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
     public List<Integer> popularityData = new ArrayList<>();
 
     public Map<String, Map<Integer, List<List<String>>>> tablePrediction = new HashMap<>();
 
-    public void addIngredients(){
+    public Map<Integer, List<List<String>>> bill = new HashMap<>();
+
+    public Random random = new Random();
+    public int markup = random.nextInt(11) + 15; //random markup between 15-25
+
+    public void addIngredients() {
         ingredients.put("Cheddar Cheese", 4.0);
         ingredients.put("Carrots", 1.0);
         ingredients.put("Potato", 1.0);
@@ -146,7 +169,7 @@ public class MockData {
         ingredients.put("Jasmine Rice", 2.0);
         ingredients.put("Basmati Rice", 2.0);
     }
-    
+
     public void addDishWithIngredients(String dishName, String... ingredients) {
         List<String> validIngredients = new ArrayList<>();
         for (String ingredient : ingredients) {
@@ -163,7 +186,7 @@ public class MockData {
     }
 
     // Generated example dishes using ChatGPT
-    public void addMenuData(){
+    public void addMenuData() {
         // American Dishes
         addDishWithIngredients("Cheeseburger", "Ground Beef", "Cheddar Cheese", "Lettuce", "Tomato", "Onion", "Pickles", "Ketchup", "Mustard", "Mayonnaise", "Hamburger Bun");
         addDishWithIngredients("Caesar Salad", "Romaine Lettuce", "Caesar Dressing", "Parmesan Cheese", "Croutons");
@@ -249,6 +272,155 @@ public class MockData {
         addDishWithIngredients("Vegan Pizza", "Pizza Dough", "Tomato Sauce", "Vegan Cheese", "Assorted Vegetables (Mushrooms, Bell Pepper, Onion, etc.)", "Basil");
     }
 
+    public void createMenu() {
+        for (Map.Entry<String, List<String>> entry : menuData.entrySet()) {
+            double price = 0;
+            List<String> dishItems = new ArrayList<>();
+            for (String ingredient : entry.getValue()) {
+                if (ingredients.containsKey(ingredient)) {
+                    price += ingredients.get(ingredient);
+                } else {
+                    System.out.println("Ingredient '" + ingredient + "' not found.");
+                }
+            }
+            dishItems.add(Double.toString(price));
+            menu.put(entry.getKey(), dishItems);
+        }
+    }
+
+    public double getDishPrice(String dishName) {
+        List<String> result = menuData.get(dishName);
+        double price = 0;
+        for (String ingredient : result) {
+            if (ingredients.containsKey(ingredient)) {
+                price += ingredients.get(ingredient);
+            } else {
+                System.out.println("Ingredient '" + ingredient + "' not found.");
+            }
+        }
+        return price;
+    }
+//==================================================================================
+
+    // timeslot generation made with ChatGPT
+    public String generateRandomTimeSlot() {
+        LocalTime startTime = generateRandomStartTime(); // Random start time
+        int maxDurationMinutes = 120;                    // Maximum duration in minutes (2 hours)
+        int slotDurationMinutes = 30;                    // Duration of each time slot in minutes
+
+        // Generate a random number of slots within the maximum allowed
+        Random random = new Random();
+        int numberOfSlots = random.nextInt(maxDurationMinutes / slotDurationMinutes) + 1; // Add 1 to ensure at least one slot
+
+        // Calculate the end time
+        LocalTime endTime = startTime.plusMinutes(slotDurationMinutes * numberOfSlots);
+
+        // If the duration exceeds 2 hours, adjust the end time
+        if (startTime.plusMinutes(maxDurationMinutes).isBefore(endTime)) {
+            endTime = startTime.plusMinutes(maxDurationMinutes);
+        }
+
+        // If the end time exceeds midnight, roll back to "23:30" of the same day
+        if (endTime.isAfter(LocalTime.of(23, 30)) || endTime.getHour() == 0) {
+            endTime = LocalTime.of(23, 30);
+        }
+        // Generate the time slot string
+        String timeSlot = startTime.toString() + "-" + endTime.toString();
+        return timeSlot;
+    }
+
+    // Random start time generated with ChatGPT
+    public LocalTime generateRandomStartTime() {
+        Random random = new Random();
+        int hour = random.nextInt(6) + 17; // Random hour between 17 and 22
+        int minute = random.nextInt(2) * 30; // Randomly select 0 or 30 for minutes
+        return LocalTime.of(hour, minute);
+    }
+
+    // Random dish picker made with ChatGPT
+    public List<String> getRandomDishes(int count) {
+        List<String> dishNames = new ArrayList<>(menu.keySet());
+        Collections.shuffle(dishNames); // Shuffle the list of dish names
+        return dishNames.subList(0, Math.min(count, dishNames.size())); // Return a sublist of random dish names
+    }
+
+    // Random name picker made with ChatGPT
+    private String getRandomName() {
+        List<String> names = new ArrayList<>(Arrays.asList(
+                "Emma", "Noah", "Olivia", "Liam", "Ava", "William", "Sophia",
+                "James", "Isabella", "Oliver", "Mia", "Benjamin", "Charlotte",
+                "Elijah", "Amelia"
+        ));
+
+        // Generate a random index
+        Random random = new Random();
+        int randomIndex = random.nextInt(names.size());
+        // Get the name at the random index
+        return names.get(randomIndex);
+    }
+
+    public void generateBills() {
+        for (int i = 1; i < 101; i++) {
+            int randomNumber = random.nextInt(6) + 1;
+            List<String> dishNames = getRandomDishes(randomNumber);
+            List<String> billItems = new ArrayList<>();
+            double totalBill = 0;
+
+            for(int j = 0; j < dishNames.size(); j++){
+                totalBill += getDishPrice(dishNames.get(j));
+            }
+            double markupResult = totalBill * ((markup/100d) + 1);
+            totalBill += markupResult;
+
+            int randomTip = random.nextInt(4) + 1;
+            int result = randomTip * 5; // random number between 5 - 20 in increments of 5 for tip %
+            double netBill = totalBill * ((result/100d) + 1);
+
+            String formattedTotalBill = String.format("%.2f", totalBill);
+            String formattedNetBill = String.format("%.2f", netBill);
+
+            billItems.add(generateRandomTimeSlot());
+            billItems.add(getRandomName());
+            billItems.add(formattedTotalBill);
+            billItems.add(Integer.toString(result));
+            billItems.add(formattedNetBill);
+
+            List<List<String>> billInfo = new ArrayList<>();
+            billInfo.add(dishNames);
+            billInfo.add(billItems);
+
+            bill.put(i, billInfo);
+        }
+    }
+
+    // Printing bills partially generated with ChatGPT
+    public void printBills() {
+        for (Map.Entry<Integer, List<List<String>>> entry : bill.entrySet()) {
+            System.out.println("Bill " + entry.getKey() + ":");
+            List<List<String>> billInfo = entry.getValue();
+
+            // Print dish names
+            System.out.println("Dish Names:");
+            List<String> dishNames = billInfo.get(0);
+            for (String dishName : dishNames) {
+                double markupResult = getDishPrice(dishName) * ((markup/100d) + 1);
+                String formattedDishPrice = String.format("%.2f", markupResult);
+                System.out.println("- " + dishName + ": £" + formattedDishPrice);
+            }
+
+            // Print bill items
+            List<String> billItems = billInfo.get(1);
+            System.out.println("Time Slot: " + billItems.get(0));
+            System.out.println("Waiter Name: " + billItems.get(1));
+            System.out.println("Total Bill: £" + billItems.get(2));
+            System.out.println("Tip Amount: " + billItems.get(3) + "%");
+            System.out.println("Net Bill: £" + billItems.get(4));
+
+            System.out.println(); // Add a blank line between bills for readability
+        }
+    }
+
+//==================================================================================
     public List<List<String>> getBookingData(String date) {
         return bookings.get(date);
     }
@@ -277,8 +449,8 @@ public class MockData {
 
     // This function was generated using ChatGPT to handle the date int correction
     public void generateYearPredictions() {
-        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
@@ -309,8 +481,8 @@ public class MockData {
 
 // ===============================================================================
     public void generateTablePredictions(){
-        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
@@ -339,30 +511,6 @@ public class MockData {
         }
         return eachDayTablePredictions;
     }
-    public Map<String, List<List<String>>> getYearPredictionsForMonth(String selectedMonth) {
-        Map<String, List<List<String>>> yearPredictionsForMonth = new HashMap<>();
-
-        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
-
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
-            String dateString = int4ToDate(dateInt4);
-
-            // Filter out predictions for the selected month
-            String month = date.getMonth().toString();
-            if (month.equalsIgnoreCase(selectedMonth)) {
-                List<List<String>> predictions = bookings.get(dateString);
-                if (predictions != null) {
-                    yearPredictionsForMonth.put(dateString, predictions);
-                }
-            }
-        }
-
-        return yearPredictionsForMonth;
-    }
-
-    // Method to convert int4 timestamp to date string
 
     // This function was generated using ChatGPT to print out the data
     public void printAllTablePredictions() {
@@ -403,8 +551,10 @@ public class MockData {
 
     public static void main(String[] args) {
         MockData mockData = new MockData();
-        mockData.generateYearPredictions();
-        mockData.printAllBookingData();
+
+        mockData.addMenuData();
+        mockData.createMenu();
+        mockData.generateBills();
+        mockData.printBills();
     }
 }
-
