@@ -339,6 +339,30 @@ public class MockData {
         }
         return eachDayTablePredictions;
     }
+    public Map<String, List<List<String>>> getYearPredictionsForMonth(String selectedMonth) {
+        Map<String, List<List<String>>> yearPredictionsForMonth = new HashMap<>();
+
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
+            String dateString = int4ToDate(dateInt4);
+
+            // Filter out predictions for the selected month
+            String month = date.getMonth().toString();
+            if (month.equalsIgnoreCase(selectedMonth)) {
+                List<List<String>> predictions = bookings.get(dateString);
+                if (predictions != null) {
+                    yearPredictionsForMonth.put(dateString, predictions);
+                }
+            }
+        }
+
+        return yearPredictionsForMonth;
+    }
+
+    // Method to convert int4 timestamp to date string
 
     // This function was generated using ChatGPT to print out the data
     public void printAllTablePredictions() {
@@ -379,8 +403,8 @@ public class MockData {
 
     public static void main(String[] args) {
         MockData mockData = new MockData();
-        mockData.generateTablePredictions();
-        mockData.printAllTablePredictions();
+        mockData.generateYearPredictions();
+        mockData.printAllBookingData();
     }
 }
 
