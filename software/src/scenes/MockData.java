@@ -156,6 +156,7 @@ public class MockData {
                 Random random = new Random();
                 double randomValue = 1 + (5 - 1) * random.nextDouble();
                 this.ingredients.put(ingredient, randomValue);
+                validIngredients.add(ingredient);
             }
         }
         menuData.put(dishName, validIngredients);
