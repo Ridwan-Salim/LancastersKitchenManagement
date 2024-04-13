@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -27,11 +28,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
+import static scenes.StaffHoursScene.SHIFTS_FILE_PATH;
 
 
 public class GeneralStaffScene extends PersonalizableScene {
@@ -138,7 +137,9 @@ public class GeneralStaffScene extends PersonalizableScene {
         viewCurrentMenu.setOnMouseExited(e -> viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE));
         viewCurrentMenu.setOnMouseClicked(e -> viewCurrentMenu.setStyle(CLICKED_BUTTON_STYLE));
 
-        leftPane.getChildren().addAll(viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
+        Button viewShifts = createButton("View my shifts", e -> openShiftsWindow(employeeName));
+        viewShifts.setPrefWidth(INPUT_FIELD_WIDTH);
+        leftPane.getChildren().addAll(viewShifts, viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
@@ -180,6 +181,105 @@ public class GeneralStaffScene extends PersonalizableScene {
             alert.setContentText("Please enter time in the format HH:mm.");
             alert.showAndWait();
         }
+    }
+    private void openShiftsWindow(String employeeName) {
+        Stage shiftsStage = new Stage();
+        shiftsStage.setTitle("Employee Shifts");
+        shiftsStage.setWidth(620);
+        shiftsStage.setHeight(640);
+
+        // Read shifts data for the specific employee
+        Map<String, List<String>> shiftsData = readShiftsData(employeeName);
+
+        // Calculate total hours worked for the employee in a month
+        Map<String, Double> totalHoursPerEmployee = calculateTotalHoursPerEmployee(shiftsData);
+
+        // Display employee shifts and total hours
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+        layout.setStyle("-fx-background-color: #f0f0f0;");
+
+        for (Map.Entry<String, List<String>> entry : shiftsData.entrySet()) {
+            String employee = entry.getKey();
+            List<String> shifts = entry.getValue();
+
+            VBox employeeBox = new VBox(5);
+            employeeBox.setStyle("-fx-border-color: #ccc; -fx-border-width: 1px; -fx-padding: 5px;");
+
+            Label nameLabel = new Label(employee);
+            nameLabel.setStyle("-fx-font-weight: bold;");
+            nameLabel.setFont(Font.font("Arial", 14));
+
+            VBox shiftsBox = new VBox(3);
+            shiftsBox.setStyle("-fx-padding: 5px;");
+            for (String shift : shifts) {
+                String tempShift = shift;
+                HBox shiftRow = new HBox(5);
+                shiftRow.setAlignment(Pos.CENTER_LEFT);
+                String[] shiftArr = shift.split(";");
+                shiftArr[1] = "Created on: " + shiftArr[1] + ". ";
+                shiftArr[2] = "Shift time-slot: " + shiftArr[2] + ". ";
+                shiftArr[3] = "Day of shift: " + shiftArr[3] + ". ";
+                shiftArr[4] = "Date of shift: " + shiftArr[4] + ". ";
+                shift = shiftArr[1] + shiftArr[2] + shiftArr[3] + shiftArr[4];
+                Label shiftLabel = new Label(shift);
+                shiftLabel.setFont(Font.font("Arial", 12));
+                shift = tempShift;
+
+                shiftRow.getChildren().add(shiftLabel);
+                shiftsBox.getChildren().add(shiftRow);
+            }
+
+            Label totalHoursLabel = new Label("Total Hours: " + totalHoursPerEmployee.getOrDefault(employee, 0.0));
+            totalHoursLabel.setFont(Font.font("Arial", 12));
+
+            employeeBox.getChildren().addAll(nameLabel, shiftsBox, totalHoursLabel);
+            layout.getChildren().add(employeeBox);
+        }
+
+        ScrollPane scrollPane = new ScrollPane(layout);
+        scrollPane.setFitToWidth(true);
+
+        Button closeButton = createButton("Close", e -> shiftsStage.close());
+        VBox mainLayout = new VBox(10);
+        mainLayout.getChildren().addAll(scrollPane, closeButton);
+        mainLayout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(mainLayout, 320, 640);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        shiftsStage.setScene(scene);
+        shiftsStage.show();
+    }
+
+    private Map<String, Double> calculateTotalHoursPerEmployee(Map<String, List<String>> shiftsData) {
+        Map<String, Double> totalHoursPerEmployee = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : shiftsData.entrySet()) {
+            double totalHours = entry.getValue().size() * 0.5; // Assuming each shift is for 30 minutes
+            totalHoursPerEmployee.put(entry.getKey(), totalHours);
+        }
+        return totalHoursPerEmployee;
+    }
+
+    private Map<String, List<String>> readShiftsData(String employeeName) {
+        Map<String, List<String>> shiftsData = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(SHIFTS_FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                String employee = parts[0];
+                if (employee.equals(employeeName)) {
+                    String shiftCreationDate = parts[1];
+                    String startTime = parts[2];
+                    String dayOfWeek = parts[3];
+                    String shiftDate = parts[4];
+                    String shiftInfo = String.format("%s;%s;%s;%s;%s", employee, shiftCreationDate, startTime, dayOfWeek, shiftDate);
+                    shiftsData.computeIfAbsent(employee, k -> new ArrayList<>()).add(shiftInfo);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return shiftsData;
     }
     public Scene createScene(boolean toggleManager) {
         BorderPane layout = new BorderPane();
@@ -271,7 +371,10 @@ public class GeneralStaffScene extends PersonalizableScene {
         viewCurrentMenu.setOnMouseExited(e -> viewCurrentMenu.setStyle(IDLE_BUTTON_STYLE));
         viewCurrentMenu.setOnMouseClicked(e -> viewCurrentMenu.setStyle(CLICKED_BUTTON_STYLE));
 
-        leftPane.getChildren().addAll(viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
+        Button viewShifts = createButton("View my shifts", e -> openShiftsWindow(employeeName));
+        viewShifts.setPrefWidth(INPUT_FIELD_WIDTH);
+
+        leftPane.getChildren().addAll(viewShifts, viewCurrentMenu, clockInField, clockOutField, clockButton, fromDateField, toDateField, reasonDropdown, submitLeaveButton);
 
         Button logoutButton = createLogoutButton();
         BorderPane.setAlignment(logoutButton, Pos.BOTTOM_LEFT); // Aligning to the bottom left
@@ -435,17 +538,43 @@ public class GeneralStaffScene extends PersonalizableScene {
 
 
     private void recordTimes(List<String> selectedTimes, String selectedDay, String selectedDate) {
-        for (String time : selectedTimes) {
+        List<String> existingRecords = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\shifts.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                existingRecords.add(line);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Check if the record already exists
+        boolean recordExists = false;
+        for (String existingRecord : existingRecords) {
+            String[] parts = existingRecord.split(";");
+            String existingEmployee = parts[0];
+            String existingDate = parts[1];
+            String existingTime = parts[2];
+            String existingDay = parts[3];
+            if (existingEmployee.equals(employeeName) && existingDate.equals(LocalDate.now().toString()) && existingDay.equals(selectedDay) && selectedTimes.contains(existingTime)) {
+                recordExists = true;
+                break;
+            }
+        }
+
+        // If the record doesn't exist, add it
+        if (!recordExists) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\shifts.csv", true))) {
-                LocalDate currentDate = LocalDate.now();
-                writer.write(employeeName + ";" + currentDate + ";" + time + ";" + selectedDay+ ";" +selectedDate);
-                writer.newLine();
+                for (String time : selectedTimes) {
+                    LocalDate currentDate = LocalDate.now();
+                    writer.write(employeeName + ";" + currentDate + ";" + time + ";" + selectedDay + ";" + selectedDate);
+                    writer.newLine();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-
 
     private void submitLeaveRequest(LocalDate fromDate, LocalDate toDate, String reason) {
         try {

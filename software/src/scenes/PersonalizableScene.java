@@ -1,11 +1,14 @@
 package scenes;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import javafx.geometry.Pos;
 
 public abstract class PersonalizableScene {
     protected String employeeName = "";
@@ -38,6 +41,29 @@ public abstract class PersonalizableScene {
         logoutButton.setOnMouseClicked(e -> logoutButton.setStyle(CLICKED_BUTTON_STYLE));
         return logoutButton;
 
+    }
+    protected Button createButton(String buttonText, EventHandler<ActionEvent> customAction) {
+        Button doneButton = new Button(buttonText);
+        doneButton.setAlignment(Pos.CENTER);
+        doneButton.setOnAction(customAction);
+        doneButton.setStyle("-fx-font-size: 14px; -fx-padding: 8px 16px; -fx-background-radius: 5px; -fx-text-fill: white; -fx-background-color: #2196f3;");
+        doneButton.setStyle(IDLE_BUTTON_STYLE);
+        doneButton.setOnMouseEntered(e -> doneButton.setStyle(HOVERED_BUTTON_STYLE));
+        doneButton.setOnMouseExited(e -> doneButton.setStyle(IDLE_BUTTON_STYLE));
+        doneButton.setOnMouseClicked(e -> doneButton.setStyle(CLICKED_BUTTON_STYLE));
+        return doneButton;
+    }
+    protected Button createButton(String buttonText, EventHandler<ActionEvent> customAction, int s1, int s2, int s3) {
+        Button doneButton = new Button(buttonText);
+        doneButton.setAlignment(Pos.CENTER);
+        doneButton.setOnAction(customAction);
+        String buttonStyle = "-fx-background-color: #2196f3; -fx-text-fill: white; -fx-background-radius: 2; -fx-font-size: 14px; -fx-padding: 3 10;";
+        doneButton.setStyle(buttonStyle);
+        doneButton.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px; -fx-padding: 3 10;");
+        doneButton.setOnMouseEntered(e -> doneButton.setStyle("-fx-background-color: #025692; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px; -fx-padding: 3 10;"));
+        doneButton.setOnMouseExited(e -> doneButton.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px; -fx-padding: 3 10;"));
+        doneButton.setOnMouseClicked(e -> doneButton.setStyle("-fx-background-color: #002540; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px; -fx-padding: 3 10;"));
+        return doneButton;
     }
     protected Button createBackButtonManager()
     {

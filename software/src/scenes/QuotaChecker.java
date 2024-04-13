@@ -53,12 +53,10 @@ public class QuotaChecker {
                             finalList.add(1, allValues);
                             dailyResult.put(timeSlot, finalList);
                         }
-                        System.out.println("Inner loop ended");
                     }
 
                 }
             }
-            System.out.println("Second Inner loop ended");
         }
 
         return result;
@@ -144,14 +142,5 @@ public class QuotaChecker {
         String quotaDirectoryPath = "quotas"; // Replace with the actual directory path
         Map<LocalDate, Map<String, List<String>>> quotaStatus = checkQuotas(shiftsFilePath, quotaDirectoryPath);
 
-        // Printing the result
-//        for (LocalDate date : quotaStatus.keySet()) {
-//            System.out.println("Date: " + date);
-//            Map<String, Boolean> dailyResult = quotaStatus.get(date);
-//            for (String timeSlot : dailyResult.keySet()) {
-//                boolean isSatisfied = dailyResult.get(timeSlot);
-//                System.out.println("Time Slot: " + timeSlot + ", Quota Satisfied: " + isSatisfied);
-//            }
-//        }
     }
 }
