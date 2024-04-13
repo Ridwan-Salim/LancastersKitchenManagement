@@ -153,10 +153,99 @@ public class MockData {
             if (this.ingredients.containsKey(ingredient)) {
                 validIngredients.add(ingredient);
             } else {
-                System.out.println("Ingredient " + ingredient + " is not available.");
+                Random random = new Random();
+                double randomValue = 1 + (5 - 1) * random.nextDouble();
+                this.ingredients.put(ingredient, randomValue);
             }
         }
         menuData.put(dishName, validIngredients);
+    }
+
+    // Generated example dishes using ChatGPT
+    public void addMenuData(){
+        // American Dishes
+        addDishWithIngredients("Cheeseburger", "Ground Beef", "Cheddar Cheese", "Lettuce", "Tomato", "Onion", "Pickles", "Ketchup", "Mustard", "Mayonnaise", "Hamburger Bun");
+        addDishWithIngredients("Caesar Salad", "Romaine Lettuce", "Caesar Dressing", "Parmesan Cheese", "Croutons");
+        addDishWithIngredients("Spaghetti and Meatballs", "Spaghetti Pasta", "Ground Beef", "Bread Crumbs", "Parmesan Cheese", "Marinara Sauce");
+        addDishWithIngredients("Macaroni and Cheese", "Elbow Macaroni", "Cheddar Cheese", "Butter", "Milk");
+        addDishWithIngredients("Buffalo Wings", "Chicken Wings", "Buffalo Sauce", "Blue Cheese Dressing", "Celery", "Carrots");
+
+        // Italian Dishes
+        addDishWithIngredients("Margherita Pizza", "Pizza Dough", "Tomato Sauce", "Fresh Mozzarella Cheese", "Fresh Basil");
+        addDishWithIngredients("Chicken Alfredo", "Fettuccine Pasta", "Chicken Breast", "Heavy Cream", "Parmesan Cheese", "Garlic", "Butter");
+        addDishWithIngredients("Lasagna", "Lasagna Noodles", "Ground Beef", "Italian Sausage", "Ricotta Cheese", "Mozzarella Cheese", "Marinara Sauce");
+        addDishWithIngredients("Bruschetta", "Baguette", "Tomato", "Basil", "Garlic", "Balsamic Vinegar", "Olive Oil");
+        addDishWithIngredients("Risotto", "Arborio Rice", "Chicken Broth", "Parmesan Cheese", "Onion", "White Wine", "Butter");
+
+        // Asian Dishes
+        addDishWithIngredients("Sushi Rolls", "Sushi Rice", "Nori", "Assorted Fish (Salmon, Tuna, etc.)", "Cucumber", "Avocado", "Soy Sauce", "Wasabi", "Pickled Ginger");
+        addDishWithIngredients("Pad Thai", "Rice Noodles", "Chicken Breast", "Shrimp", "Tofu", "Bean Sprouts", "Egg", "Peanuts", "Green Onion", "Pad Thai Sauce");
+        addDishWithIngredients("Beef Teriyaki", "Beef Steak", "Teriyaki Sauce", "Bell Pepper", "Onion", "Garlic", "Ginger", "Sesame Seeds");
+        addDishWithIngredients("Chicken Curry", "Chicken Thigh", "Curry Paste", "Coconut Milk", "Potato", "Carrot", "Onion", "Garlic", "Ginger");
+        addDishWithIngredients("Pho", "Beef Broth", "Rice Noodles", "Beef Slices", "Bean Sprouts", "Basil", "Lime", "Sriracha", "Hoisin Sauce");
+
+        // Mexican Dishes
+        addDishWithIngredients("Tacos", "Corn Tortillas", "Ground Beef", "Lettuce", "Tomato", "Cheddar Cheese", "Salsa", "Sour Cream", "Guacamole");
+        addDishWithIngredients("Burritos", "Flour Tortillas", "Rice", "Black Beans", "Ground Beef", "Lettuce", "Tomato", "Cheddar Cheese", "Salsa");
+        addDishWithIngredients("Enchiladas", "Corn Tortillas", "Shredded Chicken", "Enchilada Sauce", "Cheddar Cheese", "Black Olives", "Green Onion");
+        addDishWithIngredients("Nachos", "Tortilla Chips", "Ground Beef", "Cheddar Cheese", "Black Beans", "Jalapenos", "Salsa", "Sour Cream", "Guacamole");
+        addDishWithIngredients("Quesadillas", "Flour Tortillas", "Chicken Breast", "Cheddar Cheese", "Onion", "Bell Pepper", "Salsa", "Sour Cream");
+
+        // Mediterranean Dishes
+        addDishWithIngredients("Greek Salad", "Romaine Lettuce", "Tomato", "Cucumber", "Red Onion", "Kalamata Olives", "Feta Cheese", "Greek Dressing");
+        addDishWithIngredients("Hummus and Pita", "Chickpeas", "Tahini", "Lemon Juice", "Garlic", "Olive Oil", "Pita Bread");
+        addDishWithIngredients("Falafel", "Chickpeas", "Onion", "Garlic", "Parsley", "Cumin", "Coriander", "Tahini Sauce", "Pita Bread");
+        addDishWithIngredients("Moussaka", "Eggplant", "Ground Lamb", "Tomato Sauce", "Bechamel Sauce", "Parmesan Cheese");
+        addDishWithIngredients("Tabbouleh", "Bulgur Wheat", "Tomato", "Parsley", "Mint", "Lemon Juice", "Olive Oil");
+
+        // Desserts
+        addDishWithIngredients("Chocolate Cake", "Flour", "Sugar", "Cocoa Powder", "Eggs", "Butter", "Milk", "Vanilla Extract");
+        addDishWithIngredients("Apple Pie", "Pie Crust", "Apples", "Sugar", "Cinnamon", "Butter", "Lemon Juice");
+        addDishWithIngredients("Tiramisu", "Ladyfingers", "Espresso", "Mascarpone Cheese", "Egg", "Sugar", "Cocoa Powder");
+        addDishWithIngredients("Cheesecake", "Graham Cracker Crust", "Cream Cheese", "Sugar", "Eggs", "Sour Cream", "Vanilla Extract");
+        addDishWithIngredients("Ice Cream Sundae", "Vanilla Ice Cream", "Chocolate Syrup", "Whipped Cream", "Maraschino Cherry", "Sprinkles");
+
+        // Breakfast Dishes
+        addDishWithIngredients("Pancakes", "Flour", "Sugar", "Eggs", "Milk", "Butter", "Baking Powder", "Maple Syrup");
+        addDishWithIngredients("French Toast", "Bread", "Eggs", "Milk", "Cinnamon", "Vanilla Extract", "Butter", "Maple Syrup");
+        addDishWithIngredients("Omelette", "Eggs", "Cheese", "Onion", "Bell Pepper", "Mushrooms", "Tomato", "Spinach", "Ham");
+        addDishWithIngredients("Eggs Benedict", "English Muffin", "Poached Egg", "Canadian Bacon", "Hollandaise Sauce");
+        addDishWithIngredients("Breakfast Burrito", "Flour Tortilla", "Eggs", "Bacon", "Sausage", "Potato", "Cheddar Cheese", "Salsa");
+
+        // Soups
+        addDishWithIngredients("Chicken Noodle Soup", "Chicken Broth", "Chicken Breast", "Carrots", "Celery", "Egg Noodles", "Onion", "Garlic");
+        addDishWithIngredients("Tomato Soup", "Tomato", "Chicken Broth", "Onion", "Garlic", "Cream", "Basil");
+        addDishWithIngredients("Minestrone Soup", "Vegetable Broth", "Tomato", "Carrots", "Celery", "Onion", "Zucchini", "Kidney Beans", "Pasta", "Spinach");
+        addDishWithIngredients("Clam Chowder", "Clam Juice", "Clams", "Potato", "Onion", "Celery", "Bacon", "Heavy Cream");
+        addDishWithIngredients("Butternut Squash Soup", "Butternut Squash", "Onion", "Carrot", "Celery", "Chicken Broth", "Heavy Cream", "Nutmeg", "Cinnamon");
+
+        // Sandwiches
+        addDishWithIngredients("BLT Sandwich", "Bacon", "Lettuce", "Tomato", "Mayonnaise", "Bread");
+        addDishWithIngredients("Club Sandwich", "Turkey", "Bacon", "Lettuce", "Tomato", "Mayonnaise", "Bread");
+        addDishWithIngredients("Reuben Sandwich", "Corned Beef", "Sauerkraut", "Swiss Cheese", "Thousand Island Dressing", "Rye Bread");
+        addDishWithIngredients("Grilled Cheese Sandwich", "Cheddar Cheese", "Bread", "Butter");
+        addDishWithIngredients("Turkey Sandwich", "Turkey", "Lettuce", "Tomato", "Mayonnaise", "Bread");
+
+        // Vegetarian Dishes
+        addDishWithIngredients("Vegetable Stir-Fry", "Bell Pepper", "Broccoli", "Carrot", "Snap Peas", "Mushrooms", "Onion", "Garlic", "Ginger", "Soy Sauce");
+        addDishWithIngredients("Quinoa Salad", "Quinoa", "Cucumber", "Tomato", "Bell Pepper", "Red Onion", "Feta Cheese", "Kalamata Olives", "Lemon Juice", "Olive Oil");
+        addDishWithIngredients("Falafel Wrap", "Falafel", "Lettuce", "Tomato", "Cucumber", "Tahini Sauce", "Pita Bread");
+        addDishWithIngredients("Vegetable Curry", "Potato", "Carrot", "Bell Pepper", "Broccoli", "Cauliflower", "Onion", "Garlic", "Ginger", "Curry Paste", "Coconut Milk");
+        addDishWithIngredients("Caprese Salad", "Tomato", "Fresh Mozzarella Cheese", "Basil", "Balsamic Glaze", "Olive Oil");
+
+        // Seafood Dishes
+        addDishWithIngredients("Shrimp Scampi", "Shrimp", "Garlic", "Lemon Juice", "White Wine", "Parsley", "Butter", "Pasta");
+        addDishWithIngredients("Salmon Salad", "Salmon Fillet", "Mixed Greens", "Tomato", "Cucumber", "Red Onion", "Balsamic Vinaigrette");
+        addDishWithIngredients("Fish Tacos", "White Fish Fillet", "Corn Tortillas", "Cabbage", "Lime", "Cilantro", "Avocado", "Salsa");
+        addDishWithIngredients("Crab Cakes", "Crab Meat", "Bread Crumbs", "Egg", "Mayonnaise", "Dijon Mustard", "Worcestershire Sauce", "Old Bay Seasoning");
+        addDishWithIngredients("Lobster Bisque", "Lobster", "Heavy Cream", "Tomato Paste", "Sherry Wine", "Onion", "Garlic", "Thyme");
+
+        // Vegan Dishes
+        addDishWithIngredients("Vegan Buddha Bowl", "Quinoa", "Chickpeas", "Sweet Potato", "Broccoli", "Avocado", "Carrot", "Hummus", "Tahini Dressing");
+        addDishWithIngredients("Vegan Chili", "Black Beans", "Kidney Beans", "Tomato", "Bell Pepper", "Onion", "Garlic", "Chili Powder", "Cumin", "Vegetable Broth");
+        addDishWithIngredients("Vegan Stir-Fry", "Tofu", "Broccoli", "Bell Pepper", "Snap Peas", "Carrot", "Onion", "Garlic", "Ginger", "Soy Sauce");
+        addDishWithIngredients("Vegan Pad Thai", "Rice Noodles", "Tofu", "Bean Sprouts", "Green Onion", "Peanuts", "Garlic", "Soy Sauce", "Tamarind Paste");
+        addDishWithIngredients("Vegan Pizza", "Pizza Dough", "Tomato Sauce", "Vegan Cheese", "Assorted Vegetables (Mushrooms, Bell Pepper, Onion, etc.)", "Basil");
     }
 
     public List<List<String>> getBookingData(String date) {
