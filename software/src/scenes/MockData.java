@@ -39,9 +39,8 @@ import java.util.*;
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
-
-    public static Map<String, List<String>> menu = new HashMap<>(); // Dish -> Price, Description, Allergens
-    public static Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
+    public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, Price, Description, Allergens
+    public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
     public List<Integer> popularityData = new ArrayList<>();
@@ -177,7 +176,7 @@ public class MockData {
                 validIngredients.add(ingredient);
             } else {
                 Random random = new Random();
-                double randomValue = 1 + (5 - 1) * random.nextDouble();
+                double randomValue = 1 + (1.5) * random.nextDouble();
                 this.ingredients.put(ingredient, randomValue);
                 validIngredients.add(ingredient);
             }
@@ -273,9 +272,11 @@ public class MockData {
     }
 
     public void createMenu() {
+        int id = 1;
         for (Map.Entry<String, List<String>> entry : menuData.entrySet()) {
             double price = 0;
-            List<String> dishItems = new ArrayList<>();
+            //List<String> dishItems = new ArrayList<>();
+            String[] dishItems = new String[4];
             for (String ingredient : entry.getValue()) {
                 if (ingredients.containsKey(ingredient)) {
                     price += ingredients.get(ingredient);
@@ -283,8 +284,11 @@ public class MockData {
                     System.out.println("Ingredient '" + ingredient + "' not found.");
                 }
             }
-            dishItems.add(Double.toString(price));
-            menu.put(entry.getKey(), dishItems);
+            //dishItems.add(Double.toString(price));
+            dishItems[0] = entry.getKey();
+            dishItems[1] = Double.toString(price);
+            menu.put(id, dishItems);
+            id++;
         }
     }
 
@@ -302,13 +306,14 @@ public class MockData {
     }
 
     public void printMenu(){
-        for (Map.Entry<String, List<String>> entry : menu.entrySet()) {
-            String dish = entry.getKey();
-            List<String> details = entry.getValue();
-            System.out.println("Dish: " + dish);
-            System.out.println("Price: " + details.get(0));
-            System.out.println("Description: " + details.get(1));
-            //System.out.println("Allergens: " + details.get(2));
+        for (Map.Entry<Integer, String[]> entry : menu.entrySet()) {
+            Integer dishID = entry.getKey();
+            String[] details = entry.getValue();
+            System.out.println("ID: " + dishID);
+            System.out.println("Dish: " + details[0]);
+            System.out.println("Price: " + details[1]);
+            System.out.println("Description: " + details[2]);
+            System.out.println("Allergens: " + details[3]);
             System.out.println();
         }
     }
@@ -350,10 +355,18 @@ public class MockData {
     }
 
     // Random dish picker made with ChatGPT
-    public List<String> getRandomDishes(int count) {
-        List<String> dishNames = new ArrayList<>(menu.keySet());
-        Collections.shuffle(dishNames); // Shuffle the list of dish names
-        return dishNames.subList(0, Math.min(count, dishNames.size())); // Return a sublist of random dish names
+    public List<String> getRandomDishNames(int count) {
+        List<Integer> dishIDs = new ArrayList<>(menu.keySet()); // Get all dish IDs
+        Collections.shuffle(dishIDs); // Shuffle the list of dish IDs
+        List<String> randomDishNames = new ArrayList<>();
+        for (int i = 0; i < Math.min(count, dishIDs.size()); i++) {
+            int dishID = dishIDs.get(i);
+            String[] dishInfo = menu.get(dishID);
+            if (dishInfo != null && dishInfo.length > 0) {
+                randomDishNames.add(dishInfo[0]); // Add the dish name to the list
+            }
+        }
+        return randomDishNames; // Return a list of random dish names
     }
 
     // Random name picker made with ChatGPT
@@ -374,7 +387,7 @@ public class MockData {
     public void generateBills() {
         for (int i = 1; i < 101; i++) {
             int randomNumber = random.nextInt(6) + 1;
-            List<String> dishNames = getRandomDishes(randomNumber);
+            List<String> dishNames = getRandomDishNames(randomNumber);
             List<String> billItems = new ArrayList<>();
             double totalBill = 0;
 
@@ -592,14 +605,12 @@ public class MockData {
 
         return yearPredictionsForMonth;
     }
-
-
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         MockData mockData = new MockData();
 
         mockData.addMenuData();
         mockData.createMenu();
         mockData.generateBills();
         mockData.printBills();
-    }
+    }*/
 }
