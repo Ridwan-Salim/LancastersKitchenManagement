@@ -22,12 +22,12 @@ import java.util.*;
  * Then you can call the public Maps / Lists directly
  *
  *
- * FOR TABLE DATA @ARTEM 
+ * FOR TABLE DATA @ARTEM
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.generateTablePredictions();
  *         mockData.printAllTablePredictions();
- * FOR BILL DATA @ARTEM 
+ * FOR BILL DATA @ARTEM
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.addMenuData();
@@ -41,7 +41,7 @@ public class MockData {
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
 
     public static Map<String, List<String>> menu = new HashMap<>(); // Dish -> Price, Description, Allergens
-    public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
+    public static Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
     public List<Integer> popularityData = new ArrayList<>();
@@ -435,7 +435,7 @@ public class MockData {
         return bookings.get(date);
     }
 
-    public String int4ToDate(int int4Timestamp) {
+    public static String int4ToDate(int int4Timestamp) {
         int year = int4Timestamp / 10000;
         int month = (int4Timestamp % 10000) / 100;
         int day = int4Timestamp % 100;
@@ -459,8 +459,8 @@ public class MockData {
 
     // This function was generated using ChatGPT to handle the date int correction
     public void generateYearPredictions() {
-        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
@@ -491,8 +491,8 @@ public class MockData {
 
 // ===============================================================================
     public void generateTablePredictions(){
-        LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
-        LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
+        LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
+        LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int dateInt4 = date.getYear() * 10000 + date.getMonthValue() * 100 + date.getDayOfMonth();
@@ -580,6 +580,8 @@ public class MockData {
 
         return yearPredictionsForMonth;
     }
+
+
     public static void main(String[] args) {
         MockData mockData = new MockData();
 

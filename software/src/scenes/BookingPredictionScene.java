@@ -186,7 +186,7 @@ public class BookingPredictionScene extends ManagerScene {
 
     private String getMonthFromDate(String date) {
         // Assuming date format is "YYYY-MM-DD", extract the month part
-        String[] parts = date.split("-");
+        String[] parts = date.split("/");
         if (parts.length >= 2) {
             int month = Integer.parseInt(parts[1]);
             return switch (month) {
