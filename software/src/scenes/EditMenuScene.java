@@ -31,6 +31,7 @@ public class EditMenuScene  extends ManagerScene{
         if (!isDataInitialized) {
             mockData.addMenuData();
             mockData.createMenu();
+            mockData.addWines();
             isDataInitialized = true;
         }
     }
@@ -62,7 +63,7 @@ public class EditMenuScene  extends ManagerScene{
         labelAnimation.play();
 
         // Most of the UI generation for the ScrollPane happens in here
-        for (Map.Entry<Integer, String[]> entry : MockData.menu.entrySet()) {
+        for (Map.Entry<Integer, String[]> entry : mockData.menu.entrySet()) {
             VBox dishItemsContainer = new VBox();
             GridPane dishContainer = new GridPane();
             GridPane descAllergenContainer = new GridPane();
@@ -78,7 +79,7 @@ public class EditMenuScene  extends ManagerScene{
             dishPrice.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
             GridPane.setMargin(dishPrice, new Insets(10, 0, 0, 20));
             dishPriceLabel.put(id, dishPrice); // Labels are saved so that they can be accessed and used later
-            if (counter < MockData.menu.size()) {
+            if (counter < mockData.menu.size()) {
                 Label originalCopy = new Label(dishPrice.getText());
                 originalDishPriceLabel.put(id, originalCopy);
                 counter++;
@@ -137,7 +138,7 @@ public class EditMenuScene  extends ManagerScene{
                         alert.showAndWait();
                     } else{
                         dishDescriptions.put(id, description);
-                        String[] saveData = new String[4];
+                        String[] saveData = new String[mockData.dishInfoCapacity];
                         String saveName = dishName.getText();
                         String savePrice = dishPriceLabel.get(id).getText();
                         String saveDesc = dishDescriptions.get(id);
@@ -147,7 +148,7 @@ public class EditMenuScene  extends ManagerScene{
                         saveData[2]=  saveDesc;
                         saveData[3] = saveAllergens;
                         mockData.menu.put(id, saveData);
-                        //System.out.println(mockData.menu.get(id)[2]);
+                        System.out.println(mockData.menu.get(id)[2]);
                         descAllergenContainer.getChildren().remove(descriptionTextArea);
                         descAllergenContainer.getChildren().remove(saveDescription);
 
@@ -180,18 +181,17 @@ public class EditMenuScene  extends ManagerScene{
             CheckBox vegan = new CheckBox("Vegan");
             List<CheckBox> checkboxes = Arrays.asList(dairy, soy, nuts, egg, shellfish);
 
-            String[] allergens = {""}; // Mutable atomic block
             for (CheckBox checkbox : checkboxes) {
-                checkbox.setOnAction(saveCheckbox -> {
-                    if (checkbox.isSelected()) {
-                        if (dishAllergens.get(id) == null) {
-                            allergens[0] += checkbox.getText();
-                        } else {
-                            allergens[0] += "," + checkbox.getText();
-                        }
+                checkbox.setOnAction(event -> {
+                    String currentAllergens = dishAllergens.getOrDefault(id, "");
+                    // Stop adding the same allergen twice logic replace currentAllergens
+                    if (checkbox.isSelected() && !currentAllergens.contains(checkbox.getText())) {
+                        currentAllergens += (currentAllergens.isEmpty() ? "" : ",") + checkbox.getText();
+                    } else if (!checkbox.isSelected() && currentAllergens.contains(checkbox.getText())) {
+                        currentAllergens = currentAllergens.replace(checkbox.getText() + ",", "").replace(checkbox.getText(), "");
                     }
-                    dishAllergens.put(id, allergens[0]);
-                    System.out.println(dishAllergens.size());
+                    // Add to map as normal
+                    dishAllergens.put(id, currentAllergens);
                 });
             }
 
@@ -202,6 +202,20 @@ public class EditMenuScene  extends ManagerScene{
             descAllergenContainer.add(shellfish, 2, 1);
             descAllergenContainer.add(vegan, 3, 1);
 
+            // HBox that holds info about Dish name and Price labels
+            dishContainer.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+            dishContainer.setMinSize(500, 50);
+            dishContainer.setMaxSize(500, 50);
+            dishItemsContainer.getChildren().add(dishContainer);
+
+            // HBox that holds info about Dish description and Allergen info
+            descAllergenContainer.setStyle("-fx-background-color: #f0f0f0;");
+            GridPane.setMargin(descAllergenContainer, new Insets(0, 0, 0, 0));
+            descAllergenContainer.setMinSize(500, 50);
+            descAllergenContainer.setMaxSize(500, 50);
+            dishItemsContainer.getChildren().add(descAllergenContainer);
+
+            dishItemsContainer.setMinHeight(110);
             menuItemsContainer.getChildren().add(dishItemsContainer); // Group the elements together in the end
         }
 
@@ -265,7 +279,7 @@ public class EditMenuScene  extends ManagerScene{
                 alert.showAndWait();
 
                 for(Map.Entry<Integer, Label> entry: dishPriceLabel.entrySet()){
-                    String[] saveData = new String[4];
+                    String[] saveData = new String[mockData.dishInfoCapacity];
                     String saveName = mockData.menu.get(entry.getKey())[0];
                     String savePrice = entry.getValue().getText();
                     String saveDescription = dishDescriptions.get(entry.getKey());
@@ -277,7 +291,7 @@ public class EditMenuScene  extends ManagerScene{
                     mockData.menu.put(entry.getKey(), saveData);
                 }
             }
-            //mockData.printMenu();
+            mockData.printMenu();
         });
         TextField changeInitialMarkup = new TextField();
         VBox.setMargin(changeInitialMarkup, new Insets(10, 0, 0, 350));
@@ -345,7 +359,7 @@ public class EditMenuScene  extends ManagerScene{
             price = defaultMarkupPrice;
 
             dishLabel.setText("£" + String.format("%.2f", price));
-            MockData.menu.get(label.getKey())[2] = dishLabel.getText();
+            mockData.menu.get(label.getKey())[2] = dishLabel.getText();
         }
     }
     private void updateDishPricesAdditional() {
