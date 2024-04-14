@@ -39,7 +39,9 @@ import java.util.*;
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
-    public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, Price, Description, Allergens
+    public static Map<String, Double> wines = new HashMap<>(); // Wine -> Price
+    public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, DishPrice, Description, Allergens, Wines
+    public static int dishInfoCapacity = 5;
     public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
@@ -169,6 +171,19 @@ public class MockData {
         ingredients.put("Arborio Rice", 2.0);
         ingredients.put("Jasmine Rice", 2.0);
         ingredients.put("Basmati Rice", 2.0);
+    }
+
+    public void addWines() {
+        wines.put("Chardonnay", 15.0);
+        wines.put("Merlot", 12.0);
+        wines.put("Cabernet Sauvignon", 18.0);
+        wines.put("Pinot Noir", 20.0);
+        wines.put("Sauvignon Blanc", 14.0);
+        wines.put("Zinfandel", 16.0);
+        wines.put("Riesling", 17.0);
+        wines.put("Syrah", 22.0);
+        wines.put("Malbec", 19.0);
+        wines.put("Rosé", 13.0);
     }
 
     public void addDishWithIngredients(String dishName, String... ingredients) {
@@ -368,8 +383,7 @@ public class MockData {
         int id = 1;
         for (Map.Entry<String, List<String>> entry : menuData.entrySet()) {
             double price = 0;
-            //List<String> dishItems = new ArrayList<>();
-            String[] dishItems = new String[4];
+            String[] dishItems = new String[dishInfoCapacity];
             for (String ingredient : entry.getValue()) {
                 if (ingredients.containsKey(ingredient)) {
                     price += ingredients.get(ingredient);
@@ -398,7 +412,7 @@ public class MockData {
         return price;
     }
 
-    public void printMenu(){
+    public static void printMenu(){
         for (Map.Entry<Integer, String[]> entry : menu.entrySet()) {
             Integer dishID = entry.getKey();
             String[] details = entry.getValue();
@@ -407,6 +421,7 @@ public class MockData {
             System.out.println("Price: " + details[1]);
             System.out.println("Description: " + details[2]);
             System.out.println("Allergens: " + details[3]);
+            System.out.println("Wines: " + details[4]);
             System.out.println();
         }
     }
