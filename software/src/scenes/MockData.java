@@ -172,7 +172,19 @@ public class MockData {
         ingredients.put("Jasmine Rice", 2.0);
         ingredients.put("Basmati Rice", 2.0);
     }
-
+    public void addIngredientsFromList(String[] ingredientList) {
+        for (String ingredient : ingredientList) {
+            // Check if the ingredient already exists in the map
+            if (ingredients.containsKey(ingredient)) {
+                // If it exists, update its quantity
+                double currentQuantity = ingredients.get(ingredient);
+                ingredients.put(ingredient, currentQuantity + 1.0); // Increment by 1.0, you can change this as needed
+            } else {
+                // If it doesn't exist, add it to the map with an initial quantity
+                ingredients.put(ingredient, 1.0); // Initial quantity as 1.0, you can change this as needed
+            }
+        }
+    }
     public void addWines() {
         wines.put("Chardonnay", 15.0);
         wines.put("Merlot", 12.0);
@@ -212,6 +224,14 @@ public class MockData {
             usualStockQuantities.put(ingredient, amount);
         } else {
             System.out.println("Ingredient not found: " + ingredient);
+        }
+    }
+    public double getItemPrice(String itemName) {
+        if (ingredients.containsKey(itemName)) {
+            return ingredients.get(itemName);
+        } else {
+            System.out.println("Ingredient '" + itemName + "' not found.");
+            return -1; // or any other default value indicating not found
         }
     }
 
@@ -278,7 +298,7 @@ public class MockData {
                 "Rice Noodles", "Tofu", "Bean Sprouts", "Green Onion", "Peanuts", "Garlic", "Soy Sauce", "Tamarind Paste",
                 "Pizza Dough", "Tomato Sauce", "Vegan Cheese", "Assorted Vegetables (Mushrooms, Bell Pepper, Onion, etc.)", "Basil"
         };
-
+        addIngredientsFromList(ingredientsList);
         Random random = new Random();
 
         // Fill low stock items with random quantities

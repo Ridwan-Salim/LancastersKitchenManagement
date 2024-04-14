@@ -103,10 +103,6 @@ public class EditMenuScene  extends ManagerScene{
             descAllergenContainer.getColumnConstraints().addAll(col3, col4, col5);
 
             // HBox that holds info about Dish name and Price labels
-            dishContainer.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #999999;");
-            dishContainer.setMinSize(500, 50);
-            dishContainer.setMaxSize(500, 50);
-            dishItemsContainer.getChildren().add(dishContainer);
 
             // HBox that holds info about Dish description and Allergen info
             descAllergenContainer.setStyle("-fx-background-color: #f0f0f0;");
@@ -202,6 +198,14 @@ public class EditMenuScene  extends ManagerScene{
             descAllergenContainer.add(shellfish, 2, 1);
             descAllergenContainer.add(vegan, 3, 1);
 
+            // HBox that holds info about Dish name and Price labels
+            dishContainer.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+            dishContainer.setMinSize(500, 50);
+            dishContainer.setMaxSize(500, 50);
+            dishItemsContainer.getChildren().add(dishContainer);
+
+
+            dishItemsContainer.setMinHeight(110);
             menuItemsContainer.getChildren().add(dishItemsContainer); // Group the elements together in the end
         }
 

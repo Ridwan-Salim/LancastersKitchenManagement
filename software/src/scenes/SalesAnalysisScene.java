@@ -49,6 +49,7 @@ public class SalesAnalysisScene extends ManagerScene {
         }
         return menuItemSales;
     }
+
     // Method to calculate average amount spent
     private void updateScene() {
         Pair<LocalDate, LocalDate> selectedDateRange = getSelectedDateRange();
@@ -74,6 +75,7 @@ public class SalesAnalysisScene extends ManagerScene {
         updateRightBox(averageAmountSpent, mostValuableWaiter, totalRevenue); // Update right box
 
     }
+
     private void updatePopularDishes(Map<String, Integer> menuItemSales) {
         Node leftNode = layout.getLeft();
         if (leftNode instanceof ScrollPane) {
@@ -142,6 +144,7 @@ public class SalesAnalysisScene extends ManagerScene {
             );
         }
     }
+
     private void updateLessPopularDishes(List<String> lessPopularItems) {
         Node centerNode = layout.getCenter();
         if (centerNode instanceof VBox) {
@@ -426,6 +429,7 @@ public class SalesAnalysisScene extends ManagerScene {
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
+
     private void downloadData() {
         // Create a FileChooser dialog
         FileChooser fileChooser = new FileChooser();
@@ -558,7 +562,7 @@ public class SalesAnalysisScene extends ManagerScene {
     private List<String> calculateLessPopularItems(Map<String, Integer> menuItemSales, LocalDate startDate, LocalDate endDate) {
         List<String> lessPopularItems = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : menuItemSales.entrySet()) {
-            if (entry.getValue() <= 3) { // Define less popular based on a threshold (e.g., 3)
+            if (entry.getValue() <= 50) { // Define less popular based on a threshold (e.g., 3)
                 lessPopularItems.add(entry.getKey());
             }
         }
@@ -584,6 +588,7 @@ public class SalesAnalysisScene extends ManagerScene {
         }
         return peakHours;
     }
+
     private HBox createDateRangeSelector() {
         HBox dateRangeSelector = new HBox(10);
 
@@ -605,10 +610,10 @@ public class SalesAnalysisScene extends ManagerScene {
 
         return dateRangeSelector;
     }
+
     private Pair<LocalDate, LocalDate> getSelectedDateRange() {
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
         return new Pair<>(startDate, endDate);
     }
-
 }
