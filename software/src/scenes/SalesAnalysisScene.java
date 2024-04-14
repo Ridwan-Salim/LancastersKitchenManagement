@@ -8,21 +8,22 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 import javafx.util.Pair;
 import scenes.ManagerScene;
 import scenes.MockData;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -408,11 +409,114 @@ public class SalesAnalysisScene extends ManagerScene {
         popularTablesBox.setStyle("-fx-text-fill: #333;");
         peakHoursBox.setStyle("-fx-text-fill: #333;");
         rightBox.setStyle("-fx-text-fill: #333;");
+        Button downloadButton = createButton("Download Data", event -> {
+            try {
+                downloadData();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        HBox bottomBox = new HBox();
+        bottomBox.setSpacing(10);
+        backButton.setPrefWidth(225);
+        bottomBox.getChildren().addAll(backButton, downloadButton);
+        layout.setBottom(bottomBox);
 
 // Apply a subtle shadow effect to section
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
+    private void downloadData() {
+        // Create a FileChooser dialog
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Data");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
+        // Show the dialog and get the selected file
+        File selectedFile = fileChooser.showSaveDialog(layout.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                // Create a BufferedWriter to write data to the selected file
+                BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile));
+
+                // Get the selected date range
+                LocalDate startDate = startDatePicker.getValue();
+                LocalDate endDate = endDatePicker.getValue();
+
+                // Write the selected date range to the file
+                writer.write("Date Range: " + startDate.toString() + " to " + endDate.toString() + "\n\n");
+
+                // Gather data from the scene
+                String averageAmountSpent = ((Label) ((VBox) layout.getRight()).getChildren().get(1)).getText();
+                String totalRevenue = ((Label) ((VBox) layout.getRight()).getChildren().get(2)).getText();
+                String mostValuableWaiter = ((Label) ((VBox) layout.getRight()).getChildren().get(3)).getText();
+
+                // Write the gathered data to the file
+                writer.write("Average Amount Spent: " + averageAmountSpent + "\n");
+                writer.write("Total Revenue: " + totalRevenue + "\n");
+                writer.write("Most Valuable Waiter: " + mostValuableWaiter + "\n\n");
+
+                // Get data from popular menu items
+                writer.write("Popular Menu Items:\n");
+                VBox popularDishesBox = (VBox) ((ScrollPane) layout.getLeft()).getContent();
+                for (Node node : popularDishesBox.getChildren()) {
+                    if (node instanceof Label) {
+                        writer.write(((Label) node).getText() + "\n");
+                    }
+                }
+                writer.write("\n");
+
+                // Get data from less popular menu items
+                writer.write("Less Popular Menu Items:\n");
+                VBox lessPopularDishesBox = (VBox) ((ScrollPane) ((VBox) layout.getCenter()).getChildren().get(0)).getContent();
+                for (Node node : lessPopularDishesBox.getChildren()) {
+                    if (node instanceof Label && !((Label) node).getText().startsWith("Less Popular Menu Items:")) {
+                        writer.write(((Label) node).getText() + "\n");
+                    }
+                }
+                writer.write("\n");
+
+                // Get data from popular tables
+                writer.write("Popular Tables:\n");
+                VBox popularTablesBox = (VBox) ((ScrollPane) ((VBox) layout.getCenter()).getChildren().get(1)).getContent();
+                for (Node node : popularTablesBox.getChildren()) {
+                    if (node instanceof Label && !((Label) node).getText().startsWith("Most Popular Tables:")) {
+                        writer.write(((Label) node).getText() + "\n");
+                    }
+                }
+                writer.write("\n");
+
+                // Get data from peak hours
+                writer.write("Peak Hours:\n");
+                VBox peakHoursBox = (VBox) ((ScrollPane) ((VBox) layout.getCenter()).getChildren().get(2)).getContent();
+                for (Node node : peakHoursBox.getChildren()) {
+                    if (node instanceof Label && !((Label) node).getText().startsWith("Most Popular Tables:")) {
+                        writer.write(((Label) node).getText() + "\n");
+                    }
+                }
+
+                // Close the writer
+                writer.close();
+
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Download");
+                alert.setHeaderText(null);
+                alert.setContentText("Data downloaded successfully.");
+                alert.showAndWait();
+            } catch (Exception e) {
+                // Show error message if failed to write data
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to download data.");
+                alert.showAndWait();
+                e.printStackTrace();
+            }
+        }
+    }
+
     private double calculateAverageAmountSpent(Map<Integer, List<List<String>>> billData, LocalDate startDate, LocalDate endDate) {
         double totalAmount = 0;
         int billCount = 0;
