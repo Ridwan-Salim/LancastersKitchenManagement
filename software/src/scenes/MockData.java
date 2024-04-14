@@ -300,6 +300,18 @@ public class MockData {
         }
         return price;
     }
+
+    public void printMenu(){
+        for (Map.Entry<String, List<String>> entry : menu.entrySet()) {
+            String dish = entry.getKey();
+            List<String> details = entry.getValue();
+            System.out.println("Dish: " + dish);
+            System.out.println("Price: " + details.get(0));
+            System.out.println("Description: " + details.get(1));
+            //System.out.println("Allergens: " + details.get(2));
+            System.out.println();
+        }
+    }
 //==================================================================================
 
     // timeslot generation made with ChatGPT
@@ -430,7 +442,7 @@ public class MockData {
         }
     }
 
-//==================================================================================
+    //==================================================================================
     public List<List<String>> getBookingData(String date) {
         return bookings.get(date);
     }
@@ -489,7 +501,7 @@ public class MockData {
     }
 
 
-// ===============================================================================
+    // ===============================================================================
     public void generateTablePredictions(){
         LocalDate startDate = LocalDate.of(2024, Month.JANUARY, 1);
         LocalDate endDate = LocalDate.of(2024, Month.DECEMBER, 31);
