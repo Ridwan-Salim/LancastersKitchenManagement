@@ -139,7 +139,7 @@ public class EditMenuScene  extends ManagerScene{
                         saveData[2]=  saveDesc;
                         saveData[3] = saveAllergens;
                         mockData.menu.put(id, saveData);
-                        System.out.println(mockData.menu.get(id)[2]);
+                        //System.out.println(mockData.menu.get(id)[2]);
                         descAllergenContainer.getChildren().remove(descriptionTextArea);
                         descAllergenContainer.getChildren().remove(saveDescription);
 
@@ -279,7 +279,7 @@ public class EditMenuScene  extends ManagerScene{
                     mockData.menu.put(entry.getKey(), saveData);
                 }
             }
-            mockData.printMenu();
+            //mockData.printMenu();
         });
 
         saveAll.setStyle(IDLE_BUTTON_STYLE);
