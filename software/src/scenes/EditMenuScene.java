@@ -19,10 +19,14 @@ import java.util.*;
 public class EditMenuScene  extends ManagerScene{
     private MockData mockData = new MockData();
     private Map<Integer, Label> dishPriceLabel = new HashMap<>();
+    private Map<Integer, Label> originalDishPriceLabel = new HashMap<>();
     private Map<Integer, String> dishDescriptions = new HashMap<>();
     private Map<Integer, String> dishAllergens = new HashMap<>();
     private boolean isDataInitialized = false;
-
+    private double defaultMarkupPercentage = 5; // Default markup percentage
+    private final double oldDefaultMarkupPercentage = 5; // Default markup percentage
+    private double additionalMarkupPercentage = 0;
+    private static int counter = 0;
     public void initializeDataIfNeeded() {
         if (!isDataInitialized) {
             mockData.addMenuData();
@@ -69,12 +73,16 @@ public class EditMenuScene  extends ManagerScene{
 
             Label dishPrice = new Label(entry.getValue()[1]);
             String priceString = entry.getValue()[1].trim().replace("£", "");
-            double price = (Double.parseDouble(priceString) * 5 / 10d); // Add default markup /10 as not whole ingredient used
+            double price = (Double.parseDouble(priceString)); // Add default markup /10 as not whole ingredient used
             dishPrice.setText("£" + String.format("%.2f", price));
             dishPrice.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
             GridPane.setMargin(dishPrice, new Insets(10, 0, 0, 20));
             dishPriceLabel.put(id, dishPrice); // Labels are saved so that they can be accessed and used later
-
+            if (counter < MockData.menu.size()) {
+                Label originalCopy = new Label(dishPrice.getText());
+                originalDishPriceLabel.put(id, originalCopy);
+                counter++;
+            }
             dishContainer.add(dishName, 0, 0);
             dishContainer.add(dishPrice, 1, 0); // Grid system to align the text more absolutely
 
@@ -205,49 +213,39 @@ public class EditMenuScene  extends ManagerScene{
         HBox.setMargin(menuDishPrice, new Insets(60, 0, 0, 100));
         menuDishPrice.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        TextField changeMarkup = new TextField();
-        VBox.setMargin(changeMarkup, new Insets(100, 0, 0, 350));
-        changeMarkup.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #313131;-fx-background-radius: 20");
-        changeMarkup.setMaxWidth(INPUT_FIELD_WIDTH * 1.3);
-        changeMarkup.setPromptText("Add Markup Percentage");
-        markupContainer.getChildren().add(changeMarkup);
+        TextField changeAdditionalMarkup = new TextField();
+        VBox.setMargin(changeAdditionalMarkup, new Insets(100, 0, 0, 350));
+        changeAdditionalMarkup.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #313131;-fx-background-radius: 20");
+        changeAdditionalMarkup.setMaxWidth(INPUT_FIELD_WIDTH * 1.3);
+        changeAdditionalMarkup.setPromptText("Add Additional Markup Percentage");
+        markupContainer.getChildren().add(changeAdditionalMarkup);
 
-        Button markup = new Button("Save new markup %");
-        VBox.setMargin(markup, new Insets(10, 0, 0, 350));
-        markup.setOnAction(event -> {
-            String text = changeMarkup.getText();
-            // If the field is empty and or the value is less than 0.1%
+        Button saveAdditionalMarkup = createButton("Add service fee %", event -> {
+            String text = changeAdditionalMarkup.getText();
+            // If the field is empty or the value is less than 0.1%
             if (text.isEmpty() || !text.matches("^\\d*\\.?\\d+$") || Double.parseDouble(text) < 0.1) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter a valid markup percentage");
-                alert.showAndWait();
+                showErrorAlert("Invalid Input");
                 return;
             }
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm changes");
             alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to increase the dish markup percentage?");
+            alert.setContentText("Are you sure you want to update the additional markup percentage?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                for (Map.Entry<Integer, Label> label : dishPriceLabel.entrySet()) {
-                    String priceLabelText = label.getValue().getText().replaceAll("[^0-9.]", "");
-
-                    double newPrice = (Integer.parseInt(text) + 1) * Double.parseDouble(priceLabelText) / 10;
-                    label.getValue().setText("£" + String.format("%.2f", newPrice));
-                    MockData.menu.get(label.getKey())[2] = label.getValue().getText();
-                }
+                additionalMarkupPercentage = Double.parseDouble(text);
+                // Update dish prices based on the new additional markup
+                updateDishPricesAdditional();
                 alert.close();
             }
         });
+        saveAdditionalMarkup.setPrefWidth(INPUT_FIELD_WIDTH);
+        VBox.setMargin(saveAdditionalMarkup, new Insets(10, 0, 0, 350));
 
-        markup.setStyle(IDLE_BUTTON_STYLE);
-        markup.setPrefWidth(255);
-        markup.setOnMouseEntered(e -> markup.setStyle(HOVERED_BUTTON_STYLE));
-        markup.setOnMouseExited(e -> markup.setStyle(IDLE_BUTTON_STYLE));
-        markup.setOnMouseClicked(e -> markup.setStyle(CLICKED_BUTTON_STYLE));
-        markupContainer.getChildren().add(markup);
+        markupContainer.getChildren().add(saveAdditionalMarkup);
+
+        // Other existing code...
+
 
         Button saveAll = new Button("Save Menu");
         VBox.setMargin(saveAll, new Insets(50, 0, 0, 350));
@@ -281,7 +279,28 @@ public class EditMenuScene  extends ManagerScene{
             }
             //mockData.printMenu();
         });
+        TextField changeInitialMarkup = new TextField();
+        VBox.setMargin(changeInitialMarkup, new Insets(10, 0, 0, 350));
+        changeInitialMarkup.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #313131;-fx-background-radius: 20");
+        changeInitialMarkup.setMaxWidth(INPUT_FIELD_WIDTH * 1.3);
+        changeInitialMarkup.setPromptText("Initial Markup Percentage");
+        markupContainer.getChildren().add(changeInitialMarkup);
 
+        Button saveInitialMarkup = createButton("Save initial Markup", event -> {
+            String text = changeInitialMarkup.getText();
+            if (!text.isEmpty() && text.matches("^\\d*\\.?\\d+$") && Float.valueOf(text) < 20) {
+                defaultMarkupPercentage = Double.parseDouble(text);
+                // Update dish prices based on the new initial markup
+                updateDishPrices();
+            } else {
+                // Show error message
+                showErrorAlert("Invalid Initial Markup Percentage");
+            }
+        });
+        saveInitialMarkup.setPrefWidth(INPUT_FIELD_WIDTH);
+        VBox.setMargin(saveInitialMarkup, new Insets(10, 0, 0, 350));
+        // Add styles and event handlers for the button
+        markupContainer.getChildren().add(saveInitialMarkup);
         saveAll.setStyle(IDLE_BUTTON_STYLE);
         saveAll.setPrefWidth(255);
         saveAll.setOnMouseEntered(e -> saveAll.setStyle(HOVERED_BUTTON_STYLE));
@@ -309,5 +328,43 @@ public class EditMenuScene  extends ManagerScene{
         layout.setBottom(backButton);
         layout.setCenter(mainPane);
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
+    private void updateDishPrices() {
+        for (Map.Entry<Integer, Label> label : originalDishPriceLabel.entrySet()) {
+            Integer key = label.getKey();
+            Label originalLabel = label.getValue();
+            Label dishLabel = dishPriceLabel.get(key);
+            String priceLabelText = originalLabel.getText().replaceAll("[^0-9.]", "");
+            double price;
+
+            // Calculate price with default markup
+            double defaultMarkupPrice = (Double.parseDouble(priceLabelText)) * defaultMarkupPercentage / oldDefaultMarkupPercentage;
+
+
+            // Calculate total price
+            price = defaultMarkupPrice;
+
+            dishLabel.setText("£" + String.format("%.2f", price));
+            MockData.menu.get(label.getKey())[2] = dishLabel.getText();
+        }
+    }
+    private void updateDishPricesAdditional() {
+        for (Map.Entry<Integer, Label> label : dishPriceLabel.entrySet()) {
+            String priceLabelText = label.getValue().getText().replaceAll("[^0-9.]", "");
+            double price;
+
+
+
+            // Calculate price with additional markup
+            double additionalMarkupPrice = (additionalMarkupPercentage * Double.parseDouble(priceLabelText) / 100);
+
+            // Calculate total price
+            price =  Double.parseDouble(priceLabelText) + additionalMarkupPrice;
+
+            label.getValue().setText("£" + String.format("%.2f", price));
+            MockData.menu.get(label.getKey())[2] = label.getValue().getText();
+        }
+    }
+    private void showErrorAlert(String invalidInput) {
     }
 }

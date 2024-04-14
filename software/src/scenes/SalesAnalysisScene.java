@@ -126,10 +126,10 @@ public class SalesAnalysisScene extends ManagerScene {
             DecimalFormat df = new DecimalFormat("#.##");
             String formattedAverageAmountSpent = df.format(averageAmountSpent);
             String formattedTotalRevenue = df.format(totalRevenue);
-            Label revenueLabel = new Label("Total Revenue: $" + formattedTotalRevenue);
+            Label revenueLabel = new Label("Total Revenue: £" + formattedTotalRevenue);
             revenueLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-            Label averageAmountSpentLabel = new Label("Average Amount Spent: $" + formattedAverageAmountSpent);
+            Label averageAmountSpentLabel = new Label("Average Amount Spent: £" + formattedAverageAmountSpent);
             averageAmountSpentLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
             Label mostValuableWaiterLabel = new Label("Most Valuable Waiter: " + mostValuableWaiter);
@@ -202,7 +202,7 @@ public class SalesAnalysisScene extends ManagerScene {
                 if (thirdChild instanceof ScrollPane) {
                     ScrollPane peakHoursScrollPane = (ScrollPane) thirdChild;
                     Node content = peakHoursScrollPane.getContent();
-                    Label peakHourss = new Label("Most Popular Tables:");
+                    Label peakHourss = new Label("Peak Hours:");
                     peakHourss.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
                     if (content instanceof VBox) {
                         VBox peakHoursBox = (VBox) content;
@@ -363,7 +363,7 @@ public class SalesAnalysisScene extends ManagerScene {
         popularTablesBox.getChildren().add(0, popularTablesHeading);
         peakHoursBox.getChildren().add(0, peakHoursHeading);
 
-        Label revenueLabel = new Label("Total Revenue: $" + formattedTotalRevenue);
+        Label revenueLabel = new Label("Total Revenue: £" + formattedTotalRevenue);
         revenueLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Label averageAmountSpentLabel = new Label("Average Amount Spent: $" + formattedAverageAmountSpent);

@@ -385,7 +385,7 @@ public class MockData {
     }
 
     public void generateBills() {
-        for (int i = 1; i < 101; i++) {
+        for (int i = 1; i < 1001; i++) {
             int randomNumber = random.nextInt(6) + 1;
             List<String> dishNames = getRandomDishNames(randomNumber);
             List<String> billItems = new ArrayList<>();
