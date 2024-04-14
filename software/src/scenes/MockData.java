@@ -22,12 +22,12 @@ import java.util.*;
  * Then you can call the public Maps / Lists directly
  *
  *
- * FOR TABLE DATA @ARTEM 
+ * FOR TABLE DATA @ARTEM
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.generateTablePredictions();
  *         mockData.printAllTablePredictions();
- * FOR BILL DATA @ARTEM 
+ * FOR BILL DATA @ARTEM
  * Main:
  *         MockData mockData = new MockData();
  *         mockData.addMenuData();
@@ -300,6 +300,18 @@ public class MockData {
         }
         return price;
     }
+
+    public void printMenu(){
+        for (Map.Entry<String, List<String>> entry : menu.entrySet()) {
+            String dish = entry.getKey();
+            List<String> details = entry.getValue();
+            System.out.println("Dish: " + dish);
+            System.out.println("Price: " + details.get(0));
+            System.out.println("Description: " + details.get(1));
+            //System.out.println("Allergens: " + details.get(2));
+            System.out.println();
+        }
+    }
 //==================================================================================
 
     // timeslot generation made with ChatGPT
@@ -430,7 +442,7 @@ public class MockData {
         }
     }
 
-//==================================================================================
+    //==================================================================================
     public List<List<String>> getBookingData(String date) {
         return bookings.get(date);
     }
@@ -489,7 +501,7 @@ public class MockData {
     }
 
 
-// ===============================================================================
+    // ===============================================================================
     public void generateTablePredictions(){
         LocalDate startDate = LocalDate.of(2023, Month.JANUARY, 1);
         LocalDate endDate = LocalDate.of(2023, Month.DECEMBER, 31);
@@ -580,12 +592,12 @@ public class MockData {
 
         return yearPredictionsForMonth;
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         MockData mockData = new MockData();
 
         mockData.addMenuData();
         mockData.createMenu();
         mockData.generateBills();
         mockData.printBills();
-    }
+    }*/
 }
