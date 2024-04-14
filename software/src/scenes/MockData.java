@@ -172,16 +172,16 @@ public class MockData {
     }
 
     public static void addWines() {
-        wines.put(1, new String[]{"Chardonnay", "15.0", "2019", "20"});
-        wines.put(2, new String[]{"Merlot", "12.0", "2018", "25"});
-        wines.put(3, new String[]{"Cabernet Sauvignon", "18.0", "2017", "15"});
-        wines.put(4, new String[]{"Pinot Noir", "20.0", "2016", "30"});
-        wines.put(5, new String[]{"Sauvignon Blanc", "14.0", "2020", "18"});
-        wines.put(6, new String[]{"Zinfandel", "16.0", "2015", "22"});
-        wines.put(7, new String[]{"Riesling", "17.0", "2014", "28"});
-        wines.put(8, new String[]{"Syrah", "22.0", "2013", "12"});
-        wines.put(9, new String[]{"Malbec", "19.0", "2012", "16"});
-        wines.put(10, new String[]{"Rosé", "13.0", "2021", "20"});
+        wines.put(1, new String[]{"Chardonnay", "15.0", "Description1", "2019", "20"});
+        wines.put(2, new String[]{"Merlot", "12.0", "Description2", "2018", "25"});
+        wines.put(3, new String[]{"Cabernet Sauvignon", "18.0", "Description3", "2017", "15"});
+        wines.put(4, new String[]{"Pinot Noir", "20.0", "Description4", "2016", "30"});
+        wines.put(5, new String[]{"Sauvignon Blanc", "14.0", "Description5", "2020", "18"});
+        wines.put(6, new String[]{"Zinfandel", "16.0", "Description6", "2015", "22"});
+        wines.put(7, new String[]{"Riesling", "17.0", "Description7", "2014", "28"});
+        wines.put(8, new String[]{"Syrah", "22.0", "Description8", "2013", "12"});
+        wines.put(9, new String[]{"Malbec", "19.0","Description9", "2012", "16"});
+        wines.put(10, new String[]{"Rosé", "13.0", "Description10", "2021", "20"});
     }
 
     public void addDishWithIngredients(String dishName, String... ingredients) {
