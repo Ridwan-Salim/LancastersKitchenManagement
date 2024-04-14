@@ -34,17 +34,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public class ClockInScene extends ManagerScene{
 
     TextField clockInField;
     TextField clockOutField;
+    Button checkShiftsButton;
+    Button checkMissedShiftsButton;
 
     ComboBox<String> employeeComboBox;
+    Label shiftsCoveredLabel;
+    Label missedShiftsLabel;
 
     public Scene createScene() {
         BorderPane layout = new BorderPane();
@@ -85,6 +87,15 @@ public class ClockInScene extends ManagerScene{
         clockOutField.setMaxWidth(INPUT_FIELD_WIDTH);
         clockOutField.setPromptText("Clock Out (HH:mm)");
 
+        shiftsCoveredLabel = new Label("");
+        shiftsCoveredLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: green;");
+
+        missedShiftsLabel = new Label("");
+        missedShiftsLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: red;");
+
+        HBox textBox = new HBox();
+        textBox.getChildren().addAll(shiftsCoveredLabel, missedShiftsLabel);
+
         Button clockButton = new Button("Clock In/Out");
         clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
         clockButton.setOnAction(event -> clockInOut());
@@ -92,19 +103,183 @@ public class ClockInScene extends ManagerScene{
         clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
         clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
         clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
+        checkShiftsButton = new Button("Check Shifts");
+        checkShiftsButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        checkShiftsButton.setOnAction(event -> checkShifts());
+        checkShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkShiftsButton.setOnMouseEntered(e -> checkShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseExited(e -> checkShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseClicked(e -> checkShiftsButton.setStyle(CLICKED_BUTTON_STYLE));
 
-        pane.getChildren().addAll(employeeComboBox, clockInField, clockOutField, clockButton);
+        checkMissedShiftsButton = new Button("Check Missed Shifts");
+        checkMissedShiftsButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        checkMissedShiftsButton.setOnAction(event -> checkMissedShifts());
+        checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkMissedShiftsButton.setOnMouseEntered(e -> checkMissedShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseExited(e -> checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseClicked(e -> checkMissedShiftsButton.setStyle(CLICKED_BUTTON_STYLE));
 
+        pane.getChildren().addAll(employeeComboBox, clockInField, clockOutField, clockButton, checkShiftsButton, checkMissedShiftsButton);
+
+        VBox infoPane = new VBox(10);
+        infoPane.getChildren().addAll(shiftsCoveredLabel, missedShiftsLabel);
+        infoPane.setAlignment(Pos.CENTER_LEFT);
+
+        VBox leftPart = new VBox();
+        leftPart.getChildren().addAll(greetingLabel, infoPane);
         Button backButton = createBackButtonManager();
-        layout.setLeft(greetingLabel);
+        layout.setLeft(leftPart);
+        leftPart.setSpacing(30);
         layout.setBottom(backButton);
         layout.setCenter(pane);
+        // Apply styles
+        pane.setStyle("-fx-background-color: #f0f0f0;");
+        shiftsCoveredLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2E8B57; -fx-background-color: #F0FFF0; -fx-padding: 10px;");
+        missedShiftsLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FF6347; -fx-background-color: #FFE4E1; -fx-padding: 10px;");
+        // Make labels scrollable
+        ScrollPane shiftsScrollPane = new ScrollPane();
+        shiftsScrollPane.setContent(shiftsCoveredLabel);
+        shiftsScrollPane.setFitToWidth(true);
+        shiftsScrollPane.setPrefHeight(200);
+
+        ScrollPane missedShiftsScrollPane = new ScrollPane();
+        missedShiftsScrollPane.setContent(missedShiftsLabel);
+        missedShiftsScrollPane.setFitToWidth(true);
+        missedShiftsScrollPane.setPrefHeight(200);
+
+        infoPane.getChildren().addAll(shiftsScrollPane, missedShiftsScrollPane);
+
+        // Apply styles to buttons
+        backButton.setStyle(IDLE_BUTTON_STYLE);
+        backButton.setOnMouseEntered(e -> backButton.setStyle(HOVERED_BUTTON_STYLE));
+        backButton.setOnMouseExited(e -> backButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        checkShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkShiftsButton.setOnMouseEntered(e -> checkShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseExited(e -> checkShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkMissedShiftsButton.setOnMouseEntered(e -> checkMissedShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseExited(e -> checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+
+        // Apply styles to ComboBox and text fields
+        employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+        employeeComboBox.setOnMouseEntered(e -> employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        employeeComboBox.setOnMouseExited(e -> employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
+
+        clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+        clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
 
+    private void checkShifts() {
+        String shiftsFilePath = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\shifts.csv";
+        Map<String, List<LocalDate>> shiftsCoveredByClockIns = getShiftsCoveredByClockIns(shiftsFilePath);
 
+        // Display the results
+        StringBuilder contentText = new StringBuilder();
+        shiftsCoveredByClockIns.forEach((employee, dates) -> {
+            contentText.append(employee).append(":\n");
+            Map<LocalDate, Integer> dateCountMap = new HashMap<>();
+            for (LocalDate date : dates) {
+                dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
+            }
+            dateCountMap.forEach((date, count) -> {
+                contentText.append("- Date: ").append(date);
+                if (count > 1) {
+                    contentText.append(", Shifts Covered: ").append(count);
+                }
+                contentText.append("\n");
+            });
+        });
+        shiftsCoveredLabel.setText("Shifts covered based on existing clock-ins:\n" + contentText.toString());
+    }
 
+    private Map<String, List<LocalDate>> getShiftsCoveredByClockIns(String shiftsFilePath) {
+        Map<String, List<LocalDate>> shiftsCoveredByClockIns = new HashMap<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(shiftsFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 4) {
+                    String employee = parts[0];
+                    LocalDate shiftDate = LocalDate.parse(parts[4]);
+                    String shiftStartTime = parts[2];
+                    String shiftEndTime = calculateShiftEndTime(shiftStartTime);
+                    // Check if the shift is covered by clock-ins
+                    if (isShiftCovered(employee, shiftDate, shiftStartTime, shiftEndTime)) {
+                        shiftsCoveredByClockIns.computeIfAbsent(employee, k -> new ArrayList<>()).add(shiftDate);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return shiftsCoveredByClockIns;
+    }
 
+    private void checkMissedShifts() {
+        String shiftsFilePath = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\shifts.csv";
+
+        // Read and parse shifts data
+        Map<String, Set<LocalDate>> missedShifts = new HashMap<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(shiftsFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 4) {
+                    String employee = parts[0];
+                    LocalDate shiftDate = LocalDate.parse(parts[4]);
+                    String shiftStartTime = parts[2];
+                    String shiftEndTime = calculateShiftEndTime(shiftStartTime);
+                    // Check if the shift is covered by clock-ins
+                    if (!isShiftCovered(employee, shiftDate, shiftStartTime, shiftEndTime)) {
+                        missedShifts.computeIfAbsent(employee, k -> new HashSet<>()).add(shiftDate);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Display the results
+        StringBuilder contentText = new StringBuilder();
+        missedShifts.forEach((employee, dates) -> {
+            contentText.append(employee).append(":\n");
+            dates.forEach(date -> contentText.append("- ").append(date).append("\n"));
+        });
+        missedShiftsLabel.setText("Employees who missed their shifts:\n" + contentText.toString());
+    }
+    private boolean isShiftCovered(String employee, LocalDate shiftDate, String shiftStartTime, String shiftEndTime) {
+        String clockInsFilePath = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\clock-ins.csv";
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(clockInsFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 4 && parts[0].equals(employee)) {
+                    LocalDate clockInDate = LocalDate.parse(parts[1]);
+                    LocalTime clockInTime = LocalTime.parse(parts[2], timeFormatter);
+                    LocalTime clockOutTime = LocalTime.parse(parts[3], timeFormatter);
+                    // Check if the clock-in date matches the shift date
+                    if (clockInDate.equals(shiftDate)) {
+                        LocalTime shiftStartTimeParsed = LocalTime.parse(shiftStartTime, timeFormatter);
+                        LocalTime shiftEndTimeParsed = LocalTime.parse(shiftEndTime, timeFormatter);
+                        // Check if the clock-in time falls within the shift time range
+                        if (clockOutTime.isAfter(shiftStartTimeParsed) && clockInTime.isBefore(shiftEndTimeParsed)) {
+                            return true; // Clock-in found within the shift time range
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
     private boolean isValidTimeFormat(String startTime, String endTime) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -154,6 +329,12 @@ public class ClockInScene extends ManagerScene{
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+    private String calculateShiftEndTime(String shiftStartTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime startTime = LocalTime.parse(shiftStartTime, formatter);
+        LocalTime endTime = startTime.plusMinutes(30); // Assuming each shift is 30 minutes
+        return endTime.format(formatter);
     }
     private void clockInOut() {
         String clockInTime = clockInField.getText();
