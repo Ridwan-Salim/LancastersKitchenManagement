@@ -39,7 +39,9 @@ import java.util.*;
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
-    public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, Price, Description, Allergens
+    public static Map<Integer, String[]> wines = new HashMap<>(); // WineID -> Wine Name Price Vintage
+    public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, DishPrice, Description, Allergens, Wines
+    public static int dishInfoCapacity = 5;
     public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
 
     public HashMap<String, List<Integer>> popularity = new HashMap<>(); // Every Dish -> popularity
@@ -169,6 +171,19 @@ public class MockData {
         ingredients.put("Basmati Rice", 2.0);
     }
 
+    public void addWines() {
+        wines.put(1, new String[]{"Chardonnay", "15.0", "2019"});
+        wines.put(2, new String[]{"Merlot", "12.0", "2018"});
+        wines.put(3, new String[]{"Cabernet Sauvignon", "18.0", "2017"});
+        wines.put(4, new String[]{"Pinot Noir", "20.0", "2016"});
+        wines.put(5, new String[]{"Sauvignon Blanc", "14.0", "2020"});
+        wines.put(6, new String[]{"Zinfandel", "16.0", "2015"});
+        wines.put(7, new String[]{"Riesling", "17.0", "2014"});
+        wines.put(8, new String[]{"Syrah", "22.0", "2013"});
+        wines.put(9, new String[]{"Malbec", "19.0", "2012"});
+        wines.put(10, new String[]{"Rosé", "13.0", "2021"});
+    }
+
     public void addDishWithIngredients(String dishName, String... ingredients) {
         List<String> validIngredients = new ArrayList<>();
         for (String ingredient : ingredients) {
@@ -275,8 +290,7 @@ public class MockData {
         int id = 1;
         for (Map.Entry<String, List<String>> entry : menuData.entrySet()) {
             double price = 0;
-            //List<String> dishItems = new ArrayList<>();
-            String[] dishItems = new String[4];
+            String[] dishItems = new String[dishInfoCapacity];
             for (String ingredient : entry.getValue()) {
                 if (ingredients.containsKey(ingredient)) {
                     price += ingredients.get(ingredient);
@@ -305,7 +319,7 @@ public class MockData {
         return price;
     }
 
-    public void printMenu(){
+    public static void printMenu(){
         for (Map.Entry<Integer, String[]> entry : menu.entrySet()) {
             Integer dishID = entry.getKey();
             String[] details = entry.getValue();
@@ -314,6 +328,7 @@ public class MockData {
             System.out.println("Price: " + details[1]);
             System.out.println("Description: " + details[2]);
             System.out.println("Allergens: " + details[3]);
+            System.out.println("Wines: " + details[4]);
             System.out.println();
         }
     }
@@ -385,7 +400,7 @@ public class MockData {
     }
 
     public void generateBills() {
-        for (int i = 1; i < 1001; i++) {
+        for (int i = 1; i < 101; i++) {
             int randomNumber = random.nextInt(6) + 1;
             List<String> dishNames = getRandomDishNames(randomNumber);
             List<String> billItems = new ArrayList<>();
