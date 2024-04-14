@@ -1,8 +1,10 @@
+import core.DBConnect;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import scenes.PersonalizableScene;
-import scenes.SceneManager;
+import scenes.Login;
+import scenes.Personalisable;
+import core.SceneManager;
 
 import java.sql.SQLException;
 import java.util.Objects;
@@ -38,11 +40,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         sceneManager.setPrimaryStage(primaryStage);
-        sceneManager.showScene("LOGIN");
+        sceneManager.showScene(Login.class.getSimpleName());
 
-        setAspectRatio(primaryStage);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
         primaryStage.setResizable(true);
         primaryStage.setTitle("Lancaster's Kitchen: Management Software");
 
@@ -54,12 +57,12 @@ public class Main extends Application {
 
     private void setAspectRatio(Stage stage) {
         stage.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = newValue.doubleValue() / PersonalizableScene.ASPECT_RATIO;
+            double newHeight = newValue.doubleValue() / Personalisable.ASPECT_RATIO;
             stage.setHeight(newHeight);
         });
 
         stage.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = newValue.doubleValue() * PersonalizableScene.ASPECT_RATIO;
+            double newWidth = newValue.doubleValue() * Personalisable.ASPECT_RATIO;
             stage.setWidth(newWidth);
         });
     }
