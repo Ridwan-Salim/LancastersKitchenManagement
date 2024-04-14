@@ -39,7 +39,7 @@ import java.util.*;
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
-    public static Map<String, Double> wines = new HashMap<>(); // Wine -> Price
+    public static Map<Integer, String[]> wines = new HashMap<>(); // WineID -> Wine Name Price Vintage
     public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, DishPrice, Description, Allergens, Wines
     public static int dishInfoCapacity = 5;
     public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
@@ -50,8 +50,6 @@ public class MockData {
     public Map<String, Map<Integer, List<List<String>>>> tablePrediction = new HashMap<>();
 
     public Map<Integer, List<List<String>>> bill = new HashMap<>();
-    public Map<String, Integer> lowStockItems = new HashMap<>();  // Low stock items
-    public Map<String, Integer> usualStockQuantities = new HashMap<>();
 
     public Random random = new Random();
     public int markup = random.nextInt(11) + 15; //random markup between 15-25
@@ -179,23 +177,18 @@ public class MockData {
                 // If it exists, update its quantity
                 double currentQuantity = ingredients.get(ingredient);
                 ingredients.put(ingredient, currentQuantity + 1.0); // Increment by 1.0, you can change this as needed
-            } else {
-                // If it doesn't exist, add it to the map with an initial quantity
-                ingredients.put(ingredient, 1.0); // Initial quantity as 1.0, you can change this as needed
-            }
-        }
-    }
-    public void addWines() {
-        wines.put("Chardonnay", 15.0);
-        wines.put("Merlot", 12.0);
-        wines.put("Cabernet Sauvignon", 18.0);
-        wines.put("Pinot Noir", 20.0);
-        wines.put("Sauvignon Blanc", 14.0);
-        wines.put("Zinfandel", 16.0);
-        wines.put("Riesling", 17.0);
-        wines.put("Syrah", 22.0);
-        wines.put("Malbec", 19.0);
-        wines.put("Rosé", 13.0);
+
+    public static void addWines() {
+        wines.put(1, new String[]{"Chardonnay", "15.0", "Description1", "2019", "20"});
+        wines.put(2, new String[]{"Merlot", "12.0", "Description2", "2018", "25"});
+        wines.put(3, new String[]{"Cabernet Sauvignon", "18.0", "Description3", "2017", "15"});
+        wines.put(4, new String[]{"Pinot Noir", "20.0", "Description4", "2016", "30"});
+        wines.put(5, new String[]{"Sauvignon Blanc", "14.0", "Description5", "2020", "18"});
+        wines.put(6, new String[]{"Zinfandel", "16.0", "Description6", "2015", "22"});
+        wines.put(7, new String[]{"Riesling", "17.0", "Description7", "2014", "28"});
+        wines.put(8, new String[]{"Syrah", "22.0", "Description8", "2013", "12"});
+        wines.put(9, new String[]{"Malbec", "19.0","Description9", "2012", "16"});
+        wines.put(10, new String[]{"Rosé", "13.0", "Description10", "2021", "20"});
     }
 
     public void addDishWithIngredients(String dishName, String... ingredients) {
@@ -211,105 +204,6 @@ public class MockData {
             }
         }
         menuData.put(dishName, validIngredients);
-    }
-    public void applyNormalAmount(int amount) {
-        for (Map.Entry<String, Integer> entry : usualStockQuantities.entrySet()) {
-            usualStockQuantities.put(entry.getKey(), amount);
-        }
-    }
-
-    // Method to apply normal amount to a specific ingredient
-    public void applyNormalAmount(String ingredient, int amount) {
-        if (usualStockQuantities.containsKey(ingredient)) {
-            usualStockQuantities.put(ingredient, amount);
-        } else {
-            System.out.println("Ingredient not found: " + ingredient);
-        }
-    }
-    public double getItemPrice(String itemName) {
-        if (ingredients.containsKey(itemName)) {
-            return ingredients.get(itemName);
-        } else {
-            System.out.println("Ingredient '" + itemName + "' not found.");
-            return -1; // or any other default value indicating not found
-        }
-    }
-
-    public void addLowStockItems() {
-        String[] ingredientsList = {
-                "Ground Beef", "Cheddar Cheese", "Lettuce", "Tomato", "Onion", "Pickles", "Ketchup", "Mustard", "Mayonnaise", "Hamburger Bun",
-                "Romaine Lettuce", "Caesar Dressing", "Parmesan Cheese", "Croutons",
-                "Spaghetti Pasta", "Bread Crumbs", "Parmesan Cheese", "Marinara Sauce",
-                "Elbow Macaroni", "Cheddar Cheese", "Butter", "Milk",
-                "Chicken Wings", "Buffalo Sauce", "Blue Cheese Dressing", "Celery", "Carrots",
-                "Pizza Dough", "Tomato Sauce", "Fresh Mozzarella Cheese", "Fresh Basil",
-                "Fettuccine Pasta", "Chicken Breast", "Heavy Cream", "Parmesan Cheese", "Garlic", "Butter",
-                "Lasagna Noodles", "Ground Beef", "Italian Sausage", "Ricotta Cheese", "Mozzarella Cheese", "Marinara Sauce",
-                "Baguette", "Tomato", "Basil", "Garlic", "Balsamic Vinegar", "Olive Oil",
-                "Arborio Rice", "Chicken Broth", "Parmesan Cheese", "Onion", "White Wine", "Butter",
-                "Sushi Rice", "Nori", "Assorted Fish (Salmon, Tuna, etc.)", "Cucumber", "Avocado", "Soy Sauce", "Wasabi", "Pickled Ginger",
-                "Rice Noodles", "Chicken Breast", "Shrimp", "Tofu", "Bean Sprouts", "Egg", "Peanuts", "Green Onion", "Pad Thai Sauce",
-                "Beef Steak", "Teriyaki Sauce", "Bell Pepper", "Onion", "Garlic", "Ginger", "Sesame Seeds",
-                "Chicken Thigh", "Curry Paste", "Coconut Milk", "Potato", "Carrot", "Onion", "Garlic", "Ginger",
-                "Beef Broth", "Rice Noodles", "Beef Slices", "Bean Sprouts", "Basil", "Lime", "Sriracha", "Hoisin Sauce",
-                "Corn Tortillas", "Ground Beef", "Lettuce", "Tomato", "Cheddar Cheese", "Salsa", "Sour Cream", "Guacamole",
-                "Flour Tortillas", "Rice", "Black Beans", "Ground Beef", "Lettuce", "Tomato", "Cheddar Cheese", "Salsa",
-                "Corn Tortillas", "Shredded Chicken", "Enchilada Sauce", "Cheddar Cheese", "Black Olives", "Green Onion",
-                "Tortilla Chips", "Ground Beef", "Cheddar Cheese", "Black Beans", "Jalapenos", "Salsa", "Sour Cream", "Guacamole",
-                "Flour Tortillas", "Chicken Breast", "Cheddar Cheese", "Onion", "Bell Pepper", "Salsa", "Sour Cream",
-                "Romaine Lettuce", "Tomato", "Cucumber", "Red Onion", "Kalamata Olives", "Feta Cheese", "Greek Dressing",
-                "Chickpeas", "Tahini", "Lemon Juice", "Garlic", "Olive Oil", "Pita Bread",
-                "Chickpeas", "Onion", "Garlic", "Parsley", "Cumin", "Coriander", "Tahini Sauce", "Pita Bread",
-                "Eggplant", "Ground Lamb", "Tomato Sauce", "Bechamel Sauce", "Parmesan Cheese",
-                "Bulgur Wheat", "Tomato", "Parsley", "Mint", "Lemon Juice", "Olive Oil",
-                "Flour", "Sugar", "Cocoa Powder", "Eggs", "Butter", "Milk", "Vanilla Extract",
-                "Pie Crust", "Apples", "Sugar", "Cinnamon", "Butter", "Lemon Juice",
-                "Ladyfingers", "Espresso", "Mascarpone Cheese", "Egg", "Sugar", "Cocoa Powder",
-                "Graham Cracker Crust", "Cream Cheese", "Sugar", "Eggs", "Sour Cream", "Vanilla Extract",
-                "Vanilla Ice Cream", "Chocolate Syrup", "Whipped Cream", "Maraschino Cherry", "Sprinkles",
-                "Flour", "Sugar", "Eggs", "Milk", "Butter", "Baking Powder", "Maple Syrup",
-                "Bread", "Eggs", "Milk", "Cinnamon", "Vanilla Extract", "Butter", "Maple Syrup",
-                "Eggs", "Cheese", "Onion", "Bell Pepper", "Mushrooms", "Tomato", "Spinach", "Ham",
-                "English Muffin", "Poached Egg", "Canadian Bacon", "Hollandaise Sauce",
-                "Flour Tortilla", "Eggs", "Bacon", "Sausage", "Potato", "Cheddar Cheese", "Salsa",
-                "Chicken Broth", "Chicken Breast", "Carrots", "Celery", "Egg Noodles", "Onion", "Garlic",
-                "Tomato", "Chicken Broth", "Onion", "Garlic", "Cream", "Basil",
-                "Vegetable Broth", "Tomato", "Carrots", "Celery", "Onion", "Zucchini", "Kidney Beans", "Pasta", "Spinach",
-                "Clam Juice", "Clams", "Potato", "Onion", "Celery", "Bacon", "Heavy Cream",
-                "Butternut Squash", "Onion", "Carrot", "Celery", "Chicken Broth", "Heavy Cream", "Nutmeg", "Cinnamon",
-                "Bacon", "Lettuce", "Tomato", "Mayonnaise", "Bread",
-                "Turkey", "Bacon", "Lettuce", "Tomato", "Mayonnaise", "Bread",
-                "Corned Beef", "Sauerkraut", "Swiss Cheese", "Thousand Island Dressing", "Rye Bread",
-                "Cheddar Cheese", "Bread", "Butter",
-                "Turkey", "Lettuce", "Tomato", "Mayonnaise", "Bread",
-                "Bell Pepper", "Broccoli", "Carrot", "Snap Peas", "Mushrooms", "Onion", "Garlic", "Ginger", "Soy Sauce",
-                "Quinoa", "Cucumber", "Tomato", "Bell Pepper", "Red Onion", "Feta Cheese", "Kalamata Olives", "Lemon Juice", "Olive Oil",
-                "Falafel", "Lettuce", "Tomato", "Cucumber", "Tahini Sauce", "Pita Bread",
-                "Potato", "Carrot", "Bell Pepper", "Broccoli", "Cauliflower", "Onion", "Garlic", "Ginger", "Curry Paste", "Coconut Milk",
-                "Tomato", "Fresh Mozzarella Cheese", "Basil", "Balsamic Glaze", "Olive Oil",
-                "Shrimp", "Garlic", "Lemon Juice", "White Wine", "Parsley", "Butter", "Pasta",
-                "Salmon Fillet", "Mixed Greens", "Tomato", "Cucumber", "Red Onion", "Balsamic Vinaigrette",
-                "White Fish Fillet", "Corn Tortillas", "Cabbage", "Lime", "Cilantro", "Avocado", "Salsa",
-                "Crab Meat", "Bread Crumbs", "Egg", "Mayonnaise", "Dijon Mustard", "Worcestershire Sauce", "Old Bay Seasoning",
-                "Lobster", "Heavy Cream", "Tomato Paste", "Sherry Wine", "Onion", "Garlic", "Thyme",
-                "Quinoa", "Chickpeas", "Sweet Potato", "Broccoli", "Avocado", "Carrot", "Hummus", "Tahini Dressing",
-                "Black Beans", "Kidney Beans", "Tomato", "Bell Pepper", "Onion", "Garlic", "Chili Powder", "Cumin", "Vegetable Broth",
-                "Tofu", "Broccoli", "Bell Pepper", "Snap Peas", "Carrot", "Onion", "Garlic", "Ginger", "Soy Sauce",
-                "Rice Noodles", "Tofu", "Bean Sprouts", "Green Onion", "Peanuts", "Garlic", "Soy Sauce", "Tamarind Paste",
-                "Pizza Dough", "Tomato Sauce", "Vegan Cheese", "Assorted Vegetables (Mushrooms, Bell Pepper, Onion, etc.)", "Basil"
-        };
-        addIngredientsFromList(ingredientsList);
-        Random random = new Random();
-
-        // Fill low stock items with random quantities
-        for (String ingredient : ingredientsList) {
-            int lowStockQuantity = random.nextInt(2) + 1; // Random quantity between 1 and 5
-            lowStockItems.put(ingredient, lowStockQuantity);
-
-            // Set usual stock quantities to a higher value
-            int usualQuantity = lowStockQuantity + random.nextInt(30) + 5; // Random quantity between 5 and 10 more than low stock
-            usualStockQuantities.put(ingredient, usualQuantity);
-        }
     }
 
     // Generated example dishes using ChatGPT
@@ -513,7 +407,7 @@ public class MockData {
     }
 
     public void generateBills() {
-        for (int i = 1; i < 1001; i++) {
+        for (int i = 1; i < 101; i++) {
             int randomNumber = random.nextInt(6) + 1;
             List<String> dishNames = getRandomDishNames(randomNumber);
             List<String> billItems = new ArrayList<>();

@@ -1,5 +1,7 @@
 package scenes;
 
+import core.DBConnect;
+import core.SceneManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class Login extends PersonalizableScene {
+public class Login extends Personalisable {
 
     public Scene createScene() {
         Label titleLabel = new Label("Enter your password");
@@ -36,7 +38,11 @@ public class Login extends PersonalizableScene {
 
         loginButton.setOnAction(event -> {
             String password = passwordField.getText();
-            SceneManager.getInstance().showScene(password);
+            String namerole = DBConnect.login(password);
+            String[] split = namerole.split(":");
+            SceneManager.getInstance().setName(split[0]);
+            SceneManager.getInstance().setRole(split[1]);
+            SceneManager.getInstance().showScene(split[1]);
             System.out.println("Login button clicked with password: " + password);
         });
 
