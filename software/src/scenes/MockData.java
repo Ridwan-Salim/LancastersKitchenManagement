@@ -37,8 +37,8 @@ import java.util.*;
  * */
 
 public class MockData {
-    public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
-    public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
+    public static Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
+    public static Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
     public static Map<Integer, String[]> wines = new HashMap<>(); // WineID -> Wine Name Price Vintage Qty
     public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, DishPrice, Description, Allergens, Wines
     public static int dishInfoCapacity = 5;
@@ -57,120 +57,120 @@ public class MockData {
     public int markup = random.nextInt(11) + 15; //random markup between 15-25
 
     public void addIngredients() {
-        ingredients.put("Cheddar Cheese", 4.0);
-        ingredients.put("Carrots", 1.0);
-        ingredients.put("Potato", 1.0);
-        ingredients.put("Onion", 1.0);
-        ingredients.put("Garlic", 0.5);
-        ingredients.put("Ginger", 2.0);
-        ingredients.put("Tomato Puree", 2.0);
-        ingredients.put("Cinnamon Powder", 2.0);
-        ingredients.put("Salad Dressing", 2.0);
-        ingredients.put("Chicken Thigh", 3.0);
-        ingredients.put("Mushrooms", 2.0);
-        ingredients.put("Penne Pasta", 1.5);
-        ingredients.put("Salmon Fillets", 8.0);
-        ingredients.put("Lemon Juice", 1.0);
-        ingredients.put("Olive Oil", 5.0);
-        ingredients.put("Butter", 2.0);
-        ingredients.put("Salt", 0.5);
-        ingredients.put("Black Pepper", 1.0);
-        ingredients.put("Garlic Powder", 1.0);
-        ingredients.put("Onion Powder", 1.0);
-        ingredients.put("Paprika", 1.0);
-        ingredients.put("Cumin", 2.0);
-        ingredients.put("Coriander", 2.0);
-        ingredients.put("Oregano", 1.0);
-        ingredients.put("Thyme", 1.0);
-        ingredients.put("Basil", 1.0);
-        ingredients.put("Rosemary", 1.0);
-        ingredients.put("Bay Leaves", 1.0);
-        ingredients.put("Chili Powder", 1.0);
-        ingredients.put("Cayenne Pepper", 1.0);
-        ingredients.put("Crushed Red Pepper", 1.0);
-        ingredients.put("Dried Parsley", 1.0);
-        ingredients.put("Dried Basil", 1.0);
-        ingredients.put("Dried Oregano", 1.0);
-        ingredients.put("Dried Thyme", 1.0);
-        ingredients.put("Dried Rosemary", 1.0);
-        ingredients.put("Dried Bay Leaves", 1.0);
-        ingredients.put("Ground Ginger", 2.0);
-        ingredients.put("Ground Cinnamon", 2.0);
-        ingredients.put("Ground Nutmeg", 2.0);
-        ingredients.put("Ground Cloves", 2.0);
-        ingredients.put("Ground Allspice", 2.0);
-        ingredients.put("Ground Cardamom", 2.0);
-        ingredients.put("Ground Turmeric", 2.0);
-        ingredients.put("White Vinegar", 1.0);
-        ingredients.put("Red Wine Vinegar", 2.0);
-        ingredients.put("Balsamic Vinegar", 3.0);
-        ingredients.put("Apple Cider Vinegar", 2.0);
-        ingredients.put("Rice Vinegar", 1.5);
-        ingredients.put("Soy Sauce", 2.0);
-        ingredients.put("Worcestershire Sauce", 2.0);
-        ingredients.put("Hot Sauce", 2.0);
-        ingredients.put("Mustard", 1.5);
-        ingredients.put("Ketchup", 1.5);
-        ingredients.put("Mayonnaise", 2.0);
-        ingredients.put("BBQ Sauce", 2.0);
-        ingredients.put("Honey", 3.0);
-        ingredients.put("Maple Syrup", 3.0);
-        ingredients.put("Brown Sugar", 1.5);
-        ingredients.put("White Sugar", 1.5);
-        ingredients.put("Powdered Sugar", 2.0);
-        ingredients.put("Molasses", 2.0);
-        ingredients.put("Agave Syrup", 3.0);
-        ingredients.put("Coconut Milk", 2.0);
-        ingredients.put("Almond Milk", 2.0);
-        ingredients.put("Oat Milk", 2.0);
-        ingredients.put("Chicken Stock", 2.0);
-        ingredients.put("Beef Stock", 2.0);
-        ingredients.put("Vegetable Stock", 1.5);
-        ingredients.put("Tomato Sauce", 1.5);
-        ingredients.put("Tomato Paste", 1.5);
-        ingredients.put("Crushed Tomatoes", 1.5);
-        ingredients.put("Diced Tomatoes", 1.5);
-        ingredients.put("Tomato Soup", 1.5);
-        ingredients.put("Cream of Mushroom Soup", 2.0);
-        ingredients.put("Cream of Chicken Soup", 2.0);
-        ingredients.put("Cream of Celery Soup", 2.0);
-        ingredients.put("Chicken Broth", 2.0);
-        ingredients.put("Beef Broth", 2.0);
-        ingredients.put("Vegetable Broth", 1.5);
-        ingredients.put("Dijon Mustard", 2.0);
-        ingredients.put("Whole Grain Mustard", 2.0);
-        ingredients.put("Yellow Mustard", 1.5);
-        ingredients.put("Hoisin Sauce", 2.0);
-        ingredients.put("Fish Sauce", 2.0);
-        ingredients.put("Miso Paste", 3.0);
-        ingredients.put("Peanut Butter", 3.0);
-        ingredients.put("Tahini", 3.0);
-        ingredients.put("Sesame Oil", 3.0);
-        ingredients.put("Coconut Oil", 3.0);
-        ingredients.put("Fish Stock", 2.0);
-        ingredients.put("Clam Juice", 2.0);
-        ingredients.put("Capers", 3.0);
-        ingredients.put("Anchovies", 3.0);
-        ingredients.put("Sardines", 3.0);
-        ingredients.put("Olives", 2.0);
-        ingredients.put("Sun-Dried Tomatoes", 3.0);
-        ingredients.put("Pickles", 2.0);
-        ingredients.put("Sauerkraut", 2.0);
-        ingredients.put("Roasted Red Peppers", 3.0);
-        ingredients.put("Artichoke Hearts", 3.0);
-        ingredients.put("Hearts of Palm", 3.0);
-        ingredients.put("Cannellini Beans", 1.5);
-        ingredients.put("Black Beans", 1.5);
-        ingredients.put("Kidney Beans", 1.5);
-        ingredients.put("Chickpeas", 1.5);
-        ingredients.put("Lentils", 1.5);
-        ingredients.put("Quinoa", 3.0);
-        ingredients.put("Couscous", 2.0);
-        ingredients.put("Bulgur", 2.0);
-        ingredients.put("Farro", 2.0);
-        ingredients.put("Arborio Rice", 2.0);
-        ingredients.put("Jasmine Rice", 2.0);
-        ingredients.put("Basmati Rice", 2.0);
+        ingredients.put("Cheddar Cheese", 400.0);
+        ingredients.put("Carrots", 100.0);
+        ingredients.put("Potato", 100.0);
+        ingredients.put("Onion", 100.0);
+        ingredients.put("Garlic", 50.0);
+        ingredients.put("Ginger", 200.0);
+        ingredients.put("Tomato Puree", 200.0);
+        ingredients.put("Cinnamon Powder", 200.0);
+        ingredients.put("Salad Dressing", 200.0);
+        ingredients.put("Chicken Thigh", 300.0);
+        ingredients.put("Mushrooms", 200.0);
+        ingredients.put("Penne Pasta", 150.0);
+        ingredients.put("Salmon Fillets", 80.0);
+        ingredients.put("Lemon Juice", 10.0);
+        ingredients.put("Olive Oil", 50.0);
+        ingredients.put("Butter", 20.0);
+        ingredients.put("Salt", 50.0);
+        ingredients.put("Black Pepper", 100.0);
+        ingredients.put("Garlic Powder", 100.0);
+        ingredients.put("Onion Powder", 100.0);
+        ingredients.put("Paprika", 100.0);
+        ingredients.put("Cumin", 200.0);
+        ingredients.put("Coriander", 200.0);
+        ingredients.put("Oregano", 100.0);
+        ingredients.put("Thyme", 100.0);
+        ingredients.put("Basil", 100.0);
+        ingredients.put("Rosemary", 100.0);
+        ingredients.put("Bay Leaves", 100.0);
+        ingredients.put("Chili Powder", 100.0);
+        ingredients.put("Cayenne Pepper", 100.0);
+        ingredients.put("Crushed Red Pepper", 100.0);
+        ingredients.put("Dried Parsley", 100.0);
+        ingredients.put("Dried Basil", 100.0);
+        ingredients.put("Dried Oregano", 100.0);
+        ingredients.put("Dried Thyme", 100.0);
+        ingredients.put("Dried Rosemary", 100.0);
+        ingredients.put("Dried Bay Leaves", 100.0);
+        ingredients.put("Ground Ginger", 200.0);
+        ingredients.put("Ground Cinnamon", 200.0);
+        ingredients.put("Ground Nutmeg", 200.0);
+        ingredients.put("Ground Cloves", 200.0);
+        ingredients.put("Ground Allspice", 200.0);
+        ingredients.put("Ground Cardamom", 200.0);
+        ingredients.put("Ground Turmeric", 200.0);
+        ingredients.put("White Vinegar", 100.0);
+        ingredients.put("Red Wine Vinegar", 200.0);
+        ingredients.put("Balsamic Vinegar", 300.0);
+        ingredients.put("Apple Cider Vinegar", 200.0);
+        ingredients.put("Rice Vinegar", 150.0);
+        ingredients.put("Soy Sauce", 200.0);
+        ingredients.put("Worcestershire Sauce", 200.0);
+        ingredients.put("Hot Sauce", 200.0);
+        ingredients.put("Mustard", 150.0);
+        ingredients.put("Ketchup", 150.0);
+        ingredients.put("Mayonnaise", 200.0);
+        ingredients.put("BBQ Sauce", 200.0);
+        ingredients.put("Honey", 300.0);
+        ingredients.put("Maple Syrup", 300.0);
+        ingredients.put("Brown Sugar", 150.0);
+        ingredients.put("White Sugar", 150.0);
+        ingredients.put("Powdered Sugar", 200.0);
+        ingredients.put("Molasses", 200.0);
+        ingredients.put("Agave Syrup", 300.0);
+        ingredients.put("Coconut Milk", 200.0);
+        ingredients.put("Almond Milk", 200.0);
+        ingredients.put("Oat Milk", 200.0);
+        ingredients.put("Chicken Stock", 200.0);
+        ingredients.put("Beef Stock", 200.0);
+        ingredients.put("Vegetable Stock", 150.0);
+        ingredients.put("Tomato Sauce", 150.0);
+        ingredients.put("Tomato Paste", 150.0);
+        ingredients.put("Crushed Tomatoes", 150.0);
+        ingredients.put("Diced Tomatoes", 150.0);
+        ingredients.put("Tomato Soup", 150.0);
+        ingredients.put("Cream of Mushroom Soup", 200.0);
+        ingredients.put("Cream of Chicken Soup", 200.0);
+        ingredients.put("Cream of Celery Soup", 200.0);
+        ingredients.put("Chicken Broth", 200.0);
+        ingredients.put("Beef Broth", 200.0);
+        ingredients.put("Vegetable Broth", 150.0);
+        ingredients.put("Dijon Mustard", 200.0);
+        ingredients.put("Whole Grain Mustard", 200.0);
+        ingredients.put("Yellow Mustard", 150.0);
+        ingredients.put("Hoisin Sauce", 200.0);
+        ingredients.put("Fish Sauce", 200.0);
+        ingredients.put("Miso Paste", 300.0);
+        ingredients.put("Peanut Butter", 300.0);
+        ingredients.put("Tahini", 300.0);
+        ingredients.put("Sesame Oil", 300.0);
+        ingredients.put("Coconut Oil", 300.0);
+        ingredients.put("Fish Stock", 200.0);
+        ingredients.put("Clam Juice", 200.0);
+        ingredients.put("Capers", 300.0);
+        ingredients.put("Anchovies", 300.0);
+        ingredients.put("Sardines", 300.0);
+        ingredients.put("Olives", 200.0);
+        ingredients.put("Sun-Dried Tomatoes", 300.0);
+        ingredients.put("Pickles", 200.0);
+        ingredients.put("Sauerkraut", 200.0);
+        ingredients.put("Roasted Red Peppers", 300.0);
+        ingredients.put("Artichoke Hearts", 300.0);
+        ingredients.put("Hearts of Palm", 300.0);
+        ingredients.put("Cannellini Beans", 150.0);
+        ingredients.put("Black Beans", 150.0);
+        ingredients.put("Kidney Beans", 150.0);
+        ingredients.put("Chickpeas", 150.0);
+        ingredients.put("Lentils", 150.0);
+        ingredients.put("Quinoa", 300.0);
+        ingredients.put("Couscous", 200.0);
+        ingredients.put("Bulgur", 200.0);
+        ingredients.put("Farro", 200.0);
+        ingredients.put("Arborio Rice", 200.0);
+        ingredients.put("Jasmine Rice", 200.0);
+        ingredients.put("Basmati Rice", 200.0);
     }
     public void addIngredientsFromList(String[] ingredientList) {
         for (String ingredient : ingredientList) {
@@ -181,7 +181,7 @@ public class MockData {
                 ingredients.put(ingredient, currentQuantity + 1.0); // Increment by 1.0, you can change this as needed
             } else {
                 // If it doesn't exist, add it to the map with an initial quantity
-                ingredients.put(ingredient, 1.0); // Initial quantity as 1.0, you can change this as needed
+                ingredients.put(ingredient, 100.0); // Initial quantity as 1.0, you can change this as needed
             }
         }
     }
@@ -212,15 +212,15 @@ public class MockData {
             System.out.println("--------------------");
         }
     }
-    public void addDishWithIngredients(String dishName, String... ingredients) {
+    public static void addDishWithIngredients(String dishName, String... dishIngredients) {
         List<String> validIngredients = new ArrayList<>();
-        for (String ingredient : ingredients) {
-            if (this.ingredients.containsKey(ingredient)) {
+        for (String ingredient : dishIngredients) {
+            if (ingredients.containsKey(ingredient)) {
                 validIngredients.add(ingredient);
             } else {
                 Random random = new Random();
                 double randomValue = 1 + (1.5) * random.nextDouble();
-                this.ingredients.put(ingredient, randomValue);
+                ingredients.put(ingredient, randomValue*100);
                 validIngredients.add(ingredient);
             }
         }
@@ -330,7 +330,7 @@ public class MockData {
     }
 
     // Generated example dishes using ChatGPT
-    public void addMenuData() {
+    public static void addMenuData() {
         // American Dishes
         addDishWithIngredients("Cheeseburger", "Ground Beef", "Cheddar Cheese", "Lettuce", "Tomato", "Onion", "Pickles", "Ketchup", "Mustard", "Mayonnaise", "Hamburger Bun");
         addDishWithIngredients("Caesar Salad", "Romaine Lettuce", "Caesar Dressing", "Parmesan Cheese", "Croutons");
@@ -416,7 +416,7 @@ public class MockData {
         addDishWithIngredients("Vegan Pizza", "Pizza Dough", "Tomato Sauce", "Vegan Cheese", "Assorted Vegetables (Mushrooms, Bell Pepper, Onion, etc.)", "Basil");
     }
 
-    public void createMenu() {
+    public static void createMenu() {
         int id = 1;
         for (Map.Entry<String, List<String>> entry : menuData.entrySet()) {
             double price = 0;
