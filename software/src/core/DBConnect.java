@@ -1,6 +1,9 @@
 package core;
 
+import scenes.MockData;
+
 import java.sql.*;
+import java.util.Map;
 
 public class DBConnect {
 
@@ -19,8 +22,8 @@ public class DBConnect {
     }
 
 
-    public void uploadMockMenu() throws SQLException {
-        Statement stmt = this.con.createStatement();
+    public static void uploadMockMenu() throws SQLException {
+        Statement stmt = con.createStatement();
         //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
         disableForeignKeyChecks(con);
         String dropTableQuery = "DROP TABLE IF EXISTS Dish";
@@ -51,7 +54,7 @@ public class DBConnect {
             String allergens = data[3];
 
             String sql = "INSERT INTO Dish (ID, Name, Type, Collation, Allergens) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = this.con.prepareStatement(sql)) {
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setInt(1, id);
                 pstmt.setString(2, name);
                 pstmt.setString(3, "int(11)");
@@ -119,5 +122,4 @@ public class DBConnect {
             return null;
         }
     }
-
 }
