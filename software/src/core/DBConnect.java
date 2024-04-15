@@ -149,6 +149,7 @@ public class DBConnect {
         }
     }
 
+<<<<<<< Updated upstream
     public static void uploadMockMenu(Map<Integer, String[]> menu) throws SQLException {
         Statement stmt = con.createStatement();
         //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
@@ -198,3 +199,21 @@ public class DBConnect {
     }
 
 }
+=======
+//    public static boolean insertCSV(String... values){
+//
+//        try{
+//            String query = "INSERT INTO Shift (StaffName,CreatedDate,ShiftDate,DayOfWeek) VALUES (?,?,?,?)";
+//            return true;
+//        }
+//        catch (SQLException e){
+//            e.printStackTrace();
+//            return false;
+//        }
+//
+//        // try run main class in out dir
+//
+//    }
+
+}
+>>>>>>> Stashed changes
