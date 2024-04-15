@@ -237,7 +237,30 @@ public class GeneralStaff extends Personalisable {
             employeeBox.getChildren().addAll(nameLabel, shiftsBox, totalHoursLabel);
             layout.getChildren().add(employeeBox);
         }
+        List<String> leaveRequests = readLeaveRequests(employeeName);
+        VBox leaveBox = new VBox(5);
+        leaveBox.setStyle("-fx-border-color: #ccc; -fx-border-width: 1px; -fx-padding: 5px;");
 
+        Label leaveLabel = new Label("Leave Requests");
+        leaveLabel.setStyle("-fx-font-weight: bold;");
+        leaveLabel.setFont(Font.font("Arial", 14));
+
+        VBox leaveRequestsBox = new VBox(3);
+        leaveRequestsBox.setStyle("-fx-padding: 5px;");
+        for (String request : leaveRequests) {
+            String[] parts = request.split(";");
+            String employee = parts[0];
+            String fromDate = parts[2];
+            String toDate = parts[3];
+            String reason = parts[4];
+            String wasApproved = parts[5];
+
+            Label requestLabel = new Label("Employee: " + employee + ", From: " + fromDate + ", To: " + toDate + ", Reason: " + reason + ", Was approved: " + wasApproved);
+            requestLabel.setFont(Font.font("Arial", 12));
+            leaveRequestsBox.getChildren().add(requestLabel);
+        }
+        leaveBox.getChildren().addAll(leaveLabel, leaveRequestsBox);
+        layout.getChildren().add(leaveBox);
         ScrollPane scrollPane = new ScrollPane(layout);
         scrollPane.setFitToWidth(true);
 
@@ -246,12 +269,10 @@ public class GeneralStaff extends Personalisable {
         mainLayout.getChildren().addAll(scrollPane, closeButton);
         mainLayout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(mainLayout, 320, 640);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        Scene scene = new Scene(mainLayout, 340, 640);
         shiftsStage.setScene(scene);
         shiftsStage.show();
     }
-
     private Map<String, Double> calculateTotalHoursPerEmployee(Map<String, List<String>> shiftsData) {
         Map<String, Double> totalHoursPerEmployee = new HashMap<>();
         for (Map.Entry<String, List<String>> entry : shiftsData.entrySet()) {
@@ -259,6 +280,22 @@ public class GeneralStaff extends Personalisable {
             totalHoursPerEmployee.put(entry.getKey(), totalHours);
         }
         return totalHoursPerEmployee;
+    }
+    private List<String> readLeaveRequests(String employeeName) {
+        List<String> leaveRequests = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\approved_leaves.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                String employee = parts[0];
+                if (employee.equals(employeeName)) {
+                    leaveRequests.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return leaveRequests;
     }
 
     private Map<String, List<String>> readShiftsData(String employeeName) {

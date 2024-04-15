@@ -319,7 +319,7 @@ public class WineCellar extends Sommelier{
 
                         newWine.getChildren().removeAll(nameTextField, priceTextField, descriptionTextArea, vintageTextField,
                                 qtyTextField, saveWine);
-                        //generateWineUI(MockData.wines.size()+1, details, menuItemsContainer);
+                        generateWineUI(MockData.wines.size()+1, details, menuItemsContainer);
                         MockData.printWines();
                         alert.close();
                     }

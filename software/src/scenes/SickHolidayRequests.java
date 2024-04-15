@@ -35,9 +35,9 @@ public class SickHolidayRequests extends Manager {
     private VBox leaveRequestsContainer;
 
     public Scene createScene() {
-        readLeaveRequestsFromFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
+        readLeaveRequestsFromFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
         Label greetingLabel = new Label("Let`s observe sick/holiday requests, " + employeeName + ".");
-        greetingLabel.setMinWidth(350);
+        greetingLabel.setMinWidth(600);
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
@@ -85,8 +85,9 @@ public class SickHolidayRequests extends Manager {
     }
 
     public Scene createScene(boolean toggleManager) {
-        readLeaveRequestsFromFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
+        readLeaveRequestsFromFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
         Label greetingLabel = new Label("Let`s observe sick/holiday requests, " + employeeName + ".");
+        greetingLabel.setMinWidth(600);
         greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
         BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
@@ -102,7 +103,7 @@ public class SickHolidayRequests extends Manager {
         // Only read leave requests from CSV file once
         if (leaveRequests == null) {
             leaveRequests = new ArrayList<>();
-            readLeaveRequestsFromFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
+            readLeaveRequestsFromFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
         }
 
         leaveRequestsContainer = new VBox(20); // Increased spacing
@@ -218,7 +219,7 @@ public class SickHolidayRequests extends Manager {
         approveButton.setOnAction(event -> {
             request.setApproved(true);
             removeLeaveRequestNode(request); // Remove the node from the container
-            saveLeaveRequestsToFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv", leaveRequests);
+            saveLeaveRequestsToFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv", leaveRequests);
             updateUI(); // Update the UI
         });
         String HOVERED_BUTTON_STYLE1 = "-fx-background-color:  #34962d; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 12px; -fx-padding: 3 50;";
@@ -234,7 +235,7 @@ public class SickHolidayRequests extends Manager {
         disapproveButton.setOnAction(event -> {
             request.setApproved(false);
             removeLeaveRequestNode(request); // Remove the node from the container
-            saveLeaveRequestsToFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv", leaveRequests);
+            saveLeaveRequestsToFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv", leaveRequests);
             updateUI(); // Update the UI
         });
 
@@ -256,7 +257,7 @@ public class SickHolidayRequests extends Manager {
     }
 
     private void updateUI() {
-        readLeaveRequestsFromFile("D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
+        readLeaveRequestsFromFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\leaves.csv");
         leaveRequestsContainer.getChildren().clear(); // Clear the existing UI elements
         leaveRequestsContainer.getChildren().add(createColumnNames()); // Add column names
 
@@ -280,7 +281,7 @@ public class SickHolidayRequests extends Manager {
     }
 
     private void saveLeaveRequestsToFile(String filename, List<LeaveRequest> requests) {
-        String approvedLeavesFile = "D:\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\approved_leaves.csv";
+        String approvedLeavesFile = "D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\utils\\approved_leaves.csv";
         try (FileWriter writer = new FileWriter(approvedLeavesFile, true)) { // Use append mode
             for (LeaveRequest request : requests) {
                 writer.write(request.toCSVFormat() + "\n");
