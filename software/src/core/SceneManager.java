@@ -1,6 +1,6 @@
 package core;
 
-import classes.Wine;
+
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import scenes.*;

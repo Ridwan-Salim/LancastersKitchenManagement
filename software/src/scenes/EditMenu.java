@@ -1,5 +1,6 @@
 package scenes;
 
+import core.DBConnect;
 import core.SceneManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -14,7 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
+import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class EditMenu extends Manager {

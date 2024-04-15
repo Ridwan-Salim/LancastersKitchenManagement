@@ -1,5 +1,6 @@
 package scenes;
 
+import core.DBConnect;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,7 +11,9 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 
+import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WineCellar extends Sommelier{
 
@@ -183,7 +186,7 @@ public class WineCellar extends Sommelier{
         menuItemsContainer.setMinWidth(1050);
         menuItemsContainer.setMaxWidth(1050);
 
-        VBox.setMargin(scrollPane, new Insets(50, 0, 0, -500));
+        VBox.setMargin(scrollPane, new Insets(50, 0, 0, -600));
         scrollPane.setContent(menuItemsContainer);
         scrollPane.setMinSize(1050, 375);
         scrollPane.setMaxSize(1050, 375);
@@ -355,7 +358,7 @@ public class WineCellar extends Sommelier{
         menuItemsContainer.setMinWidth(1050);
         menuItemsContainer.setMaxWidth(1050);
 
-        VBox.setMargin(scrollPane, new Insets(50, 0, 0, -500));
+        VBox.setMargin(scrollPane, new Insets(50, 0, 0, -600));
         scrollPane.setContent(menuItemsContainer);
         scrollPane.setMinSize(1050, 375);
         scrollPane.setMaxSize(1050, 375);
