@@ -1,6 +1,9 @@
 package core;
+
 import scenes.MockData;
+
 import java.sql.*;
+import java.util.Map;
 
 public class DBConnect {
 
@@ -19,52 +22,52 @@ public class DBConnect {
     }
 
 
-    public void uploadMockMenu() throws SQLException {
-//        Statement stmt = this.con.createStatement();
-//        //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
-//        disableForeignKeyChecks(con);
-//        String dropTableQuery = "DROP TABLE IF EXISTS Dish";
-//        stmt.executeUpdate(dropTableQuery);
-//        System.out.println("Tables dropped successfully.");
-//        MockData.addMenuData();
-//        MockData.createMenu();
-//        MockData.addWines();
-//
-//        // Recreate the Dish table
-//        String createTableQuery = "CREATE TABLE IF NOT EXISTS Dish (" +
-//                "ID INT NOT NULL PRIMARY KEY," +
-//                "Name VARCHAR(255) NOT NULL," +
-//                "Type VARCHAR(255)," +
-//                "Collation VARCHAR(255)," +
-//                "Allergens VARCHAR(255)" +
-//                ")";
-//        stmt.executeUpdate(createTableQuery);
-//        enableForeignKeyChecks(con);
-//        System.out.println("Table created successfully.");
-//
-//        for (Map.Entry<Integer, String[]> entry : MockData.menu.entrySet()) {
-//            Integer id = entry.getKey();
-//            String[] data = entry.getValue();
-//            String name = data[0];
-//            String price = data[1];
-//            String description = data[2];
-//            String allergens = data[3];
-//
-//            String sql = "INSERT INTO Dish (ID, Name, Type, Collation, Allergens) VALUES (?, ?, ?, ?, ?)";
-//            try (PreparedStatement pstmt = this.con.prepareStatement(sql)) {
-//                pstmt.setInt(1, id);
-//                pstmt.setString(2, name);
-//                pstmt.setString(3, "int(11)");
-//                pstmt.setString(4, "UTF8_GENERAL_CI");
-//                pstmt.setString(5, allergens);
-//
-//                // Execute the INSERT statement
-//                System.out.println("Data uploaded successfully!");
-//                pstmt.executeUpdate();
-//            }   catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    public static void uploadMockMenu() throws SQLException {
+        Statement stmt = con.createStatement();
+        //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
+        disableForeignKeyChecks(con);
+        String dropTableQuery = "DROP TABLE IF EXISTS Dish";
+        stmt.executeUpdate(dropTableQuery);
+        System.out.println("Tables dropped successfully.");
+        MockData.addMenuData();
+        MockData.createMenu();
+        MockData.addWines();
+
+        // Recreate the Dish table
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS Dish (" +
+                "ID INT NOT NULL PRIMARY KEY," +
+                "Name VARCHAR(255) NOT NULL," +
+                "Type VARCHAR(255)," +
+                "Collation VARCHAR(255)," +
+                "Allergens VARCHAR(255)" +
+                ")";
+        stmt.executeUpdate(createTableQuery);
+        enableForeignKeyChecks(con);
+        System.out.println("Table created successfully.");
+
+        for (Map.Entry<Integer, String[]> entry : MockData.menu.entrySet()) {
+            Integer id = entry.getKey();
+            String[] data = entry.getValue();
+            String name = data[0];
+            String price = data[1];
+            String description = data[2];
+            String allergens = data[3];
+
+            String sql = "INSERT INTO Dish (ID, Name, Type, Collation, Allergens) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                pstmt.setString(2, name);
+                pstmt.setString(3, "int(11)");
+                pstmt.setString(4, "UTF8_GENERAL_CI");
+                pstmt.setString(5, allergens);
+
+                // Execute the INSERT statement
+                System.out.println("Data uploaded successfully!");
+                pstmt.executeUpdate();
+            }   catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
     private static void disableForeignKeyChecks(Connection con) throws SQLException {
         try (Statement stmt = con.createStatement()) {
@@ -119,5 +122,4 @@ public class DBConnect {
             return null;
         }
     }
-
 }
