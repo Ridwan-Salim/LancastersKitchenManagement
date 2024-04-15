@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AddWineMenu extends DirectorScene {
+public class AddWineMenu extends Sommelier {
 
     private Map<Integer, String> wines = new HashMap<>();
 

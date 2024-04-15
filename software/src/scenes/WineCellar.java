@@ -12,7 +12,7 @@ import javafx.geometry.Pos;
 
 import java.util.*;
 
-public class WineCellar extends DirectorScene{
+public class WineCellar extends Sommelier{
 
     public Map<Integer, String> cellarNames = new HashMap<>();
     public Map<Integer, String> cellarPrice = new HashMap<>();

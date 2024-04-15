@@ -46,7 +46,7 @@ public class Main extends Application {
 
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Lancaster's Kitchen: Management Software");
 
         Image iconImage = new Image(getClass().getResourceAsStream("dat/img/chartIcon.png"));

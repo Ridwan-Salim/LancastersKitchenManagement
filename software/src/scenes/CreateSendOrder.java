@@ -34,7 +34,7 @@ import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateSendOrderScene extends ManagerScene {
+public class CreateSendOrder extends Manager {
 
     private ObservableList<String> orderItems = FXCollections.observableArrayList();
     private ObservableList<String> lowItems = FXCollections.observableArrayList();
@@ -45,7 +45,6 @@ public class CreateSendOrderScene extends ManagerScene {
     private Map<String, Integer> regularItemMap = new HashMap<>();
     private MockData mockData;
 
-public class CreateSendOrder extends Manager {
     public Scene createScene() {
         mockData = new MockData();
         mockData.addLowStockItems();

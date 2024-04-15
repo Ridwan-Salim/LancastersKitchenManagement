@@ -1,5 +1,8 @@
 package core;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 public class DBConnect {
@@ -55,6 +58,31 @@ public class DBConnect {
             return username + ":" + role;
 
         } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ObservableList getAllRoleName(){
+
+        ObservableList<String> allRoleNames = FXCollections.observableArrayList();
+
+        try{
+            String query1 = "SELECT Name,Role from Staff WHERE EndOfContract IS NULL";
+            Statement statement1 = con.createStatement();
+            ResultSet resultSet1 = statement1.executeQuery(query1);
+
+            while (resultSet1.next()){
+                String name = resultSet1.getString("Name");
+                String role = resultSet1.getString("Role");
+
+                allRoleNames.add(role + " " + name);
+            }
+            return allRoleNames;
+
+        }
+        catch (SQLException e){
+            e.printStackTrace();
             return null;
         }
     }

@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
