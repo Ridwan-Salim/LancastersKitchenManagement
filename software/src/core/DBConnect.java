@@ -19,34 +19,33 @@ public class DBConnect {
                 username,
                 password);
         System.out.println("Success");
-        uploadMockMenu();
     }
 
 
-    public static void uploadMockMenu() throws SQLException {
+   public static void uploadMockMenu(Map<Integer, String[]> menu) throws SQLException {
         Statement stmt = con.createStatement();
         //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
         disableForeignKeyChecks(con);
         String dropTableQuery = "DROP TABLE IF EXISTS Dish";
         stmt.executeUpdate(dropTableQuery);
-        System.out.println("Tables dropped successfully.");
+        System.out.println("Dish Tables dropped successfully.");
         MockData.addMenuData();
         MockData.createMenu();
         MockData.addWines();
 
         // Recreate the Dish table
         String createTableQuery = "CREATE TABLE IF NOT EXISTS Dish (" +
-                "ID INT NOT NULL PRIMARY KEY," +
-                "Name VARCHAR(255) NOT NULL," +
-                "Type VARCHAR(255)," +
-                "Collation VARCHAR(255)," +
-                "Allergens VARCHAR(255)" +
+                "id INT NOT NULL PRIMARY KEY," +
+                "name VARCHAR(255) NOT NULL," +
+                "price VARCHAR(255)," +
+                "description VARCHAR(255)," +
+                "allergens VARCHAR(255)" +
                 ")";
         stmt.executeUpdate(createTableQuery);
         enableForeignKeyChecks(con);
-        System.out.println("Table created successfully.");
+        System.out.println("Dish Table created successfully.");
 
-        for (Map.Entry<Integer, String[]> entry : MockData.menu.entrySet()) {
+        for (Map.Entry<Integer, String[]> entry : menu.entrySet()) {
             Integer id = entry.getKey();
             String[] data = entry.getValue();
             String name = data[0];
@@ -54,13 +53,61 @@ public class DBConnect {
             String description = data[2];
             String allergens = data[3];
 
-            String sql = "INSERT INTO Dish (ID, Name, Type, Collation, Allergens) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Dish (id, name, price, description, allergens) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt = con.prepareStatement(sql)) {
                 pstmt.setInt(1, id);
                 pstmt.setString(2, name);
-                pstmt.setString(3, "int(11)");
-                pstmt.setString(4, "UTF8_GENERAL_CI");
+                pstmt.setString(3, price);
+                pstmt.setString(4, description);
                 pstmt.setString(5, allergens);
+
+                // Execute the INSERT statement
+                System.out.println("Dish Data uploaded successfully!");
+                pstmt.executeUpdate();
+            }   catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void uploadWineMenu(Map<Integer, String[]> menu) throws SQLException {
+        Statement stmt = con.createStatement();
+        //ResultSet rs = stmt.executeQuery("SELECT id, name, price FROM Dish");
+        disableForeignKeyChecks(con);
+        String dropTableQuery = "DROP TABLE IF EXISTS Wine";
+        stmt.executeUpdate(dropTableQuery);
+        System.out.println("Wine Tables dropped successfully.");
+        MockData.addMenuData();
+        MockData.createMenu();
+        MockData.addWines();
+
+        // Recreate the Dish table
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS Wine (" +
+                "id INT NOT NULL PRIMARY KEY," +
+                "name VARCHAR(255) NOT NULL," +
+                "price VARCHAR(255)," +
+                "description VARCHAR(255)," +
+                "vintage VARCHAR(255)" +
+                ")";
+        stmt.executeUpdate(createTableQuery);
+        enableForeignKeyChecks(con);
+        System.out.println("Wine Table created successfully.");
+
+        for (Map.Entry<Integer, String[]> entry : menu.entrySet()) {
+            Integer id = entry.getKey();
+            String[] data = entry.getValue();
+            String name = data[0];
+            String price = data[1];
+            String description = data[2];
+            String vintage = data[3];
+
+            String sql = "INSERT INTO Wine (id, name, price, description, vintage) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                pstmt.setString(2, name);
+                pstmt.setString(3, price);
+                pstmt.setString(4, description);
+                pstmt.setString(5, vintage);
 
                 // Execute the INSERT statement
                 System.out.println("Data uploaded successfully!");
