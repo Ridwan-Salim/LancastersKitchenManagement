@@ -109,6 +109,12 @@ public class SceneManager {
             else{
                 scene = scenes.get(newScene);
             }
+            if (newScene.contains("General Staff")){
+                scene = scenes.get(GeneralStaff.class.getSimpleName());
+            }
+            else{
+                scene = scenes.get(newScene);
+            }
 
             scene.setEmployeeName(name);
             scene.setEmployeeRole(role);
@@ -142,6 +148,7 @@ public class SceneManager {
             } else {
                 showAlert("Invalid Role", "Invalid role specified for the user.", Alert.AlertType.ERROR);
             }
+
         }
     }
 

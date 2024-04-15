@@ -372,7 +372,7 @@ public class EditMenu extends Manager {
 
             Label dishPrice = new Label(entry.getValue()[1]);
             String priceString = entry.getValue()[1].trim().replace("£", "");
-            double price = (Double.parseDouble(priceString)); // Add default markup /10 as not whole ingredient used
+            double price = Double.parseDouble(priceString) / 100.0; // Divide by 100
             dishPrice.setText("£" + String.format("%.2f", price));
             dishPrice.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
             GridPane.setMargin(dishPrice, new Insets(10, 0, 0, 20));
@@ -525,7 +525,7 @@ public class EditMenu extends Manager {
         Button saveAdditionalMarkup = createButton("Add service fee %", event -> {
             String text = changeAdditionalMarkup.getText();
             // If the field is empty or the value is less than 0.1%
-            if (text.isEmpty() || !text.matches("^\\d*\\.?\\d+$") || Double.parseDouble(text) < 0.1) {
+            if (text.isEmpty() || !text.matches("^\\d*\\.?\\d+£") || Double.parseDouble(text) < 0.1) {
                 showErrorAlert("Invalid Input");
                 return;
             }
@@ -644,7 +644,7 @@ public class EditMenu extends Manager {
 
 
             // Calculate total price
-            price = defaultMarkupPrice;
+            price = defaultMarkupPrice/100;
 
             dishLabel.setText("£" + String.format("%.2f", price));
             mockData.menu.get(label.getKey())[2] = dishLabel.getText();
@@ -661,7 +661,7 @@ public class EditMenu extends Manager {
             double additionalMarkupPrice = (additionalMarkupPercentage * Double.parseDouble(priceLabelText) / 100);
 
             // Calculate total price
-            price =  Double.parseDouble(priceLabelText) + additionalMarkupPrice;
+            price =  Double.parseDouble(priceLabelText) + additionalMarkupPrice/100;
 
             label.getValue().setText("£" + String.format("%.2f", price));
             MockData.menu.get(label.getKey())[2] = label.getValue().getText();
