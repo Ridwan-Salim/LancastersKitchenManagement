@@ -39,7 +39,7 @@ import java.util.*;
 public class MockData {
     public Map<String, List<String>> menuData = new HashMap<>();  // Dish -> Ingredients list
     public Map<String, Double> ingredients = new HashMap<>(); // Ingredients -> Price
-    public static Map<Integer, String[]> wines = new HashMap<>(); // WineID -> Wine Name Price Vintage
+    public static Map<Integer, String[]> wines = new HashMap<>(); // WineID -> Wine Name Price Vintage Qty
     public static Map<Integer, String[]> menu = new HashMap<>(); // ID -> DishName, DishPrice, Description, Allergens, Wines
     public static int dishInfoCapacity = 5;
     public Map<String, List<List<String>>> bookings = new HashMap<>(); // Everyday -> booking predictions
@@ -170,13 +170,6 @@ public class MockData {
         ingredients.put("Jasmine Rice", 2.0);
         ingredients.put("Basmati Rice", 2.0);
     }
-    public void addIngredientsFromList(String[] ingredientList) {
-        for (String ingredient : ingredientList) {
-            // Check if the ingredient already exists in the map
-            if (ingredients.containsKey(ingredient)) {
-                // If it exists, update its quantity
-                double currentQuantity = ingredients.get(ingredient);
-                ingredients.put(ingredient, currentQuantity + 1.0); // Increment by 1.0, you can change this as needed
 
     public static void addWines() {
         wines.put(1, new String[]{"Chardonnay", "15.0", "Description1", "2019", "20"});
@@ -191,6 +184,19 @@ public class MockData {
         wines.put(10, new String[]{"Rosé", "13.0", "Description10", "2021", "20"});
     }
 
+    public static void printWines() {
+        for (Map.Entry<Integer, String[]> entry : wines.entrySet()) {
+            Integer id = entry.getKey();
+            String[] wineDetails = entry.getValue();
+            System.out.println("ID: " + id);
+            System.out.println("Name: " + wineDetails[0]);
+            System.out.println("Price: £" + wineDetails[1]);
+            System.out.println("Description: " + wineDetails[2]);
+            System.out.println("Vintage: " + wineDetails[3]);
+            System.out.println("Qty: " + wineDetails[4]);
+            System.out.println("--------------------");
+        }
+    }
     public void addDishWithIngredients(String dishName, String... ingredients) {
         List<String> validIngredients = new ArrayList<>();
         for (String ingredient : ingredients) {
