@@ -23,6 +23,7 @@ public class EditMenu extends Manager {
     private Map<Integer, Label> originalDishPriceLabel = new HashMap<>();
     private Map<Integer, String> dishDescriptions = new HashMap<>();
     private Map<Integer, String> dishAllergens = new HashMap<>();
+    private Map<Integer, String[]> uploadCopy = new HashMap<>();
     private boolean isDataInitialized = false;
     private double defaultMarkupPercentage = 5; // Default markup percentage
     private final double oldDefaultMarkupPercentage = 5; // Default markup percentage
@@ -548,7 +549,6 @@ public class EditMenu extends Manager {
 
         // Other existing code...
 
-
         Button saveAll = new Button("Save Menu");
         VBox.setMargin(saveAll, new Insets(50, 0, 0, 350));
         saveAll.setOnAction(saveEvent -> {
@@ -566,20 +566,24 @@ public class EditMenu extends Manager {
                 alert.setContentText("Menu changes have been saved to the database");
                 alert.showAndWait();
 
-                for(Map.Entry<Integer, Label> entry: dishPriceLabel.entrySet()){
+                for (Map.Entry<Integer, Label> entry : dishPriceLabel.entrySet()) {
+                    Integer id = entry.getKey();
+                    Label label = entry.getValue();
                     String[] saveData = new String[mockData.dishInfoCapacity];
-                    String saveName = mockData.menu.get(entry.getKey())[0];
-                    String savePrice = entry.getValue().getText();
-                    String saveDescription = dishDescriptions.get(entry.getKey());
-                    String saveAllergens = dishAllergens.get(entry.getKey());
-                    saveData[0] = saveName;
-                    saveData[1] = savePrice;
-                    saveData[2] =  saveDescription;
-                    saveData[3] = saveAllergens;
-                    mockData.menu.put(entry.getKey(), saveData);
+                    saveData[0] = mockData.menu.get(id)[0]; // Name
+                    saveData[1] = label.getText(); // Price
+                    saveData[2] = dishDescriptions.getOrDefault(id, ""); // Description
+                    saveData[3] = dishAllergens.getOrDefault(id, ""); // Allergens
+                    mockData.menu.put(id, saveData);
+                }
+                uploadCopy = mockData.menu.entrySet().stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> Arrays.copyOf(e.getValue(), e.getValue().length)));
+                try {
+                    DBConnect.uploadMockMenu(uploadCopy);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
-            mockData.printMenu();
         });
         TextField changeInitialMarkup = new TextField();
         VBox.setMargin(changeInitialMarkup, new Insets(10, 0, 0, 350));

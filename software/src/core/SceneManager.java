@@ -1,5 +1,6 @@
 package core;
 
+import classes.Wine;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import scenes.*;
@@ -125,6 +126,18 @@ public class SceneManager {
                 return;
             }
 
+            scene.setEmployeeName(name);
+            scene.setEmployeeRole(role);
+
+            // create Manager scene for Manager: createScene()
+            // create Manager scene for Lancaster: createScene(false)
+
+            // create General Staff scene for General Staff (can be Chef or FoH): createScene()
+            // create General Staff scene for Manager: createScene(true)
+            // create General Staff scene for Lancaster: createScene(false)
+
+            // create Lancaster scene for Lancaster: createScene()
+
             System.out.println(name + " : " + role);
 
             if (role.contains("General Staff")) {
@@ -134,7 +147,8 @@ public class SceneManager {
                 else{
                     return;
                 }
-            } else if (role.equals("Manager")) {
+            }
+            else if (role.equals("Manager")) {
                 if (scene instanceof Manager) {
                     primaryStage.setScene(scene.createScene());
                 } else if (scene instanceof GeneralStaff) {
