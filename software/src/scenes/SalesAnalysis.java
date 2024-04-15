@@ -423,6 +423,214 @@ public class SalesAnalysis extends Manager {
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
+    public Scene createScene(boolean toggleManager) {
+
+        dateRangeSelector = createDateRangeSelector();
+
+        startDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> updateScene());
+        endDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> updateScene());
+
+        mockData = new MockData();
+
+        mockData.addMenuData();
+        mockData.createMenu();
+        mockData.generateBills();
+        Map<Integer, List<List<String>>> billData = mockData.bill;
+        layout = new BorderPane();
+        layout.setPadding(new Insets(20));
+
+        Label greetingLabel = new Label("Time to do some analysis, " + employeeName + ".");
+        greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
+        BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
+        Timeline labelAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(greetingLabel.opacityProperty(), 0)),
+                new KeyFrame(Duration.seconds(1), new KeyValue(greetingLabel.opacityProperty(), 1))
+        );
+        labelAnimation.play();
+
+        Button backButton = createBackButtonManager();
+
+
+        // Get selected date range
+
+        // Left section: Popular Menu Items
+        VBox popularDishesBox = new VBox(5);
+        popularDishesBox.getChildren().addAll(
+                dateRangeSelector
+        );
+
+        // Sort the menu items by sales count in descending order
+
+        // Display only the top 15 popular menu items
+
+
+        ScrollPane popularDishesScrollPane = new ScrollPane(popularDishesBox);
+        popularDishesScrollPane.setFitToWidth(true);
+        layout.setLeft(popularDishesScrollPane);
+
+        // Center section: Less Popular Menu Items, Most Popular Tables, and Peak Hours
+        VBox centerBox = new VBox(10);
+        centerBox.setAlignment(Pos.CENTER);
+
+        // Less Popular Menu Items
+        VBox lessPopularDishesBox = new VBox(5);
+        lessPopularDishesBox.getChildren().addAll(
+                dateRangeSelector
+        );
+        Pair<LocalDate, LocalDate> selectedDateRange = getSelectedDateRange();
+        LocalDate startDate = selectedDateRange.getKey();
+        LocalDate endDate = selectedDateRange.getValue();
+
+        // Generate statistics based on selected date range
+        Map<String, Integer> menuItemSales = calculateMenuItemSales(billData, startDate, endDate);
+        double averageAmountSpent = calculateAverageAmountSpent(billData, startDate, endDate);
+        String mostValuableWaiter = calculateMostValuableWaiter(billData, startDate, endDate);
+        Map<String, Integer> tableSales = calculateTableSales(billData, startDate, endDate);
+        List<String> lessPopularItems = calculateLessPopularItems(menuItemSales, startDate, endDate);
+        List<String> peakHours = calculatePeakHours(billData, startDate, endDate);
+
+        List<Map.Entry<String, Integer>> sortedMenuItems = new ArrayList<>(menuItemSales.entrySet());
+        sortedMenuItems.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        int itemCount = 0;
+        for (Map.Entry<String, Integer> entry : sortedMenuItems) {
+            if (itemCount >= 15) {
+                break;
+            }
+            popularDishesBox.getChildren().add(new Label(entry.getKey() + ": " + entry.getValue() + " sold"));
+            itemCount++;
+        }
+
+        lessPopularItems.forEach(item -> lessPopularDishesBox.getChildren().add(new Label(item)));
+        ScrollPane lessPopularDishesScrollPane = new ScrollPane(lessPopularDishesBox);
+        lessPopularDishesScrollPane.setFitToWidth(true);
+        lessPopularDishesScrollPane.setPrefViewportHeight(150);
+        centerBox.getChildren().add(lessPopularDishesScrollPane);
+
+        // Most Popular Tables
+        VBox popularTablesBox = new VBox(5);
+        tableSales.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+                .limit(5)
+                .forEach(entry -> popularTablesBox.getChildren().add(new Label(entry.getKey() + ": " + entry.getValue() + " times")));
+        ScrollPane popularTablesScrollPane = new ScrollPane(popularTablesBox);
+        popularTablesScrollPane.setFitToWidth(true);
+        popularTablesScrollPane.setPrefViewportHeight(150);
+        centerBox.getChildren().add(popularTablesScrollPane);
+
+        // Peak Hours
+        VBox peakHoursBox = new VBox(5);
+        peakHours.forEach(hour -> peakHoursBox.getChildren().add(new Label(hour)));
+        ScrollPane peakHoursScrollPane = new ScrollPane(peakHoursBox);
+        peakHoursScrollPane.setFitToWidth(true);
+        peakHoursScrollPane.setPrefViewportHeight(150);
+        centerBox.getChildren().add(peakHoursScrollPane);
+
+        layout.setCenter(centerBox);
+
+        // Right section: Average bill, total revenue, and most valuable waiter
+        VBox rightBox = new VBox(10);
+
+        // Format average amount spent and total revenue to display only 2 decimals
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedAverageAmountSpent = df.format(averageAmountSpent);
+        double totalRevenue = calculateTotalRevenue(billData, startDate, endDate);
+        String formattedTotalRevenue = df.format(totalRevenue);
+        layout.setRight(rightBox);
+        rightBox.setAlignment(Pos.CENTER);
+
+
+        layout.setTop(greetingLabel);
+        layout.setBottom(backButton);
+        popularDishesBox.setStyle("-fx-background-color: #f9f9f9;");
+        lessPopularDishesBox.setStyle("-fx-background-color: #f9f9f9;");
+        popularTablesBox.setStyle("-fx-background-color: #f9f9f9;");
+        peakHoursBox.setStyle("-fx-background-color: #f9f9f9;");
+        rightBox.setStyle("-fx-background-color: #f9f9f9;");
+        // Add bold and increase font size for headings
+
+        Label popularDishesHeading = new Label("Popular Menu Items:");
+        popularDishesHeading.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        Label lessPopularDishesHeading = new Label("Less Popular Menu Items:");
+        lessPopularDishesHeading.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        Label popularTablesHeading = new Label("Most Popular Tables:");
+        popularTablesHeading.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        Label peakHoursHeading = new Label("Peak Hours:");
+        peakHoursHeading.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+// Add headings to the corresponding boxes
+        popularDishesBox.getChildren().add(0, popularDishesHeading);
+        lessPopularDishesBox.getChildren().add(0, lessPopularDishesHeading);
+        popularTablesBox.getChildren().add(0, popularTablesHeading);
+        peakHoursBox.getChildren().add(0, peakHoursHeading);
+
+        Label revenueLabel = new Label("Total Revenue: £" + formattedTotalRevenue);
+        revenueLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label averageAmountSpentLabel = new Label("Average Amount Spent: $" + formattedAverageAmountSpent);
+        averageAmountSpentLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label mostValuableWaiterLabel = new Label("Most Valuable Waiter: " + mostValuableWaiter);
+        mostValuableWaiterLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+// Add labels to the rightBox
+        rightBox.setAlignment(Pos.BASELINE_LEFT);
+
+// Add labels to the rightBox
+        rightBox.getChildren().addAll(
+                dateRangeSelector,
+                averageAmountSpentLabel,
+                revenueLabel,
+                mostValuableWaiterLabel
+        );
+// Add padding to sections
+        popularDishesBox.setPadding(new Insets(10));
+        lessPopularDishesBox.setPadding(new Insets(10));
+        popularTablesBox.setPadding(new Insets(10));
+        peakHoursBox.setPadding(new Insets(10));
+        rightBox.setPadding(new Insets(10));
+
+// Apply border to sections
+        popularDishesBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        lessPopularDishesBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        popularTablesBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        peakHoursBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        rightBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+// Add spacing between elements
+        popularDishesBox.setSpacing(10);
+        lessPopularDishesBox.setSpacing(10);
+        popularTablesBox.setSpacing(10);
+        peakHoursBox.setSpacing(10);
+        rightBox.setSpacing(10);
+
+// Set text color
+        popularDishesBox.setStyle("-fx-text-fill: #333;");
+        lessPopularDishesBox.setStyle("-fx-text-fill: #333;");
+        popularTablesBox.setStyle("-fx-text-fill: #333;");
+        peakHoursBox.setStyle("-fx-text-fill: #333;");
+        rightBox.setStyle("-fx-text-fill: #333;");
+        Button downloadButton = createButton("Download Data", event -> {
+            try {
+                downloadData();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        HBox bottomBox = new HBox();
+        bottomBox.setSpacing(10);
+        backButton.setPrefWidth(225);
+        bottomBox.getChildren().addAll(backButton, downloadButton);
+        layout.setBottom(bottomBox);
+
+// Apply a subtle shadow effect to section
+
+        return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
 
     private void downloadData() {
         // Create a FileChooser dialog

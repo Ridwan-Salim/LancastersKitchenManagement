@@ -19,11 +19,87 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BookingPrediction extends Manager {
+public class BookingPrediction extends Sommelier {
     private Scene scene;
     private MockData mockData = new MockData();
 
     public Scene createScene() {
+        mockData.generateYearPredictions();
+        BorderPane layout = new BorderPane();
+        layout.setPadding(new Insets(20));
+
+        Label greetingLabel = new Label("Want to predict some future, " + employeeName + "?");
+        greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
+        BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
+
+
+
+        ComboBox<String> monthComboBox = new ComboBox<>();
+        monthComboBox.getItems().addAll("January", "February", "March", "April", "May", "June", "July", "August",
+                "September", "October", "November", "December");
+        monthComboBox.setValue("January");
+
+        monthComboBox.setStyle("-fx-font-size: 14px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        monthComboBox.setOnMouseEntered(e -> monthComboBox.setStyle("-fx-font-size: 14px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        monthComboBox.setOnMouseExited(e -> monthComboBox.setStyle("-fx-font-size: 14px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
+        monthComboBox.setPrefWidth(225);
+        Button sortByMoneyButton = createButton("Sort by Money", event -> sortAndDisplayData("money", monthComboBox.getValue()));
+        sortByMoneyButton.setPrefWidth(225);
+        Button sortByTablesButton= createButton("Sort by Tables", event -> sortAndDisplayData("tables", monthComboBox.getValue()));
+        sortByTablesButton.setPrefWidth(225);
+        VBox bookingDataContainer = new VBox(10);
+        bookingDataContainer.setAlignment(Pos.CENTER_LEFT);
+        bookingDataContainer.setPadding(new Insets(10));
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(bookingDataContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefViewportHeight(400); // Adjust as needed
+        scrollPane.setStyle("-fx-background-color: #f7f7f7; -fx-background-insets: 0; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
+
+        Button backButton = createBackButtonManager();
+        backButton.setPrefWidth(200);
+        Button downloadButton = createButton("Download",event -> {
+            // Retrieve booking data for the selected month
+            String selectedMonth = monthComboBox.getValue();
+            Map<String, List<List<String>>> bookings = mockData.getYearPredictionsForMonth(selectedMonth);
+            // Call a method to download the content of the output text field
+            downloadData(bookings.toString());
+        } );
+        downloadButton.setPrefWidth(200);
+        HBox bottomBox = new HBox(downloadButton);
+        bottomBox.getChildren().add(backButton);
+        bottomBox.setAlignment(Pos.CENTER_RIGHT);
+        bottomBox.setPadding(new Insets(10));
+        bottomBox.setSpacing(150);
+
+        Button showAllDataButton = createButton("All Booking Data", event -> showAllBookingData(bookingDataContainer));
+        showAllDataButton.setPrefWidth(225);
+
+// Retrieve booking data and update the UI
+        updateBookingData(bookingDataContainer, "January");
+        GridPane controlPanel = new GridPane();
+        controlPanel.setPadding(new Insets(10));
+        controlPanel.setAlignment(Pos.CENTER_LEFT);
+        controlPanel.setHgap(10);
+        controlPanel.setVgap(10);
+
+// Add buttons to the grid
+        controlPanel.add(monthComboBox, 0, 0);
+        controlPanel.add(sortByMoneyButton, 0, 1);
+        controlPanel.add(sortByTablesButton, 1, 0);
+        controlPanel.add(showAllDataButton, 1, 1);
+// Adding components to the layout
+        layout.setTop(greetingLabel);
+        layout.setCenter(scrollPane);
+        layout.setLeft(controlPanel);
+        layout.setBottom(bottomBox);
+
+        scene = new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+        return scene;
+    }
+    public Scene createScene(boolean togleManager) {
         mockData.generateYearPredictions();
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));

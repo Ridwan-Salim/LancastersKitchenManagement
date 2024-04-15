@@ -68,11 +68,11 @@ public class SceneManager {
         Personalisable staffHoursScene = new StaffHours();
         nameSet.add(staffHoursScene);
 
-        Personalisable wineMenuScene = new AddWineMenu();
-        nameSet.add(wineMenuScene);
+        Personalisable wineMenu = new AddWineMenu();
+        nameSet.add(wineMenu);
 
-        Personalisable wineCellarScene = new WineCellar();
-        nameSet.add(wineCellarScene);
+        Personalisable wineCellar = new WineCellar();
+        nameSet.add(wineCellar);
 
         Personalisable loginScene = new Login();
         nameSet.add(loginScene);
@@ -138,11 +138,7 @@ public class SceneManager {
                     return;
                 }
             } else if (role.equals("Director")) {
-                if (scene instanceof Sommelier) {
-                    primaryStage.setScene(scene.createScene());
-                } else {
-                    primaryStage.setScene(scene.createScene(false));
-                }
+                    primaryStage.setScene(scene.createScene(true));
             } else {
                 showAlert("Invalid Role", "Invalid role specified for the user.", Alert.AlertType.ERROR);
             }

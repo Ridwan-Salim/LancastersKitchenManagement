@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -43,6 +44,130 @@ public class ClockIn extends Manager {
     Label missedShiftsLabel;
 
     public Scene createScene() {
+        BorderPane layout = new BorderPane();
+        layout.setPadding(new Insets(20));
+
+        Label greetingLabel = new Label("Let's clock someone in/out, " + employeeName + ".");
+        greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
+        BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
+        Timeline labelAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(greetingLabel.opacityProperty(), 0)),
+                new KeyFrame(Duration.seconds(1), new KeyValue(greetingLabel.opacityProperty(), 1))
+        );
+        labelAnimation.play();
+
+        VBox pane = new VBox(20);
+        pane.setAlignment(Pos.CENTER);
+        pane.setPadding(new Insets(10));
+
+        // Creating ComboBox for employee selection
+        ObservableList<String> employeeNames = FXCollections.observableArrayList(extractNamesFromFile("D:\\homework\\Lancasters\\vpp\\LancastersKitchenMgmt\\software\\src\\scenes\\usersInfo\\users_info.txt"));
+        employeeComboBox = new ComboBox<>(employeeNames);
+        employeeComboBox.setPrefWidth(INPUT_FIELD_WIDTH);
+        employeeComboBox.setPromptText("Select Employee");
+        employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        ComboBox<String> finalRoleDropdown2 = employeeComboBox;
+        employeeComboBox.setOnMouseEntered(e -> finalRoleDropdown2.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        ComboBox<String> finalRoleDropdown3 = employeeComboBox;
+        employeeComboBox.setOnMouseExited(e -> finalRoleDropdown3.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
+
+        clockInField = new TextField();
+        clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        clockInField.setMaxWidth(INPUT_FIELD_WIDTH);
+        clockInField.setPromptText("Clock In (HH:mm)");
+
+        clockOutField = new TextField();
+        clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;-fx-background-radius: 20");
+        clockOutField.setMaxWidth(INPUT_FIELD_WIDTH);
+        clockOutField.setPromptText("Clock Out (HH:mm)");
+
+        shiftsCoveredLabel = new Label("");
+        shiftsCoveredLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: green;");
+
+        missedShiftsLabel = new Label("");
+        missedShiftsLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: red;");
+
+        HBox textBox = new HBox();
+        textBox.getChildren().addAll(shiftsCoveredLabel, missedShiftsLabel);
+
+        Button clockButton = new Button("Clock In/Out");
+        clockButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        clockButton.setOnAction(event -> clockInOut());
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setOnMouseClicked(e -> clockButton.setStyle(CLICKED_BUTTON_STYLE));
+        checkShiftsButton = new Button("Check Shifts");
+        checkShiftsButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        checkShiftsButton.setOnAction(event -> checkShifts());
+        checkShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkShiftsButton.setOnMouseEntered(e -> checkShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseExited(e -> checkShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseClicked(e -> checkShiftsButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        checkMissedShiftsButton = new Button("Check Missed Shifts");
+        checkMissedShiftsButton.setPrefWidth(INPUT_FIELD_WIDTH);
+        checkMissedShiftsButton.setOnAction(event -> checkMissedShifts());
+        checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkMissedShiftsButton.setOnMouseEntered(e -> checkMissedShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseExited(e -> checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseClicked(e -> checkMissedShiftsButton.setStyle(CLICKED_BUTTON_STYLE));
+
+        pane.getChildren().addAll(employeeComboBox, clockInField, clockOutField, clockButton, checkShiftsButton, checkMissedShiftsButton);
+
+        VBox infoPane = new VBox(10);
+        infoPane.getChildren().addAll(shiftsCoveredLabel, missedShiftsLabel);
+        infoPane.setAlignment(Pos.CENTER_LEFT);
+
+        VBox leftPart = new VBox();
+        leftPart.getChildren().addAll(greetingLabel, infoPane);
+        Button backButton = createBackButtonManager();
+        layout.setLeft(leftPart);
+        leftPart.setSpacing(30);
+        layout.setBottom(backButton);
+        layout.setCenter(pane);
+        // Apply styles
+        pane.setStyle("-fx-background-color: #f0f0f0;");
+        shiftsCoveredLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2E8B57; -fx-background-color: #F0FFF0; -fx-padding: 10px;");
+        missedShiftsLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FF6347; -fx-background-color: #FFE4E1; -fx-padding: 10px;");
+        // Make labels scrollable
+        ScrollPane shiftsScrollPane = new ScrollPane();
+        shiftsScrollPane.setContent(shiftsCoveredLabel);
+        shiftsScrollPane.setFitToWidth(true);
+        shiftsScrollPane.setPrefHeight(200);
+
+        ScrollPane missedShiftsScrollPane = new ScrollPane();
+        missedShiftsScrollPane.setContent(missedShiftsLabel);
+        missedShiftsScrollPane.setFitToWidth(true);
+        missedShiftsScrollPane.setPrefHeight(200);
+
+        infoPane.getChildren().addAll(shiftsScrollPane, missedShiftsScrollPane);
+
+        // Apply styles to buttons
+        backButton.setStyle(IDLE_BUTTON_STYLE);
+        backButton.setOnMouseEntered(e -> backButton.setStyle(HOVERED_BUTTON_STYLE));
+        backButton.setOnMouseExited(e -> backButton.setStyle(IDLE_BUTTON_STYLE));
+        clockButton.setStyle(IDLE_BUTTON_STYLE);
+        clockButton.setOnMouseEntered(e -> clockButton.setStyle(HOVERED_BUTTON_STYLE));
+        clockButton.setOnMouseExited(e -> clockButton.setStyle(IDLE_BUTTON_STYLE));
+        checkShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkShiftsButton.setOnMouseEntered(e -> checkShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkShiftsButton.setOnMouseExited(e -> checkShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+        checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE);
+        checkMissedShiftsButton.setOnMouseEntered(e -> checkMissedShiftsButton.setStyle(HOVERED_BUTTON_STYLE));
+        checkMissedShiftsButton.setOnMouseExited(e -> checkMissedShiftsButton.setStyle(IDLE_BUTTON_STYLE));
+
+        // Apply styles to ComboBox and text fields
+        employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+        employeeComboBox.setOnMouseEntered(e -> employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #e0e0e0; -fx-border-color: #999999"));
+        employeeComboBox.setOnMouseExited(e -> employeeComboBox.setStyle("-fx-font-size: 16px; -fx-background-color: #f0f0f0; -fx-border-color: #999999"));
+
+        clockInField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+        clockOutField.setStyle("-fx-font-size: 12px; -fx-background-color: #f0f0f0; -fx-border-color: #999999;");
+        return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
+    public Scene createScene(boolean toggle) {
         BorderPane layout = new BorderPane();
         layout.setPadding(new Insets(20));
 

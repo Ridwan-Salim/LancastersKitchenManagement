@@ -71,6 +71,37 @@ public class StaffHours extends Manager {
         scheduler.scheduleAtFixedRate(this::updateCalendarTask, 0, 1, TimeUnit.SECONDS);
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
+    public Scene createScene(boolean toggleManager) {
+        mockData.generateTablePredictions();
+        mockData.generateYearPredictions();
+        BorderPane layout = new BorderPane();
+        layout.setPadding(new Insets(20));
+
+        Label greetingLabel = new Label("Let's check the staff hours, " + employeeName + ".");
+        greetingLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        BorderPane.setAlignment(greetingLabel, Pos.TOP_LEFT);
+        BorderPane.setMargin(greetingLabel, new Insets(10, 0, 0, 10));
+        Timeline labelAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(greetingLabel.opacityProperty(), 0)),
+                new KeyFrame(Duration.seconds(1), new KeyValue(greetingLabel.opacityProperty(), 1))
+        );
+        labelAnimation.play();
+
+        calendar = createCalendarPane();
+        Button backButton = createBackButtonManager();
+        Button shiftsButton = createButton("View Shifts", actionEvent -> {openShiftsWindow();});
+
+        layout.setTop(greetingLabel); // Set greetingLabel to the top
+        layout.setCenter(calendar); // Set calendar to the center
+        layout.setBottom(backButton);
+        layout.setRight(shiftsButton);
+        for (LocalDate date : displayedDates) {
+            String dateString = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            calculateStaffNeeded(dateString);
+        }
+        scheduler.scheduleAtFixedRate(this::updateCalendarTask, 0, 1, TimeUnit.SECONDS);
+        return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
+    }
     private void updateCalendarTask() {
         try {
             updateCalendar();
