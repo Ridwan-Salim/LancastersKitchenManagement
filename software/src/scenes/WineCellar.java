@@ -19,6 +19,7 @@ public class WineCellar extends Sommelier{
     public Map<Integer, String> cellarDescription = new HashMap<>();
     public Map<Integer, String> cellarVintage = new HashMap<>();
     public Map<Integer, String> cellarQty = new HashMap<>();
+    private Map<Integer, String[]> uploadCopy = new HashMap<>();
 
     public Scene createScene() {
         MockData.addWines();
@@ -70,6 +71,13 @@ public class WineCellar extends Sommelier{
                     String wineVintage = cellarVintage.get(id);
                     String wineQty = cellarQty.get(id);
                     MockData.wines.put(id, new String[] {wineName, winePrice, wineDescription, wineVintage, wineQty});
+                }
+                uploadCopy = MockData.wines.entrySet().stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> Arrays.copyOf(e.getValue(), e.getValue().length)));
+                try {
+                    DBConnect.uploadWineMenu(uploadCopy);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
