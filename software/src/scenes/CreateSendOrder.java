@@ -3,9 +3,12 @@ package scenes;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -16,10 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.geometry.Pos;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,7 +36,6 @@ public class CreateSendOrder extends Manager {
     private Map<String, Integer> lowItemMap = new HashMap<>();
     private Map<String, Integer> regularItemMap = new HashMap<>();
     private MockData mockData;
-
 
     public Scene createScene() {
         mockData = new MockData();
@@ -264,7 +262,8 @@ public class CreateSendOrder extends Manager {
         calculatePriceButton.setPrefWidth(225);
         Button sendOrderButton = createButton("Send Order", e -> {
             // Create a JSON representation of the order and send it
-            String jsonOrder = createJsonOrder(); // Create a method to generate JSON representation of the order
+            String jsonOrder = createJsonOrder();
+            showConfirmationAlert("Order Sent", "The order has been sent successfully.");// Create a method to generate JSON representation of the order
             System.out.println("Sending Order: " + jsonOrder); // Display or send the JSON order (you can change this to whatever you need)
         });
         sendOrderButton.setPrefWidth(275);
@@ -273,8 +272,11 @@ public class CreateSendOrder extends Manager {
             // You need to implement the logic to save the content of the screen to a file
             // This can include saving the order list, low items, regular items, etc.
             // For simplicity, let's assume you have a method called saveContentToFile(String content, String filename)
+
             String content = "Order Items: " + orderItems + "\nLow Items: " + lowItems + "\nRegular Items: " + regularItems;
+
             saveContentToFile(content);
+            showConfirmationAlert("Download Complete", "The order has been downloaded successfully.");
         });
         downloadButton.setPrefWidth(275);
 
@@ -322,7 +324,7 @@ public class CreateSendOrder extends Manager {
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
-    public Scene createScene(boolean togleManager) {
+    public Scene createScene(boolean toggleManager) {
         mockData = new MockData();
         mockData.addLowStockItems();
         mockData.addIngredients();
@@ -547,7 +549,8 @@ public class CreateSendOrder extends Manager {
         calculatePriceButton.setPrefWidth(225);
         Button sendOrderButton = createButton("Send Order", e -> {
             // Create a JSON representation of the order and send it
-            String jsonOrder = createJsonOrder(); // Create a method to generate JSON representation of the order
+            String jsonOrder = createJsonOrder();
+            showConfirmationAlert("Order Sent", "The order has been sent successfully.");// Create a method to generate JSON representation of the order
             System.out.println("Sending Order: " + jsonOrder); // Display or send the JSON order (you can change this to whatever you need)
         });
         sendOrderButton.setPrefWidth(275);
@@ -556,8 +559,11 @@ public class CreateSendOrder extends Manager {
             // You need to implement the logic to save the content of the screen to a file
             // This can include saving the order list, low items, regular items, etc.
             // For simplicity, let's assume you have a method called saveContentToFile(String content, String filename)
+
             String content = "Order Items: " + orderItems + "\nLow Items: " + lowItems + "\nRegular Items: " + regularItems;
+
             saveContentToFile(content);
+            showConfirmationAlert("Download Complete", "The order has been downloaded successfully.");
         });
         downloadButton.setPrefWidth(275);
 
@@ -605,7 +611,13 @@ public class CreateSendOrder extends Manager {
 
         return new Scene(layout, SCREEN_RES_WIDTH, SCREEN_RES_HEIGHT);
     }
-
+    private void showConfirmationAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     private String createJsonOrder() {
         JSONObject jsonOrder = new JSONObject();
         JSONArray itemsArray = new JSONArray();
@@ -668,4 +680,3 @@ public class CreateSendOrder extends Manager {
         }
     }
 }
-

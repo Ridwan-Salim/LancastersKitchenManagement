@@ -62,8 +62,8 @@ public class SceneManager {
         Personalisable salesAnalysisScene = new SalesAnalysis();
         nameSet.add(salesAnalysisScene);
 
-        Personalisable sickHolidayRequestsScene = new SickHolidayRequests();
-        nameSet.add(sickHolidayRequestsScene);
+        Personalisable sickHolidayRequests = new SickHolidayRequests();
+        nameSet.add(sickHolidayRequests);
 
         Personalisable staffHoursScene = new StaffHours();
         nameSet.add(staffHoursScene);
