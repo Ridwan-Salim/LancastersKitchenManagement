@@ -42,7 +42,12 @@ public class Login extends Personalisable {
             String[] split = namerole.split(":");
             SceneManager.getInstance().setName(split[0]);
             SceneManager.getInstance().setRole(split[1]);
-            SceneManager.getInstance().showScene(split[1]);
+            if (split[1].equals("Director")){
+                SceneManager.getInstance().showScene(Sommelier.class.getSimpleName());
+            }
+            else{
+                SceneManager.getInstance().showScene(split[1]);
+            }
             System.out.println("Login button clicked with password: " + password);
         });
 
